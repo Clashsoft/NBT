@@ -22,7 +22,73 @@ public class NBTHelper
 	
 	public static byte getTypeFromValue(String value)
 	{
-		return 0;
+		if (value.startsWith("{"))
+		{
+			return TYPE_COMPOUND;
+		}
+		else if (value.startsWith("["))
+		{
+			return TYPE_LIST;
+		}
+		else if (value.startsWith("<"))
+		{
+			return TYPE_ARRAY;
+		}
+		else if ("true".equals(value) || "false".equals(value))
+		{
+			return TYPE_BOOLEAN;
+		}
+		else if (value.endsWith("B"))
+		{
+			return TYPE_BYTE;
+		}
+		else if (value.endsWith("S"))
+		{
+			return TYPE_SHORT;
+		}
+		else if (value.startsWith("'") && value.endsWith("'"))
+		{
+			return TYPE_CHAR;
+		}
+		else if (value.endsWith("I"))
+		{
+			return TYPE_INT;
+		}
+		else if (value.endsWith("F"))
+		{
+			return TYPE_FLOAT;
+		}
+		else if (value.endsWith("D"))
+		{
+			return TYPE_DOUBLE;
+		}
+		else if (value.startsWith("\"") && value.endsWith("\""))
+		{
+			return TYPE_STRING;
+		}
+		else
+		{
+			if (value.contains("."))
+			{
+				try
+				{
+					Double.parseDouble(value);
+					return TYPE_DOUBLE;
+				}
+				catch (NumberFormatException ex)
+				{
+				}
+			}
+			try
+			{
+				Long.parseLong(value);
+				return TYPE_LONG;
+			}
+			catch (NumberFormatException ex)
+			{
+			}
+		}
+		return TYPE_STRING;
 	}
 	
 	public static List<String> split(String text)
