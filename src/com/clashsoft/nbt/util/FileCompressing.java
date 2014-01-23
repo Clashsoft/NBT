@@ -1,4 +1,4 @@
-package com.clashsoft.nbt.loader;
+package com.clashsoft.nbt.util;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;

@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+
+import com.clashsoft.nbt.util.NBTHelper;
 
 /**
  * A named binary tag representing an array with constant size.
@@ -220,56 +223,6 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	public Object getValue()
 	{
 		return this.array;
-	}
-	
-	@Override
-	public String toString()
-	{
-		byte type = this.subtype;
-		if (type == TYPE_NBT)
-		{
-			return Arrays.toString(getNBTArray());
-		}
-		else if (type == TYPE_BOOLEAN)
-		{
-			return Arrays.toString(getBooleanArray());
-		}
-		else if (type == TYPE_BYTE)
-		{
-			return Arrays.toString(getByteArray());
-		}
-		else if (type == TYPE_SHORT)
-		{
-			return Arrays.toString(getShortArray());
-		}
-		else if (type == TYPE_CHAR)
-		{
-			return Arrays.toString(getCharArray());
-		}
-		else if (type == TYPE_INT)
-		{
-			return Arrays.toString(getIntArray());
-		}
-		else if (type == TYPE_LONG)
-		{
-			return Arrays.toString(getLongArray());
-		}
-		else if (type == TYPE_FLOAT)
-		{
-			return Arrays.toString(getFloatArray());
-		}
-		else if (type == TYPE_DOUBLE)
-		{
-			return Arrays.toString(getDoubleArray());
-		}
-		else if (type == TYPE_STRING)
-		{
-			return Arrays.toString(getStringArray());
-		}
-		else
-		{
-			return "[]";
-		}
 	}
 	
 	public static byte[] boolToByte(int l, boolean[] booleanArray)
@@ -503,14 +456,106 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	}
 	
 	@Override
-	public String writeValueString(String prefix)
+	public String writeString()
 	{
-		return null;
+		byte type = this.subtype;
+		if (type == TYPE_NBT)
+		{
+			return Arrays.toString(getNBTArray());
+		}
+		else if (type == TYPE_BOOLEAN)
+		{
+			return Arrays.toString(getBooleanArray());
+		}
+		else if (type == TYPE_BYTE)
+		{
+			return Arrays.toString(getByteArray());
+		}
+		else if (type == TYPE_SHORT)
+		{
+			return Arrays.toString(getShortArray());
+		}
+		else if (type == TYPE_CHAR)
+		{
+			return Arrays.toString(getCharArray());
+		}
+		else if (type == TYPE_INT)
+		{
+			return Arrays.toString(getIntArray());
+		}
+		else if (type == TYPE_LONG)
+		{
+			return Arrays.toString(getLongArray());
+		}
+		else if (type == TYPE_FLOAT)
+		{
+			return Arrays.toString(getFloatArray());
+		}
+		else if (type == TYPE_DOUBLE)
+		{
+			return Arrays.toString(getDoubleArray());
+		}
+		else if (type == TYPE_STRING)
+		{
+			return Arrays.toString(getStringArray());
+		}
+		else
+		{
+			return "[]";
+		}
 	}
-	
+
 	@Override
-	public void readValueString(String dataString)
+	public void readString(String dataString)
 	{
+		if ("[]".equals(dataString))
+		{
+			this.length = 0;
+		}
+		
+		int pos1 = dataString.indexOf('[') + 1;
+		int pos2 = dataString.lastIndexOf(']');
+		if (pos1 < 0 || pos2 < 0)
+		{
+			return;
+		}
+		dataString = dataString.substring(pos1, pos2);
+		
+		List<String> tags = NBTHelper.split(dataString);
+		int len = tags.size();
+		
+		NamedBinaryTag[] nbts = new NamedBinaryTag[len];
+		
+		for (int i = 0; i < len; i++)
+		{
+			String[] split = tags.get(i).split(":");
+			
+			String type = null;
+			int index = i;
+			String value = null;
+			
+			if (split.length >= 3)
+			{
+				type = split[0];
+				index = Integer.parseInt(split[1]);
+				value = split[2];
+			}
+			else if (split.length >= 2)
+			{
+				index = Integer.parseInt(split[0]);
+				value = split[1];
+			}
+			else if (split.length >= 1)
+			{
+				index = i;
+				value = split[0];
+			}
+			
+			NamedBinaryTag tag = NBTHelper.createTag(type, "", value);
+			nbts[index] = tag;
+		}
+		
+		// TODO Convert NBT array to primitive array
 	}
 	
 	public int getLength()
@@ -520,7 +565,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	
 	public NamedBinaryTag getWrapper(int index)
 	{
-		return NamedBinaryTag.createFromObject(this.getObject(index));
+		return NBTHelper.createFromObject(this.getObject(index));
 	}
 	
 	public Object getObject(int index)

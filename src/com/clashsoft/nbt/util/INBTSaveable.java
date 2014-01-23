@@ -1,4 +1,6 @@
-package com.clashsoft.nbt;
+package com.clashsoft.nbt.util;
+
+import com.clashsoft.nbt.NBTTagCompound;
 
 public interface INBTSaveable
 {

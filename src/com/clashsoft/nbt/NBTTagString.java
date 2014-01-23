@@ -32,15 +32,15 @@ public class NBTTagString extends NamedBinaryTag
 	}
 	
 	@Override
-	public String writeValueString(String prefix)
+	public String writeString()
 	{
-		return "\"" + this.value.replace("\"", "\\\"") + "\"";
+		return "\"" + this.value + "\"";
 	}
 	
 	@Override
-	public void readValueString(String dataString)
+	public void readString(String dataString)
 	{
-		this.value = dataString.substring(1, dataString.length() - 1).replace("\\\"", "\"");
+		this.value = dataString.substring(1, dataString.length() - 1);
 	}
 
 	@Override

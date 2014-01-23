@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.clashsoft.nbt.loader.NBTParser;
+import com.clashsoft.nbt.util.NBTHelper;
 
 public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedBinaryTag>
 {
@@ -173,7 +173,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		for (int i = 0; i < args.length; i++)
 		{
 			String tagName = name + i;
-			NamedBinaryTag base = NamedBinaryTag.createFromObject(tagName, args[i]);
+			NamedBinaryTag base = NBTHelper.createFromObject(tagName, args[i]);
 			if (base != null)
 			{
 				list.addTag(base);
@@ -188,7 +188,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		for (int i = 0; i < args.size(); i++)
 		{
 			String tagName = name + i;
-			NamedBinaryTag base = NamedBinaryTag.createFromObject(tagName, args.get(i));
+			NamedBinaryTag base = NBTHelper.createFromObject(tagName, args.get(i));
 			if (base != null)
 			{
 				list.addTag(base);
@@ -219,40 +219,65 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 	}
 	
 	@Override
-	public String writeValueString(String prefix)
+	public String writeString()
 	{
-		StringBuilder sb = new StringBuilder(this.tags.toString().length() * 8);
+		int len = this.tags.size();
+		StringBuilder sb = new StringBuilder(len << 6).append("\n[");
 		
-		sb.append("\n" + prefix + "[");
-		
-		for (int key = 0; key < this.tags.size(); key++)
+		NamedBinaryTag value;
+		for (int key = 0; key < len; key++)
 		{
-			NamedBinaryTag value = this.tags.get(key);
-			sb.append("\n").append(prefix).append(" (").append(key).append(':');
-			sb.append(value.createString(prefix + " ")).append(')');
+			value = this.tags.get(key);
+			sb.append("\n").append(key).append(':').append(value.toString()).append(',');
 		}
+		sb.append("\n]");
 		
-		sb.append("\n" + prefix + "]");
 		return sb.toString();
 	}
 	
 	@Override
-	public void readValueString(String dataString)
+	public void readString(String dataString)
 	{
-		int pos1 = dataString.indexOf('[') + 1;
-		int pos2 = dataString.lastIndexOf(']');
+		int pos1 = dataString.indexOf('{') + 1;
+		int pos2 = dataString.lastIndexOf('}');
 		if (pos1 < 0 || pos2 < 0)
 		{
 			return;
 		}
-		dataString = dataString.substring(pos1, pos2).trim();
-		for (String sub : NBTTagCompound.split(dataString))
+		
+		dataString = dataString.substring(pos1, pos2);
+		
+		List<String> tags = NBTHelper.split(dataString);
+		int len = tags.size();
+		this.ensureSize(len);
+		
+		for (int i = 0; i < len; i++)
 		{
-			int point = sub.indexOf(':');
-			String tagID = sub.substring(0, point);
-			String tag = sub.substring(point + 1, sub.length());
-			NamedBinaryTag base = NBTParser.parseTag(tag);
-			this.setTag(Integer.parseInt(tagID), base);
+			String[] split = tags.get(i).split(":");
+			
+			String type = null;
+			int index = i;
+			String value = null;
+			
+			if (split.length >= 3)
+			{
+				type = split[0];
+				index = Integer.parseInt(split[1]);
+				value = split[2];
+			}
+			else if (split.length >= 2)
+			{
+				index = Integer.parseInt(split[0]);
+				value = split[1];
+			}
+			else if (split.length >= 1)
+			{
+				index = i;
+				value = split[0];
+			}
+			
+			NamedBinaryTag tag = NBTHelper.createTag(type, "", value);
+			this.setTag(index, tag);
 		}
 	}
 	

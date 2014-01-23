@@ -32,13 +32,13 @@ public class NBTTagChar extends NamedBinaryTag
 	}
 	
 	@Override
-	public String writeValueString(String prefix)
+	public String writeString()
 	{
 		return "'" + this.value + "'";
 	}
 	
 	@Override
-	public void readValueString(String dataString)
+	public void readString(String dataString)
 	{
 		this.value = dataString.charAt(1);
 	}

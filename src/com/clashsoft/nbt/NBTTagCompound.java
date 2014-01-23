@@ -5,7 +5,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.*;
 
-import com.clashsoft.nbt.loader.NBTParser;
+import com.clashsoft.nbt.util.NBTHelper;
 
 public class NBTTagCompound extends NamedBinaryTag implements NBTTagContainer<String>
 {
@@ -214,25 +214,24 @@ public class NBTTagCompound extends NamedBinaryTag implements NBTTagContainer<St
 	}
 	
 	@Override
-	public String writeValueString(String prefix)
+	public String writeString()
 	{
-		StringBuilder sb = new StringBuilder(this.tags.size() * 100);
+		int len = this.tags.size();
+		StringBuilder sb = new StringBuilder(len << 6).append("\n[");
 		
-		sb.append("\n" + prefix + "{");
-		
+		NamedBinaryTag value;
 		for (String key : this.tags.keySet())
 		{
-			NamedBinaryTag value = this.tags.get(key);
-			sb.append("\n").append(prefix).append(" (").append(key).append(':');
-			sb.append(value.createString(prefix + " ")).append(')');
+			value = this.tags.get(key);
+			sb.append("\n").append(key).append(':').append(value.toString()).append(',');
 		}
+		sb.append("\n]");
 		
-		sb.append("\n" + prefix + "}");
 		return sb.toString();
 	}
 	
 	@Override
-	public void readValueString(String dataString)
+	public void readString(String dataString)
 	{
 		int pos1 = dataString.indexOf('{') + 1;
 		int pos2 = dataString.lastIndexOf('}');
@@ -241,66 +240,32 @@ public class NBTTagCompound extends NamedBinaryTag implements NBTTagContainer<St
 			return;
 		}
 		
-		dataString = dataString.substring(pos1, pos2).trim();
+		dataString = dataString.substring(pos1, pos2);
 		
-		for (String sub : split(dataString))
+		for (String sub : NBTHelper.split(dataString))
 		{
-			int point = sub.indexOf(':');
-			String tagName = sub.substring(0, point);
-			String tag = sub.substring(point + 1, sub.length());
-			NamedBinaryTag base = NBTParser.parseTag(tag);
-			this.setTag(tagName, base);
-		}
-	}
-	
-	protected static List<String> split(String text)
-	{
-		List<String> result = new ArrayList<String>();
-		
-		int depth1 = 0; // Depth of ( )
-		int depth2 = 0; // Depth of [ ]
-		int depth3 = 0; // Depth of { }
-		boolean quote = false;
-		
-		String tag = "";
-		int index = -1;
-		for (int i = 0; i < text.length(); i++)
-		{
-			char c = text.charAt(i);
+			String[] split = sub.split(":");
 			
-			if (c == '"' && !(i > 0 && text.charAt(i - 1) == '\\'))
+			String type = null;
+			String name = null;
+			String value = null;
+			
+			if (split.length >= 3)
 			{
-				quote = !quote;
+				type = split[0];
+				name = split[1];
+				value = split[2];
+			}
+			else if (split.length >= 2)
+			{
+				name = split[0];
+				value = split[1];
 			}
 			
-			if (!quote)
-			{
-				if (c == '(')
-				{
-					if (depth1 == 0)
-					{
-						index = i;
-					}
-					depth1++;
-					continue;
-				}
-				else if (c == ')')
-				{
-					depth1--;
-					
-					if (depth1 == 0 && index != -1)
-					{
-						tag = text.substring(index + 1, i);
-						result.add(tag);
-					}
-				}
-			}
-			else
-			{
-				tag += c;
-			}
+			NamedBinaryTag tag = NBTHelper.createTag(type, name, value);
+			
+			this.addTag(tag);
 		}
-		return result;
 	}
 	
 	@Override

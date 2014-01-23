@@ -1,32 +1,33 @@
 package com.clashsoft.nbt;
 
+import static com.clashsoft.nbt.util.NBTHelper.createFromType;
+
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.util.Objects;
 
-import com.clashsoft.nbt.loader.NBTSerializer;
+import com.clashsoft.nbt.util.NBTSerializer;
 
 public abstract class NamedBinaryTag
 {
-	public static final byte		TYPE_END		= 0;
-	public static final byte		TYPE_COMPOUND	= 1;
-	public static final byte		TYPE_LIST		= 2;
-	public static final byte		TYPE_ARRAY		= 3;
+	public static final byte	TYPE_END		= 0;
+	public static final byte	TYPE_COMPOUND	= 1;
+	public static final byte	TYPE_LIST		= 2;
+	public static final byte	TYPE_ARRAY		= 3;
 	
-	public static final byte		TYPE_BOOLEAN	= 10;
-	public static final byte		TYPE_BYTE		= 11;
-	public static final byte		TYPE_SHORT		= 12;
-	public static final byte		TYPE_CHAR		= 13;
-	public static final byte		TYPE_INT		= 14;
-	public static final byte		TYPE_LONG		= 15;
-	public static final byte		TYPE_FLOAT		= 16;
-	public static final byte		TYPE_DOUBLE		= 17;
-	public static final byte		TYPE_STRING		= 18;
+	public static final byte	TYPE_BOOLEAN	= 10;
+	public static final byte	TYPE_BYTE		= 11;
+	public static final byte	TYPE_SHORT		= 12;
+	public static final byte	TYPE_CHAR		= 13;
+	public static final byte	TYPE_INT		= 14;
+	public static final byte	TYPE_LONG		= 15;
+	public static final byte	TYPE_FLOAT		= 16;
+	public static final byte	TYPE_DOUBLE		= 17;
+	public static final byte	TYPE_STRING		= 18;
 	
-	public static final Class[]		TYPES			= new Class[256];
+	public static final Class[]	TYPES			= new Class[256];
 	
 	static
 	{
@@ -54,10 +55,6 @@ public abstract class NamedBinaryTag
 	{
 		this.type = type;
 		this.name = name;
-		if (NBTSerializer.useString() && (name.contains("[") || name.contains("]") || name.contains("{") || name.contains("}")))
-		{
-			throw new IllegalArgumentException("Name must not contain [ ] { } !");
-		}
 	}
 	
 	public String getName()
@@ -124,31 +121,26 @@ public abstract class NamedBinaryTag
 		return true;
 	}
 	
-	public abstract Object getValue();
-	
+	@Override
+	public final String toString()
+	{
+		return "\"" + name + "\":" + this.writeString();
+	}
+
 	public boolean valueEquals(NamedBinaryTag that)
 	{
 		return Objects.equals(this.getValue(), that.getValue());
 	}
 	
-	public final String createString(String prefix)
-	{
-		return "{t:" + this.type + "n:[" + this.name + "]v:[" + this.writeValueString(prefix) + "]}";
-	}
-	
-	@Override
-	public String toString()
-	{
-		return this.getValue().toString();
-	}
-	
+	public abstract Object getValue();
+
 	public abstract void writeValue(DataOutput output) throws IOException;
 	
 	public abstract void readValue(DataInput input) throws IOException;
 	
-	public abstract String writeValueString(String prefix);
+	public abstract String writeString();
 	
-	public abstract void readValueString(String dataString);
+	public abstract void readString(String dataString);
 	
 	public final boolean serialize(File out, boolean compressed)
 	{
@@ -179,139 +171,5 @@ public abstract class NamedBinaryTag
 		NamedBinaryTag nbt = createFromType(name, type);
 		nbt.readValue(input);
 		return nbt;
-	}
-	
-	public static NamedBinaryTag createFromObject(Object value)
-	{
-		String name = value instanceof NamedBinaryTag ? ((NamedBinaryTag) value).name : "";
-		return createFromObject(name, value);
-	}
-	
-	public static Class getClassFromType(byte type)
-	{
-		return TYPES[type];
-	}
-	
-	public static byte getTypeFromClass(Class type)
-	{
-		for (int i = 0; i < 256; i++)
-		{
-			if (TYPES[i] == type)
-			{
-				return (byte) i;
-			}
-		}
-		return 0;
-	}
-	
-	public static NamedBinaryTag createFromObject(String tagName, Object value)
-	{
-		if (value instanceof NamedBinaryTag)
-		{
-			return (NamedBinaryTag) value;
-		}
-		else if (value instanceof Boolean)
-		{
-			return new NBTTagBoolean(tagName, (Boolean) value);
-		}
-		else if (value instanceof Byte)
-		{
-			return new NBTTagByte(tagName, (Byte) value);
-		}
-		else if (value instanceof Short)
-		{
-			return new NBTTagShort(tagName, (Short) value);
-		}
-		else if (value instanceof Character)
-		{
-			return new NBTTagChar(tagName, (Character) value);
-		}
-		else if (value instanceof Integer)
-		{
-			return new NBTTagInteger(tagName, (Integer) value);
-		}
-		else if (value instanceof Long)
-		{
-			return new NBTTagLong(tagName, (Long) value);
-		}
-		else if (value instanceof Float)
-		{
-			return new NBTTagFloat(tagName, (Float) value);
-		}
-		else if (value instanceof Double)
-		{
-			return new NBTTagDouble(tagName, (Double) value);
-		}
-		else if (value instanceof String)
-		{
-			return new NBTTagString(tagName, (String) value);
-		}
-		return null;
-	}
-	
-	public static NamedBinaryTag createFromType(String tagName, byte type)
-	{
-		if (type == TYPE_COMPOUND)
-		{
-			return new NBTTagCompound(tagName);
-		}
-		else if (type == TYPE_LIST)
-		{
-			return new NBTTagList(tagName);
-		}
-		else if (type == TYPE_ARRAY)
-		{
-			return new NBTTagArray(tagName);
-		}
-		else if (type == TYPE_BOOLEAN)
-		{
-			return new NBTTagBoolean(tagName);
-		}
-		else if (type == TYPE_BYTE)
-		{
-			return new NBTTagByte(tagName);
-		}
-		else if (type == TYPE_SHORT)
-		{
-			return new NBTTagShort(tagName);
-		}
-		else if (type == TYPE_CHAR)
-		{
-			return new NBTTagChar(tagName);
-		}
-		else if (type == TYPE_INT)
-		{
-			return new NBTTagInteger(tagName);
-		}
-		else if (type == TYPE_LONG)
-		{
-			return new NBTTagLong(tagName);
-		}
-		else if (type == TYPE_FLOAT)
-		{
-			return new NBTTagFloat(tagName);
-		}
-		else if (type == TYPE_DOUBLE)
-		{
-			return new NBTTagDouble(tagName);
-		}
-		else if (type == TYPE_STRING)
-		{
-			return new NBTTagString(tagName);
-		}
-		else
-		{
-			Class clazz = getClassFromType(type);
-			try
-			{
-				Constructor<NamedBinaryTag> c = clazz.getConstructor(String.class);
-				return c.newInstance(tagName);
-			}
-			catch (ReflectiveOperationException ex)
-			{
-				ex.printStackTrace();
-				return null;
-			}
-		}
 	}
 }

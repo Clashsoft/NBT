@@ -26,13 +26,13 @@ public class NBTTagBoolean extends NamedBinaryTag
 	}
 	
 	@Override
-	public String writeValueString(String prefix)
+	public String writeString()
 	{
 		return this.value ? "t" : "f";
 	}
 	
 	@Override
-	public void readValueString(String dataString)
+	public void readString(String dataString)
 	{
 		this.value = "t".equals(dataString);
 	}

@@ -39,13 +39,13 @@ public class NBTTagEnd extends NamedBinaryTag
 	}
 	
 	@Override
-	public String writeValueString(String prefix)
+	public String writeString()
 	{
-		return null;
+		return "";
 	}
 	
 	@Override
-	public void readValueString(String dataString)
+	public void readString(String dataString)
 	{
 	}
 }
