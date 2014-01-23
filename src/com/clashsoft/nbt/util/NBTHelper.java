@@ -1,12 +1,14 @@
 package com.clashsoft.nbt.util;
 
+import static com.clashsoft.nbt.NamedBinaryTag.*;
+
+import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.clashsoft.nbt.*;
-
-import static com.clashsoft.nbt.NamedBinaryTag.*;
 
 public class NBTHelper
 {
@@ -187,6 +189,14 @@ public class NBTHelper
 		{
 			return new NBTTagString(tagName, (String) value);
 		}
+		else if (value instanceof Date)
+		{
+			return new NBTTagDate(tagName, (Date) value);
+		}
+		else if (value instanceof BufferedImage)
+		{
+			return new NBTTagImage(tagName, (BufferedImage) value);
+		}
 		return null;
 	}
 	
@@ -239,6 +249,14 @@ public class NBTHelper
 		else if (type == TYPE_STRING)
 		{
 			return new NBTTagString(tagName);
+		}
+		else if (type == TYPE_DATE)
+		{
+			return new NBTTagDate(tagName);
+		}
+		else if (type == TYPE_IMAGE)
+		{
+			return new NBTTagImage(tagName);
 		}
 		else
 		{
