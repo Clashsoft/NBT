@@ -38,6 +38,21 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		super(TYPE_ARRAY, name);
 	}
 	
+	/**
+	 * Creates a new tag array from an array. The array is converted into a
+	 * {@link NamedBinaryTag} array and then reverse-converted to a primitive
+	 * array.
+	 * 
+	 * @param name
+	 * @param array
+	 */
+	public NBTTagArray(String name, Object array)
+	{
+		this(name);
+		this.array = array;
+		this.unwrap(array);
+	}
+	
 	public NBTTagArray(String name, Object array, int length, byte type)
 	{
 		this(name);
@@ -612,7 +627,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			}
 			this.array = shortArray;
 		}
-		else if (type == TYPE_INT)
+		else if (type == TYPE_CHAR)
 		{
 			char[] charArray = new char[len];
 			for (int i = 0; i < len; i++)
@@ -674,6 +689,21 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		}
 	}
 	
+	public void unwrap(Object array)
+	{
+		int len = Array.getLength(array);
+		NamedBinaryTag[] nbtArray = new NamedBinaryTag[len];
+		
+		for (int i = 0; i < len; i++)
+		{
+			Object obj = Array.get(array, i);
+			NamedBinaryTag tag = NBTHelper.wrap(obj);
+			nbtArray[i] = tag;
+		}
+		
+		this.unwrap(nbtArray);
+	}
+	
 	public int getLength()
 	{
 		return this.length;
@@ -681,7 +711,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	
 	public NamedBinaryTag getWrapper(int index)
 	{
-		return NBTHelper.createFromObject(this.getObject(index));
+		return NBTHelper.wrap(this.getObject(index));
 	}
 	
 	public Object getObject(int index)
