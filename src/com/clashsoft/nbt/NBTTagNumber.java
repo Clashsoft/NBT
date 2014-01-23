@@ -21,7 +21,7 @@ public abstract class NBTTagNumber extends NamedBinaryTag
 	}
 	
 	@Override
-	public final String writeString()
+	public String writeString()
 	{
 		return this.value.toString() + this.getPostfixChar();
 	}
@@ -35,7 +35,8 @@ public abstract class NBTTagNumber extends NamedBinaryTag
 	@Override
 	public void readString(String dataString)
 	{
-		this.value = this.readNumber(dataString.substring(0, dataString.indexOf(this.getPostfixChar())));
+		int pos = dataString.indexOf(this.getPostfixChar());
+		this.value = this.readNumber(pos == -1 ? dataString : dataString.substring(0, pos));
 	}
 	
 	@Override

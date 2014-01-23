@@ -139,16 +139,20 @@ public class NBTTagCompound extends NamedBinaryTag implements NBTTagContainer<St
 		return tag != null ? tag.value : false;
 	}
 	
+	public Number getNumber(String name)
+	{
+		NBTTagNumber tag = (NBTTagNumber) this.getTag(name);
+		return tag != null ? tag.value : 0;
+	}
+	
 	public byte getByte(String name)
 	{
-		NBTTagByte tag = (NBTTagByte) this.getTag(name);
-		return tag != null ? tag.value : 0;
+		return getNumber(name).byteValue();
 	}
 	
 	public short getShort(String name)
 	{
-		NBTTagShort tag = (NBTTagShort) this.getTag(name);
-		return tag != null ? tag.value : 0;
+		return getNumber(name).shortValue();
 	}
 	
 	public char getChar(String name)
@@ -159,26 +163,22 @@ public class NBTTagCompound extends NamedBinaryTag implements NBTTagContainer<St
 	
 	public int getInteger(String name)
 	{
-		NBTTagInteger tag = (NBTTagInteger) this.getTag(name);
-		return tag != null ? tag.value : 0;
+		return getNumber(name).intValue();
 	}
 	
 	public long getLong(String name)
 	{
-		NBTTagLong tag = (NBTTagLong) this.getTag(name);
-		return tag != null ? tag.value : 0L;
+		return getNumber(name).longValue();
 	}
 	
 	public float getFloat(String name)
 	{
-		NBTTagFloat tag = (NBTTagFloat) this.getTag(name);
-		return tag != null ? tag.value : 0F;
+		return getNumber(name).floatValue();
 	}
 	
 	public double getDouble(String name)
 	{
-		NBTTagDouble tag = (NBTTagDouble) this.getTag(name);
-		return tag != null ? tag.value : 0D;
+		return getNumber(name).doubleValue();
 	}
 	
 	public String getString(String name)

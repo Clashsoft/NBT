@@ -26,6 +26,12 @@ public class NBTTagInteger extends NBTTagNumber
 	}
 	
 	@Override
+	public String writeString()
+	{
+		return "" + this.value;
+	}
+	
+	@Override
 	public Number readNumber(String number)
 	{
 		return this.value = Integer.parseInt(number);

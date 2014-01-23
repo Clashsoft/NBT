@@ -34,7 +34,7 @@ public class NBTTagBoolean extends NamedBinaryTag
 	@Override
 	public void readString(String dataString)
 	{
-		this.value = "t".equals(dataString);
+		this.value = Boolean.parseBoolean(dataString);
 	}
 	
 	@Override

@@ -47,7 +47,7 @@ public class NBTHelper
 	
 	public static NamedBinaryTag createTag(String type, String name, String value)
 	{
-		byte t = (type == null ? getTypeFromValue(value) : getTypeFromTypeName(name));
+		byte t = (type == null ? getTypeFromValue(value) : getTypeFromTypeName(type));
 		NamedBinaryTag tag = createFromType(name, t);
 		tag.readString(value);
 		return tag;
@@ -219,7 +219,7 @@ public class NBTHelper
 	
 	public static Class getClassFromType(byte type)
 	{
-		return TYPES[type];
+		return TYPES[type & 255];
 	}
 	
 	public static byte getTypeFromClass(Class type)
@@ -239,11 +239,11 @@ public class NBTHelper
 		Class clazz = getClassFromType(type);
 		if (clazz != null)
 		{
-			return clazz.getSimpleName().replace("NBT", "");
+			return clazz.getSimpleName().replace("NBTTag", "");
 		}
 		else
 		{
-			return null;
+			return "";
 		}
 	}
 	
@@ -259,9 +259,12 @@ public class NBTHelper
 			// name is in name form
 		}
 		
+		name = name.toLowerCase();
+		
 		for (int i = 0; i < 256; i++)
 		{
-			if (name.equals(getTypeName((byte) i)))
+			String typeName = getTypeName((byte) i).toLowerCase();
+			if (typeName.startsWith(name))
 			{
 				return (byte) i;
 			}
@@ -389,16 +392,19 @@ public class NBTHelper
 		else
 		{
 			Class clazz = getClassFromType(type);
-			try
+			if (clazz != null)
 			{
-				Constructor<NamedBinaryTag> c = clazz.getConstructor(String.class);
-				return c.newInstance(tagName);
+				try
+				{
+					Constructor<NamedBinaryTag> c = clazz.getConstructor(String.class);
+					return c.newInstance(tagName);
+				}
+				catch (ReflectiveOperationException ex)
+				{
+					ex.printStackTrace();
+				}
 			}
-			catch (ReflectiveOperationException ex)
-			{
-				ex.printStackTrace();
-				return null;
-			}
+			return null;
 		}
 	}
 }
