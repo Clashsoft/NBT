@@ -75,6 +75,12 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		this.setShortArray(shortArray);
 	}
 	
+	public NBTTagArray(String name, char[] charArray)
+	{
+		this(name);
+		this.setCharArray(charArray);
+	}
+	
 	public NBTTagArray(String name, int[] intArray)
 	{
 		this(name);
@@ -307,6 +313,14 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 				output.writeShort(shortArray[i]);
 			}
 		}
+		else if (type == TYPE_CHAR)
+		{
+			char[] charArray = (char[]) this.array;
+			for (int i = 0; i < len; i++)
+			{
+				output.writeChar(charArray[i]);
+			}
+		}
 		else if (type == TYPE_INT)
 		{
 			int[] intArray = (int[]) this.array;
@@ -404,6 +418,15 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 				shortArray[i] = input.readShort();
 			}
 			this.array = shortArray;
+		}
+		else if (type == TYPE_CHAR)
+		{
+			char[] charArray = new char[len];
+			for (int i = 0; i < len; i++)
+			{
+				charArray[i] = input.readChar();
+			}
+			this.array = charArray;
 		}
 		else if (type == TYPE_INT)
 		{
@@ -534,7 +557,121 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			nbts[index] = tag;
 		}
 		
-		// TODO Convert NBT array to primitive array
+		this.unwrap(nbts);
+	}
+	
+	public void unwrap(NamedBinaryTag[] nbtArray)
+	{
+		int len = nbtArray.length;
+		byte type = -1;
+		
+		for (int i = 0; i < len; i++)
+		{
+			byte t = nbtArray[i].getType();
+			if (type == -1)
+			{
+				type = t;
+			}
+			else if (type != t)
+			{
+				this.setNBTArray(nbtArray);
+				return;
+			}
+		}
+		
+		this.subtype = type;
+		this.length = len;
+		
+		if (type == TYPE_BOOLEAN)
+		{
+			boolean[] booleanArray = new boolean[len];
+			for (int i = 0; i < len; i++)
+			{
+				NBTTagBoolean tag = (NBTTagBoolean) nbtArray[i];
+				booleanArray[i] = tag.value;
+			}
+			this.array = booleanArray;
+		}
+		else if (type == TYPE_BYTE)
+		{
+			byte[] byteArray = new byte[len];
+			for (int i = 0; i < len; i++)
+			{
+				NBTTagByte tag = (NBTTagByte) nbtArray[i];
+				byteArray[i] = tag.value;
+			}
+			this.array = byteArray;
+		}
+		else if (type == TYPE_SHORT)
+		{
+			short[] shortArray = new short[len];
+			for (int i = 0; i < len; i++)
+			{
+				NBTTagShort tag = (NBTTagShort) nbtArray[i];
+				shortArray[i] = tag.value;
+			}
+			this.array = shortArray;
+		}
+		else if (type == TYPE_INT)
+		{
+			char[] charArray = new char[len];
+			for (int i = 0; i < len; i++)
+			{
+				NBTTagChar tag = (NBTTagChar) nbtArray[i];
+				charArray[i] = tag.value;
+			}
+			this.array = charArray;
+		}
+		else if (type == TYPE_INT)
+		{
+			int[] intArray = new int[len];
+			for (int i = 0; i < len; i++)
+			{
+				NBTTagInteger tag = (NBTTagInteger) nbtArray[i];
+				intArray[i] = tag.value;
+			}
+			this.array = intArray;
+		}
+		else if (type == TYPE_LONG)
+		{
+			long[] longArray = new long[len];
+			for (int i = 0; i < len; i++)
+			{
+				NBTTagLong tag = (NBTTagLong) nbtArray[i];
+				longArray[i] = tag.value;
+			}
+			this.array = longArray;
+		}
+		else if (type == TYPE_FLOAT)
+		{
+			float[] floatArray = new float[len];
+			for (int i = 0; i < len; i++)
+			{
+				NBTTagFloat tag = (NBTTagFloat) nbtArray[i];
+				floatArray[i] = tag.value;
+			}
+			this.array = floatArray;
+		}
+		else if (type == TYPE_DOUBLE)
+		{
+			double[] doubleArray = new double[len];
+			for (int i = 0; i < len; i++)
+			{
+				NBTTagDouble tag = (NBTTagDouble) nbtArray[i];
+				doubleArray[i] = tag.value;
+			}
+			this.array = doubleArray;
+		}
+		else if (type == TYPE_STRING)
+		{
+			String[] stringArray = new String[len];
+			for (int i = 0; i < len; i++)
+			{
+				NBTTagString tag = (NBTTagString) nbtArray[i];
+				stringArray[i] = tag.value;
+			}
+			this.array = stringArray;
+		}
 	}
 	
 	public int getLength()
