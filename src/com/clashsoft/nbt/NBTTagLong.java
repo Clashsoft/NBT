@@ -8,6 +8,11 @@ public class NBTTagLong extends NBTTagNumber
 {
 	public long	value;
 	
+	public NBTTagLong(String name)
+	{
+		this(name, 0L);
+	}
+	
 	public NBTTagLong(String name, long value)
 	{
 		super(TYPE_LONG, name, value);

@@ -8,6 +8,11 @@ public class NBTTagDouble extends NBTTagNumber
 {
 	public double	value;
 	
+	public NBTTagDouble(String name)
+	{
+		this(name, 0D);
+	}
+	
 	public NBTTagDouble(String name, double value)
 	{
 		super(TYPE_DOUBLE, name, value);

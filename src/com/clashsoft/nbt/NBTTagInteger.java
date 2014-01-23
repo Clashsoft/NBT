@@ -8,6 +8,11 @@ public class NBTTagInteger extends NBTTagNumber
 {
 	public int	value;
 	
+	public NBTTagInteger(String name)
+	{
+		this(name, 0);
+	}
+	
 	public NBTTagInteger(String name, int value)
 	{
 		super(TYPE_INT, name, value);

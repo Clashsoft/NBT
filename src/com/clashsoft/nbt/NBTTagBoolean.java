@@ -8,6 +8,11 @@ public class NBTTagBoolean extends NamedBinaryTag
 {
 	public boolean	value;
 	
+	public NBTTagBoolean(String name)
+	{
+		this(name, false);
+	}
+	
 	public NBTTagBoolean(String name, boolean value)
 	{
 		super(TYPE_BOOLEAN, name);

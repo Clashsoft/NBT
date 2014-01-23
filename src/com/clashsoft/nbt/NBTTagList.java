@@ -12,7 +12,7 @@ import com.clashsoft.nbt.loader.NBTParser;
 
 public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedBinaryTag>
 {
-	private ArrayList<NamedBinaryTag>	tags;
+	private List<NamedBinaryTag>	tags;
 	
 	public NBTTagList(String name)
 	{
@@ -21,12 +21,17 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 	
 	public NBTTagList(String name, int capacity)
 	{
+		this(name, new ArrayList(capacity));
+	}
+	
+	public NBTTagList(String name, List<NamedBinaryTag> tags)
+	{
 		super(TYPE_LIST, name);
-		this.tags = new ArrayList(capacity);
+		this.tags = tags;
 	}
 	
 	@Override
-	public ArrayList<NamedBinaryTag> getValue()
+	public List<NamedBinaryTag> getValue()
 	{
 		return this.tags;
 	}
@@ -52,7 +57,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 	
 	public void addTag(String name, NamedBinaryTag tag)
 	{
-		tag.name = name;
+		tag.setName(name);
 		this.addTag(tag);
 	}
 	
@@ -64,10 +69,15 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 	
 	private void ensureSize(int size)
 	{
-		this.tags.ensureCapacity(size);
-		while (this.tags.size() < size)
+		List tags = this.tags;
+		
+		if (tags instanceof ArrayList)
 		{
-			this.tags.add(null);
+			((ArrayList) tags).ensureCapacity(size);
+		}
+		while (tags.size() < size)
+		{
+			tags.add(null);
 		}
 	}
 	

@@ -30,7 +30,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	 * 
 	 * @param name
 	 */
-	protected NBTTagArray(String name)
+	public NBTTagArray(String name)
 	{
 		super(TYPE_ARRAY, name);
 	}

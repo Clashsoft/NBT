@@ -8,6 +8,11 @@ public class NBTTagFloat extends NBTTagNumber
 {
 	public float	value;
 	
+	public NBTTagFloat(String name)
+	{
+		this(name, 0F);
+	}
+	
 	public NBTTagFloat(String name, float value)
 	{
 		super(TYPE_FLOAT, name, value);

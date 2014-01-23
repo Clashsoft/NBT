@@ -8,6 +8,11 @@ public class NBTTagByte extends NBTTagNumber
 {
 	public byte	value;
 	
+	public NBTTagByte(String name)
+	{
+		this(name, (byte) 0);
+	}
+	
 	public NBTTagByte(String name, byte value)
 	{
 		super(TYPE_BYTE, name, value);

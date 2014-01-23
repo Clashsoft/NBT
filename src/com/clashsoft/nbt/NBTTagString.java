@@ -8,6 +8,11 @@ public class NBTTagString extends NamedBinaryTag
 {
 	public String	value;
 	
+	public NBTTagString(String name)
+	{
+		this(name, "");
+	}
+	
 	public NBTTagString(String name, String value)
 	{
 		super(TYPE_STRING, name);

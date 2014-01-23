@@ -4,6 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.Objects;
 
 import com.clashsoft.nbt.loader.NBTSerializer;
@@ -46,8 +47,8 @@ public abstract class NamedBinaryTag
 	
 	public static final NBTTagEnd	END				= new NBTTagEnd();
 	
-	public String					name;
-	public byte						type;
+	private String					name;
+	private final byte				type;
 	
 	public NamedBinaryTag(byte type, String name)
 	{
@@ -57,6 +58,22 @@ public abstract class NamedBinaryTag
 		{
 			throw new IllegalArgumentException("Name must not contain [ ] { } !");
 		}
+	}
+	
+	public String getName()
+	{
+		return this.name;
+	}
+	
+	protected NamedBinaryTag setName(String name)
+	{
+		this.name = name;
+		return this;
+	}
+	
+	public byte getType()
+	{
+		return this.type;
 	}
 	
 	@Override
@@ -170,6 +187,23 @@ public abstract class NamedBinaryTag
 		return createFromObject(name, value);
 	}
 	
+	public static Class getClassFromType(byte type)
+	{
+		return TYPES[type];
+	}
+	
+	public static byte getTypeFromClass(Class type)
+	{
+		for (int i = 0; i < 256; i++)
+		{
+			if (TYPES[i] == type)
+			{
+				return (byte) i;
+			}
+		}
+		return 0;
+	}
+	
 	public static NamedBinaryTag createFromObject(String tagName, Object value)
 	{
 		if (value instanceof NamedBinaryTag)
@@ -178,35 +212,35 @@ public abstract class NamedBinaryTag
 		}
 		else if (value instanceof Boolean)
 		{
-			return new NBTTagBoolean(tagName, (boolean) value);
+			return new NBTTagBoolean(tagName, (Boolean) value);
 		}
 		else if (value instanceof Byte)
 		{
-			return new NBTTagByte(tagName, (byte) value);
+			return new NBTTagByte(tagName, (Byte) value);
 		}
 		else if (value instanceof Short)
 		{
-			return new NBTTagShort(tagName, (short) value);
+			return new NBTTagShort(tagName, (Short) value);
 		}
 		else if (value instanceof Character)
 		{
-			return new NBTTagChar(tagName, (char) value);
+			return new NBTTagChar(tagName, (Character) value);
 		}
 		else if (value instanceof Integer)
 		{
-			return new NBTTagInteger(tagName, (int) value);
+			return new NBTTagInteger(tagName, (Integer) value);
 		}
 		else if (value instanceof Long)
 		{
-			return new NBTTagLong(tagName, (long) value);
+			return new NBTTagLong(tagName, (Long) value);
 		}
 		else if (value instanceof Float)
 		{
-			return new NBTTagFloat(tagName, (float) value);
+			return new NBTTagFloat(tagName, (Float) value);
 		}
 		else if (value instanceof Double)
 		{
-			return new NBTTagDouble(tagName, (double) value);
+			return new NBTTagDouble(tagName, (Double) value);
 		}
 		else if (value instanceof String)
 		{
@@ -231,40 +265,53 @@ public abstract class NamedBinaryTag
 		}
 		else if (type == TYPE_BOOLEAN)
 		{
-			return new NBTTagBoolean(tagName, false);
+			return new NBTTagBoolean(tagName);
 		}
 		else if (type == TYPE_BYTE)
 		{
-			return new NBTTagByte(tagName, (byte) 0);
+			return new NBTTagByte(tagName);
 		}
 		else if (type == TYPE_SHORT)
 		{
-			return new NBTTagShort(tagName, (short) 0);
+			return new NBTTagShort(tagName);
 		}
 		else if (type == TYPE_CHAR)
 		{
-			return new NBTTagChar(tagName, (char) 0);
+			return new NBTTagChar(tagName);
 		}
 		else if (type == TYPE_INT)
 		{
-			return new NBTTagInteger(tagName, 0);
+			return new NBTTagInteger(tagName);
 		}
 		else if (type == TYPE_LONG)
 		{
-			return new NBTTagLong(tagName, 0L);
+			return new NBTTagLong(tagName);
 		}
 		else if (type == TYPE_FLOAT)
 		{
-			return new NBTTagFloat(tagName, 0F);
+			return new NBTTagFloat(tagName);
 		}
 		else if (type == TYPE_DOUBLE)
 		{
-			return new NBTTagDouble(tagName, 0D);
+			return new NBTTagDouble(tagName);
 		}
 		else if (type == TYPE_STRING)
 		{
-			return new NBTTagString(tagName, "");
+			return new NBTTagString(tagName);
 		}
-		return null;
+		else
+		{
+			Class clazz = getClassFromType(type);
+			try
+			{
+				Constructor<NamedBinaryTag> c = clazz.getConstructor(String.class);
+				return c.newInstance(tagName);
+			}
+			catch (ReflectiveOperationException ex)
+			{
+				ex.printStackTrace();
+				return null;
+			}
+		}
 	}
 }

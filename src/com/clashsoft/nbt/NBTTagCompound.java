@@ -37,7 +37,7 @@ public class NBTTagCompound extends NamedBinaryTag implements NBTTagContainer<St
 	@Override
 	public void removeTag(NamedBinaryTag tag)
 	{
-		this.tags.remove(tag.name);
+		this.tags.remove(tag.getName());
 	}
 	
 	@Override
@@ -54,13 +54,13 @@ public class NBTTagCompound extends NamedBinaryTag implements NBTTagContainer<St
 	
 	public NamedBinaryTag setTag(String name, NamedBinaryTag tag)
 	{
-		tag.name = name;
+		tag.setName(name);
 		return this.setTag(name, tag);
 	}
 	
 	public NamedBinaryTag setTag(NamedBinaryTag tag)
 	{
-		return this.tags.put(tag.name, tag);
+		return this.tags.put(tag.getName(), tag);
 	}
 	
 	public boolean hasTag(String name)

@@ -8,6 +8,11 @@ public class NBTTagShort extends NBTTagNumber
 {
 	public short	value;
 	
+	public NBTTagShort(String name)
+	{
+		this(name, (short) 0);
+	}
+	
 	public NBTTagShort(String name, short value)
 	{
 		super(TYPE_SHORT, name, value);
