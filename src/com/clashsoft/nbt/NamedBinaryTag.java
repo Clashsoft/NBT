@@ -12,25 +12,25 @@ import com.clashsoft.nbt.util.NBTSerializer;
 
 public abstract class NamedBinaryTag
 {
-	public static final byte	TYPE_END		= 0;
-	public static final byte	TYPE_COMPOUND	= 1;
-	public static final byte	TYPE_LIST		= 2;
-	public static final byte	TYPE_ARRAY		= 3;
+	public static final byte		TYPE_END		= 0;
+	public static final byte		TYPE_COMPOUND	= 1;
+	public static final byte		TYPE_LIST		= 2;
+	public static final byte		TYPE_ARRAY		= 3;
 	
-	public static final byte	TYPE_BOOLEAN	= 10;
-	public static final byte	TYPE_BYTE		= 11;
-	public static final byte	TYPE_SHORT		= 12;
-	public static final byte	TYPE_CHAR		= 13;
-	public static final byte	TYPE_INT		= 14;
-	public static final byte	TYPE_LONG		= 15;
-	public static final byte	TYPE_FLOAT		= 16;
-	public static final byte	TYPE_DOUBLE		= 17;
-	public static final byte	TYPE_STRING		= 18;
+	public static final byte		TYPE_BOOLEAN	= 10;
+	public static final byte		TYPE_BYTE		= 11;
+	public static final byte		TYPE_SHORT		= 12;
+	public static final byte		TYPE_CHAR		= 13;
+	public static final byte		TYPE_INT		= 14;
+	public static final byte		TYPE_LONG		= 15;
+	public static final byte		TYPE_FLOAT		= 16;
+	public static final byte		TYPE_DOUBLE		= 17;
+	public static final byte		TYPE_STRING		= 18;
 	
-	public static final byte	TYPE_DATE		= 30;
-	public static final byte	TYPE_IMAGE		= 31;
+	public static final byte		TYPE_DATE		= 30;
+	public static final byte		TYPE_IMAGE		= 31;
 	
-	public static final Class[]	TYPES			= new Class[256];
+	public static final Class[]		TYPES			= new Class[256];
 	
 	static
 	{
@@ -131,16 +131,16 @@ public abstract class NamedBinaryTag
 	@Override
 	public final String toString()
 	{
-		return "\"" + name + "\":" + this.writeString();
+		return "\"" + this.getName() + "\":" + this.writeString();
 	}
-
+	
 	public boolean valueEquals(NamedBinaryTag that)
 	{
 		return Objects.equals(this.getValue(), that.getValue());
 	}
 	
 	public abstract Object getValue();
-
+	
 	public abstract void writeValue(DataOutput output) throws IOException;
 	
 	public abstract void readValue(DataInput input) throws IOException;

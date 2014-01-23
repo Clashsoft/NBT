@@ -21,7 +21,7 @@ public class NBTTagEnd extends NamedBinaryTag
 	{
 		return null;
 	}
-
+	
 	@Override
 	public boolean valueEquals(NamedBinaryTag that)
 	{

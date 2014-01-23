@@ -5,8 +5,8 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public abstract class NBTTagNumber extends NamedBinaryTag
-{	
-	protected Number value;
+{
+	protected Number	value;
 	
 	public NBTTagNumber(byte type, String name, Number value)
 	{
@@ -46,8 +46,10 @@ public abstract class NBTTagNumber extends NamedBinaryTag
 	}
 	
 	public abstract char getPostfixChar();
+	
 	public abstract void writeNumber(DataOutput output) throws IOException;
 	
 	public abstract Number readNumber(String number);
+	
 	public abstract Number readNumber(DataInput input) throws IOException;
 }

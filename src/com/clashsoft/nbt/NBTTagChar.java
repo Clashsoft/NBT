@@ -42,13 +42,13 @@ public class NBTTagChar extends NamedBinaryTag
 	{
 		this.value = dataString.charAt(1);
 	}
-
+	
 	@Override
 	public void writeValue(DataOutput output) throws IOException
 	{
 		output.writeChar(this.value);
 	}
-
+	
 	@Override
 	public void readValue(DataInput input) throws IOException
 	{

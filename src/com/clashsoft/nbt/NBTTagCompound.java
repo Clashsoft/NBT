@@ -3,7 +3,9 @@ package com.clashsoft.nbt;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import com.clashsoft.nbt.util.NBTHelper;
 
@@ -147,12 +149,12 @@ public class NBTTagCompound extends NamedBinaryTag implements NBTTagContainer<St
 	
 	public byte getByte(String name)
 	{
-		return getNumber(name).byteValue();
+		return this.getNumber(name).byteValue();
 	}
 	
 	public short getShort(String name)
 	{
-		return getNumber(name).shortValue();
+		return this.getNumber(name).shortValue();
 	}
 	
 	public char getChar(String name)
@@ -163,22 +165,22 @@ public class NBTTagCompound extends NamedBinaryTag implements NBTTagContainer<St
 	
 	public int getInteger(String name)
 	{
-		return getNumber(name).intValue();
+		return this.getNumber(name).intValue();
 	}
 	
 	public long getLong(String name)
 	{
-		return getNumber(name).longValue();
+		return this.getNumber(name).longValue();
 	}
 	
 	public float getFloat(String name)
 	{
-		return getNumber(name).floatValue();
+		return this.getNumber(name).floatValue();
 	}
 	
 	public double getDouble(String name)
 	{
-		return getNumber(name).doubleValue();
+		return this.getNumber(name).doubleValue();
 	}
 	
 	public String getString(String name)

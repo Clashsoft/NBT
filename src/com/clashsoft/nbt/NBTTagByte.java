@@ -30,13 +30,13 @@ public class NBTTagByte extends NBTTagNumber
 	{
 		return this.value = Byte.parseByte(number);
 	}
-
+	
 	@Override
 	public void writeNumber(DataOutput output) throws IOException
 	{
 		output.writeByte(this.value);
 	}
-
+	
 	@Override
 	public Number readNumber(DataInput input) throws IOException
 	{

@@ -28,7 +28,7 @@ public class NBTTagDate extends NamedBinaryTag
 	@Override
 	public Date getValue()
 	{
-		return date;
+		return this.date;
 	}
 	
 	@Override

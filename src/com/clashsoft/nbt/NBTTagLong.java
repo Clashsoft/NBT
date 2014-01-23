@@ -30,13 +30,13 @@ public class NBTTagLong extends NBTTagNumber
 	{
 		return Long.parseLong(number);
 	}
-
+	
 	@Override
 	public void writeNumber(DataOutput output) throws IOException
 	{
 		output.writeLong(this.value);
 	}
-
+	
 	@Override
 	public Number readNumber(DataInput input) throws IOException
 	{

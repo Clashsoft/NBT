@@ -42,13 +42,13 @@ public class NBTTagBoolean extends NamedBinaryTag
 	{
 		return this.value == ((NBTTagBoolean) that).value;
 	}
-
+	
 	@Override
 	public void writeValue(DataOutput output) throws IOException
 	{
 		output.writeBoolean(this.value);
 	}
-
+	
 	@Override
 	public void readValue(DataInput input) throws IOException
 	{

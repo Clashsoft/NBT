@@ -194,13 +194,13 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		return new Iterator()
 		{
 			private Object	array	= NBTTagArray.this.array;
-			private int		len		= Array.getLength(array);
+			private int		len		= Array.getLength(this.array);
 			private int		index	= 0;
 			
 			@Override
 			public boolean hasNext()
 			{
-				return index < len;
+				return this.index < this.len;
 			}
 			
 			@Override
@@ -235,7 +235,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			{
 				int a = i >> 3;
 				int p = i & 7;
-				bytes[a] |= (1 << p);
+				bytes[a] |= 1 << p;
 			}
 		}
 		return bytes;
@@ -249,7 +249,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		{
 			int a = i >> 3;
 			int p = i & 7;
-			bools[i] = (byteArray[a] & (1 << p)) != 0;
+			bools[i] = (byteArray[a] & 1 << p) != 0;
 		}
 		return bools;
 	}
@@ -461,50 +461,50 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		byte type = this.subtype;
 		if (type == TYPE_NBT)
 		{
-			return Arrays.toString(getNBTArray());
+			return Arrays.toString(this.getNBTArray());
 		}
 		else if (type == TYPE_BOOLEAN)
 		{
-			return Arrays.toString(getBooleanArray());
+			return Arrays.toString(this.getBooleanArray());
 		}
 		else if (type == TYPE_BYTE)
 		{
-			return Arrays.toString(getByteArray());
+			return Arrays.toString(this.getByteArray());
 		}
 		else if (type == TYPE_SHORT)
 		{
-			return Arrays.toString(getShortArray());
+			return Arrays.toString(this.getShortArray());
 		}
 		else if (type == TYPE_CHAR)
 		{
-			return Arrays.toString(getCharArray());
+			return Arrays.toString(this.getCharArray());
 		}
 		else if (type == TYPE_INT)
 		{
-			return Arrays.toString(getIntArray());
+			return Arrays.toString(this.getIntArray());
 		}
 		else if (type == TYPE_LONG)
 		{
-			return Arrays.toString(getLongArray());
+			return Arrays.toString(this.getLongArray());
 		}
 		else if (type == TYPE_FLOAT)
 		{
-			return Arrays.toString(getFloatArray());
+			return Arrays.toString(this.getFloatArray());
 		}
 		else if (type == TYPE_DOUBLE)
 		{
-			return Arrays.toString(getDoubleArray());
+			return Arrays.toString(this.getDoubleArray());
 		}
 		else if (type == TYPE_STRING)
 		{
-			return Arrays.toString(getStringArray());
+			return Arrays.toString(this.getStringArray());
 		}
 		else
 		{
 			return "[]";
 		}
 	}
-
+	
 	@Override
 	public void readString(String dataString)
 	{

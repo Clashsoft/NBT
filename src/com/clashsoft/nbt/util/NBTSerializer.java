@@ -18,12 +18,12 @@ public class NBTSerializer
 		}
 		
 		try
-		{	
+		{
 			DataInputStream input = FileCompressing.inputStream(in, compressed);
 			readHeader(input);
 			NamedBinaryTag nbt = NamedBinaryTag.read(input);
 			input.close();
-			return nbt;	
+			return nbt;
 		}
 		catch (Exception ex)
 		{

@@ -30,13 +30,13 @@ public class NBTTagDouble extends NBTTagNumber
 	{
 		return this.value = Double.parseDouble(number);
 	}
-
+	
 	@Override
 	public void writeNumber(DataOutput output) throws IOException
 	{
 		output.writeDouble(this.value);
 	}
-
+	
 	@Override
 	public Number readNumber(DataInput input) throws IOException
 	{

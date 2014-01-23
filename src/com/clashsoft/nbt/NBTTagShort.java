@@ -30,13 +30,13 @@ public class NBTTagShort extends NBTTagNumber
 	{
 		return this.value = Short.parseShort(number);
 	}
-
+	
 	@Override
 	public void writeNumber(DataOutput output) throws IOException
 	{
 		output.writeShort(this.value);
 	}
-
+	
 	@Override
 	public Number readNumber(DataInput input) throws IOException
 	{

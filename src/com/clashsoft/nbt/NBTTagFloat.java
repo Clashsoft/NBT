@@ -30,13 +30,13 @@ public class NBTTagFloat extends NBTTagNumber
 	{
 		return Float.parseFloat(number);
 	}
-
+	
 	@Override
 	public void writeNumber(DataOutput output) throws IOException
 	{
 		output.writeFloat(this.value);
 	}
-
+	
 	@Override
 	public Number readNumber(DataInput input) throws IOException
 	{
