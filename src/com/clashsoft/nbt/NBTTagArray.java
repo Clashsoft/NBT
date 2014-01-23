@@ -521,37 +521,16 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		}
 		dataString = dataString.substring(pos1, pos2);
 		
-		List<String> tags = NBTHelper.split(dataString);
+		List<String> tags = NBTHelper.split(dataString, ',');
 		int len = tags.size();
 		
 		NamedBinaryTag[] nbts = new NamedBinaryTag[len];
 		
 		for (int i = 0; i < len; i++)
 		{
-			String[] split = tags.get(i).split(":");
-			
-			String type = null;
-			int index = i;
-			String value = null;
-			
-			if (split.length >= 3)
-			{
-				type = split[0];
-				index = Integer.parseInt(split[1]);
-				value = split[2];
-			}
-			else if (split.length >= 2)
-			{
-				index = Integer.parseInt(split[0]);
-				value = split[1];
-			}
-			else if (split.length >= 1)
-			{
-				index = i;
-				value = split[0];
-			}
-			
-			NamedBinaryTag tag = NBTHelper.createTag(type, "", value);
+			String sub = tags.get(i);
+			NamedBinaryTag tag = NBTHelper.createTag(sub);
+			int index = Integer.parseInt(tag.getName());
 			nbts[index] = tag;
 		}
 		

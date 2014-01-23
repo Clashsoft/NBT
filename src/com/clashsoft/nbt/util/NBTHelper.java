@@ -12,6 +12,39 @@ import com.clashsoft.nbt.*;
 
 public class NBTHelper
 {
+	public static String parseName(String name)
+	{
+		int len = name.length();
+		if (len >= 2 && name.startsWith("\"") && name.endsWith("\""))
+		{
+			return name.substring(1, len - 1);
+		}
+		return name;
+	}
+	
+	public static NamedBinaryTag createTag(String data)
+	{
+		String[] split = listToArray(split(data, ':'));
+		
+		String type = null;
+		String name = null;
+		String value = null;
+		
+		if (split.length >= 3)
+		{
+			type = split[0];
+			name = parseName(split[1]);
+			value = split[2];
+		}
+		else if (split.length >= 2)
+		{
+			name = parseName(split[0]);
+			value = split[1];
+		}
+		
+		return createTag(type, name, value);
+	}
+	
 	public static NamedBinaryTag createTag(String type, String name, String value)
 	{
 		byte t = (type == null ? getTypeFromValue(value) : getTypeFromTypeName(name));
@@ -22,6 +55,11 @@ public class NBTHelper
 	
 	public static byte getTypeFromValue(String value)
 	{
+		if (value == null)
+		{
+			return 0;
+		}
+		
 		if (value.startsWith("{"))
 		{
 			return TYPE_COMPOUND;
@@ -91,74 +129,90 @@ public class NBTHelper
 		return TYPE_STRING;
 	}
 	
-	public static List<String> split(String text)
+	public static String[] listToArray(List<String> list)
 	{
+		return list.toArray(new String[list.size()]);
+	}
+	
+	public static List<String> split(String text, char split)
+	{
+		int len = text.length();
+		
 		List<String> result = new ArrayList<String>();
 		
 		int depth1 = 0; // Depth of ( )
 		int depth2 = 0; // Depth of [ ]
 		int depth3 = 0; // Depth of { }
 		int depth4 = 0; // Depth of < >
-		boolean quote = false;
 		
-		String tag = "";
-		int index = -1;
-		for (int i = 0; i < text.length(); i++)
+		boolean quote = false;
+		int index = 0;
+		char current = 0;
+		char last = 0;
+		
+		for (int i = 0; i < len;)
 		{
-			char c = text.charAt(i);
+			int i0 = i + 1;
+			current = text.charAt(i);
 			
-			if (c == '"' && !(i > 0 && text.charAt(i - 1) == '\\'))
+			if (last != '\\')
 			{
-				quote = !quote;
-			}
-			
-			if (!quote)
-			{
-				if (c == '(')
+				if (current == '"')
 				{
-					depth1++;
+					quote = !quote;
 				}
-				else if (c == ')')
+				else if (!quote)
 				{
-					depth1--;
-				}
-				else if (c == '[')
-				{
-					depth2++;
-				}
-				else if (c == ']')
-				{
-					depth2--;
-				}
-				else if (c == '{')
-				{
-					depth3++;
-				}
-				else if (c == '}')
-				{
-					depth3--;
-				}
-				else if (c == '<')
-				{
-					depth4++;
-				}
-				else if (c == '>')
-				{
-					depth4--;
-				}
-				else if (c == ',')
-				{
-					if (depth1 == 0 && depth2 == 0 && depth3 == 0 && depth4 == 0 && index != -1)
+					if (current == '(')
 					{
-						tag = text.substring(index + 1, i);
-						result.add(tag);
+						depth1++;
+					}
+					else if (current == ')')
+					{
+						depth1--;
+					}
+					else if (current == '[')
+					{
+						depth2++;
+					}
+					else if (current == ']')
+					{
+						depth2--;
+					}
+					else if (current == '{')
+					{
+						depth3++;
+					}
+					else if (current == '}')
+					{
+						depth3--;
+					}
+					else if (current == '<')
+					{
+						depth4++;
+					}
+					else if (current == '>')
+					{
+						depth4--;
+					}
+					
+				}
+				
+				if (!quote && depth1 == 0 && depth2 == 0 && depth3 == 0 && depth4 == 0)
+				{
+					if (current == split)
+					{
+						result.add(text.substring(index, i));
+						index = i0;
+					}
+					else if (i0 == len)
+					{
+						result.add(text.substring(index, i0));
 					}
 				}
 			}
-			else
-			{
-				tag += c;
-			}
+			last = current;
+			i = i0;
 		}
 		return result;
 	}
@@ -182,7 +236,15 @@ public class NBTHelper
 	
 	public static String getTypeName(byte type)
 	{
-		return getClassFromType(type).getSimpleName().replace("NBT", "");
+		Class clazz = getClassFromType(type);
+		if (clazz != null)
+		{
+			return clazz.getSimpleName().replace("NBT", "");
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	public static byte getTypeFromTypeName(String name)

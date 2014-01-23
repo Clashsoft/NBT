@@ -217,15 +217,15 @@ public class NBTTagCompound extends NamedBinaryTag implements NBTTagContainer<St
 	public String writeString()
 	{
 		int len = this.tags.size();
-		StringBuilder sb = new StringBuilder(len << 6).append("\n[");
+		StringBuilder sb = new StringBuilder(len << 6).append("{");
 		
 		NamedBinaryTag value;
 		for (String key : this.tags.keySet())
 		{
 			value = this.tags.get(key);
-			sb.append("\n").append(key).append(':').append(value.toString()).append(',');
+			sb.append(value.toString()).append(',');
 		}
-		sb.append("\n]");
+		sb.append("}");
 		
 		return sb.toString();
 	}
@@ -242,28 +242,9 @@ public class NBTTagCompound extends NamedBinaryTag implements NBTTagContainer<St
 		
 		dataString = dataString.substring(pos1, pos2);
 		
-		for (String sub : NBTHelper.split(dataString))
+		for (String sub : NBTHelper.split(dataString, ','))
 		{
-			String[] split = sub.split(":");
-			
-			String type = null;
-			String name = null;
-			String value = null;
-			
-			if (split.length >= 3)
-			{
-				type = split[0];
-				name = split[1];
-				value = split[2];
-			}
-			else if (split.length >= 2)
-			{
-				name = split[0];
-				value = split[1];
-			}
-			
-			NamedBinaryTag tag = NBTHelper.createTag(type, name, value);
-			
+			NamedBinaryTag tag = NBTHelper.createTag(sub);
 			this.addTag(tag);
 		}
 	}

@@ -28,7 +28,7 @@ public class NBTTagBoolean extends NamedBinaryTag
 	@Override
 	public String writeString()
 	{
-		return this.value ? "t" : "f";
+		return this.value ? "true" : "false";
 	}
 	
 	@Override
