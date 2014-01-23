@@ -30,16 +30,20 @@ public class NBTHelper
 		String name = null;
 		String value = null;
 		
-		if (split.length >= 3)
+		if (split.length == 1)
+		{
+			value = split[0];
+		}
+		else if (split.length == 2)
+		{
+			name = parseName(split[0]);
+			value = split[1];
+		}
+		else if (split.length == 3)
 		{
 			type = split[0];
 			name = parseName(split[1]);
 			value = split[2];
-		}
-		else if (split.length >= 2)
-		{
-			name = parseName(split[0]);
-			value = split[1];
 		}
 		
 		return createTag(type, name, value);
