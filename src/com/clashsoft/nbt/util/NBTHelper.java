@@ -54,7 +54,12 @@ public class NBTHelper
 	public static NamedBinaryTag createTag(String type, String name, String value)
 	{
 		byte t = type == null ? getTypeFromValue(value) : getTypeFromTypeName(type);
-		NamedBinaryTag tag = createFromType(name, t);
+		return createTag(t, name, value);
+	}
+	
+	public static NamedBinaryTag createTag(byte type, String name, String value)
+	{
+		NamedBinaryTag tag = createFromType(name, type);
 		tag.readString(value);
 		return tag;
 	}
