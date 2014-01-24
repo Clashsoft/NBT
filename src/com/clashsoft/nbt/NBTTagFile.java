@@ -43,12 +43,13 @@ public class NBTTagFile extends NamedBinaryTag
 	public String writeString()
 	{
 		String name = this.file == null ? "null" : this.file.getPath();
-		return name;
+		return "file " + name;
 	}
 	
 	@Override
 	public void readString(String dataString)
 	{
+		dataString = dataString.substring(5);
 		if ("null".equals(dataString))
 		{
 			this.file = null;

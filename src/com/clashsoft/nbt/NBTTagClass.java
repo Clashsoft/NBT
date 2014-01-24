@@ -42,12 +42,13 @@ public class NBTTagClass extends NamedBinaryTag
 	public String writeString()
 	{
 		String name = this.clazz == null ? "null" : this.clazz.getName();
-		return name;
+		return "class " + name;
 	}
 	
 	@Override
 	public void readString(String dataString)
 	{
+		dataString = dataString.substring(6);
 		if ("null".equals(dataString))
 		{
 			this.clazz = null;

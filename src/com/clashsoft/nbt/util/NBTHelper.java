@@ -110,6 +110,18 @@ public class NBTHelper
 		{
 			return TYPE_STRING;
 		}
+		else if (value.startsWith("class"))
+		{
+			return TYPE_CLASS;
+		}
+		else if (value.startsWith("date"))
+		{
+			return TYPE_DATE;
+		}
+		else if (value.startsWith("file"))
+		{
+			return TYPE_FILE;
+		}
 		else
 		{
 			if (value.contains("."))

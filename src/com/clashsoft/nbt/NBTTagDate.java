@@ -49,12 +49,13 @@ public class NBTTagDate extends NamedBinaryTag
 	public String writeString()
 	{
 		String date = this.date == null ? "null" : FORMAT.format(this.date);
-		return date;
+		return "date " + date;
 	}
 	
 	@Override
 	public void readString(String dataString)
 	{
+		dataString = dataString.substring(5);
 		if ("null".equals(dataString))
 		{
 			this.date = null;
