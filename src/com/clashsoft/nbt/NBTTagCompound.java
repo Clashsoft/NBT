@@ -107,7 +107,7 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 	public Number getNumber(String name)
 	{
 		NBTTagNumber tag = (NBTTagNumber) this.getTag(name);
-		return tag != null ? tag.value : 0;
+		return tag != null ? tag.getValue() : 0;
 	}
 	
 	public byte getByte(String name)

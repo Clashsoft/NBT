@@ -1,5 +1,6 @@
 package com.clashsoft.nbt;
 
+
 public interface NBTTagContainer<T> extends Iterable<T>
 {
 	/**
