@@ -4,11 +4,12 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.clashsoft.nbt.util.NBTHelper;
 
-public abstract class NBTTagMap extends NamedBinaryTag
+public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<String>
 {
 	protected Map<String, NamedBinaryTag>	tags;
 	
@@ -26,7 +27,18 @@ public abstract class NBTTagMap extends NamedBinaryTag
 	@Override
 	public Object getValue()
 	{
+		return this.getMap();
+	}
+	
+	public Map<String, NamedBinaryTag> getMap()
+	{
 		return this.tags;
+	}
+	
+	@Override
+	public Iterator<String> iterator()
+	{
+		return this.getMap().keySet().iterator();
 	}
 	
 	protected NamedBinaryTag setTag(String name, NamedBinaryTag tag)

@@ -1,6 +1,5 @@
 package com.clashsoft.nbt;
 
-import java.util.Iterator;
 import java.util.Map;
 
 public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
@@ -37,12 +36,6 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 	public boolean canAddTag(String name)
 	{
 		return !this.hasTag(name);
-	}
-	
-	@Override
-	public Iterator<String> iterator()
-	{
-		return this.tags.keySet().iterator();
 	}
 	
 	public void setBoolean(String name, boolean value)
