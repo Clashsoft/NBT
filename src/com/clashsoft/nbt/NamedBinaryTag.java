@@ -66,6 +66,8 @@ public abstract class NamedBinaryTag
 	private String					name;
 	private final byte				type;
 	
+	private NBTTagContainer			container		= null;
+	
 	public NamedBinaryTag(byte type, String name)
 	{
 		this.type = type;
@@ -77,15 +79,36 @@ public abstract class NamedBinaryTag
 		return this.name;
 	}
 	
-	protected NamedBinaryTag setName(String name)
+	public NBTTagContainer getContainer()
 	{
-		this.name = name;
-		return this;
+		return this.container;
 	}
 	
 	public byte getType()
 	{
 		return this.type;
+	}
+	
+	protected NamedBinaryTag setName(String name)
+	{
+		if (this.container != null)
+		{
+			this.container.removeTag(this);
+			this.name = name;
+			this.container.addTag(this);
+		}
+		else
+		{
+			this.name = name;
+		}
+		
+		return this;
+	}
+	
+	protected NamedBinaryTag setContainer(NBTTagContainer container)
+	{
+		this.container = container;
+		return this;
 	}
 	
 	@Override

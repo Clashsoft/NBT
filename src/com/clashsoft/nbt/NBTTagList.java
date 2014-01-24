@@ -39,6 +39,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 	@Override
 	public NamedBinaryTag addTag(NamedBinaryTag tag)
 	{
+		tag.setContainer(this);
 		this.tags.add(tag);
 		return null;
 	}
