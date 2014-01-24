@@ -32,6 +32,7 @@ public abstract class NamedBinaryTag
 	public static final byte		TYPE_DATE		= 30;
 	public static final byte		TYPE_IMAGE		= 31;
 	public static final byte		TYPE_CLASS		= 32;
+	public static final byte		TYPE_FILE		= 33;
 	
 	public static final Class[]		TYPES			= new Class[256];
 	
@@ -57,6 +58,7 @@ public abstract class NamedBinaryTag
 		TYPES[TYPE_DATE] = NBTTagDate.class;
 		TYPES[TYPE_IMAGE] = NBTTagImage.class;
 		TYPES[TYPE_CLASS] = NBTTagClass.class;
+		TYPES[TYPE_FILE] = NBTTagFile.class;
 	}
 	
 	public static final NBTTagEnd	END				= new NBTTagEnd();

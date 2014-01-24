@@ -2,27 +2,28 @@ package com.clashsoft.nbt;
 
 import java.io.DataInput;
 import java.io.DataOutput;
+import java.io.File;
 import java.io.IOException;
 
-public class NBTTagClass extends NamedBinaryTag
+public class NBTTagFile extends NamedBinaryTag
 {
-	public Class	clazz;
+	public File file;
 	
-	public NBTTagClass(String name)
+	public NBTTagFile(String name)
 	{
-		this(name, Object.class);
+		this(name, null);
 	}
 	
-	public NBTTagClass(String name, Class clazz)
+	public NBTTagFile(String name, File file)
 	{
-		super(TYPE_CLASS, name);
-		this.clazz = clazz;
+		super(TYPE_FILE, name);
+		this.file = file;
 	}
 	
 	@Override
-	public Class getValue()
+	public File getValue()
 	{
-		return this.clazz;
+		return this.file;
 	}
 	
 	@Override
@@ -41,7 +42,7 @@ public class NBTTagClass extends NamedBinaryTag
 	@Override
 	public String writeString()
 	{
-		String name = this.clazz == null ? "null" : this.clazz.getName();
+		String name = this.file == null ? "null" : this.file.getPath();
 		return name;
 	}
 	
@@ -50,18 +51,11 @@ public class NBTTagClass extends NamedBinaryTag
 	{
 		if ("null".equals(dataString))
 		{
-			this.clazz = null;
+			this.file = null;
 		}
 		else
 		{
-			try
-			{
-				this.clazz = Class.forName(dataString, false, ClassLoader.getSystemClassLoader());
-			}
-			catch (ClassNotFoundException ex)
-			{
-				this.clazz = null;
-			}
+			this.file = new File(dataString);
 		}
 	}
 }

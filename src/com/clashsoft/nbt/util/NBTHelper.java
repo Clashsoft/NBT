@@ -3,6 +3,7 @@ package com.clashsoft.nbt.util;
 import static com.clashsoft.nbt.NamedBinaryTag.*;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Date;
@@ -303,7 +304,7 @@ public class NBTHelper
 		{
 			return true;
 		}
-		else if (value instanceof Date || value instanceof BufferedImage || value instanceof Class)
+		else if (value instanceof Date || value instanceof File || value instanceof BufferedImage || value instanceof Class)
 		{
 			return true;
 		}
@@ -390,6 +391,10 @@ public class NBTHelper
 		{
 			return new NBTTagClass(tagName, (Class) value);
 		}
+		else if (value instanceof File)
+		{
+			return new NBTTagFile(tagName, (File) value);
+		}
 		return null;
 	}
 	
@@ -454,6 +459,10 @@ public class NBTHelper
 		else if (type == TYPE_CLASS)
 		{
 			return new NBTTagClass(tagName);
+		}
+		else if (type == TYPE_FILE)
+		{
+			return new NBTTagFile(tagName);
 		}
 		else
 		{
