@@ -77,14 +77,19 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 	{
 		int len = this.tags.size();
 		StringBuilder sb = new StringBuilder(len << 6).append("{");
-		
 		NamedBinaryTag value;
+		
 		for (String key : this.tags.keySet())
 		{
 			value = this.tags.get(key);
 			sb.append(String.valueOf(value)).append(',');
 		}
-		sb.deleteCharAt(sb.length() - 1).append("}");
+		sb.append("}");
+		
+		if (len > 0)
+		{
+			sb.deleteCharAt(sb.length() - 2);
+		}
 		
 		return sb.toString();
 	}
