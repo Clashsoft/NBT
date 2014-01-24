@@ -1,0 +1,121 @@
+package com.clashsoft.nbt;
+
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.clashsoft.nbt.util.NBTHelper;
+
+public abstract class NBTTagMap extends NamedBinaryTag
+{
+	protected Map<String, NamedBinaryTag>	tags;
+	
+	public NBTTagMap(byte type, String name)
+	{
+		this(type, name, new HashMap());
+	}
+	
+	public NBTTagMap(byte type, String name, Map<String, NamedBinaryTag> tags)
+	{
+		super(type, name);
+		this.tags = tags;
+	}
+	
+	@Override
+	public Object getValue()
+	{
+		return this.tags;
+	}
+	
+	protected NamedBinaryTag setTag(String name, NamedBinaryTag tag)
+	{
+		tag.setName(name);
+		return this.setTag(name, tag);
+	}
+	
+	protected NamedBinaryTag setTag(NamedBinaryTag tag)
+	{
+		return this.tags.put(tag.getName(), tag);
+	}
+	
+	public boolean hasTag(String name)
+	{
+		return this.tags.containsKey(name);
+	}
+	
+	public NamedBinaryTag getTag(String name)
+	{
+		return this.tags.get(name);
+	}
+	
+	@Override
+	public boolean valueEquals(NamedBinaryTag that)
+	{
+		return this.tags.equals(((NBTTagCompound) that).getValue());
+	}
+	
+	@Override
+	public String writeString()
+	{
+		int len = this.tags.size();
+		StringBuilder sb = new StringBuilder(len << 6).append("{");
+		
+		NamedBinaryTag value;
+		for (String key : this.tags.keySet())
+		{
+			value = this.tags.get(key);
+			sb.append(value.toString()).append(',');
+		}
+		sb.append("}");
+		
+		return sb.toString();
+	}
+	
+	@Override
+	public void readString(String dataString)
+	{
+		int pos1 = dataString.indexOf('{') + 1;
+		int pos2 = dataString.lastIndexOf('}');
+		if (pos1 < 0 || pos2 < 0)
+		{
+			return;
+		}
+		
+		dataString = dataString.substring(pos1, pos2);
+		
+		for (String sub : NBTHelper.split(dataString, ','))
+		{
+			NamedBinaryTag tag = NBTHelper.createTag(sub);
+			this.setTag(tag);
+		}
+	}
+	
+	@Override
+	public void writeValue(DataOutput output) throws IOException
+	{
+		for (String key : this.tags.keySet())
+		{
+			NamedBinaryTag value = this.tags.get(key);
+			value.write(output);
+		}
+		END.write(output);
+	}
+	
+	@Override
+	public void readValue(DataInput input) throws IOException
+	{
+		while (true)
+		{
+			NamedBinaryTag nbt = NamedBinaryTag.read(input);
+			
+			if (nbt == NamedBinaryTag.END)
+			{
+				break;
+			}
+			
+			this.setTag(nbt);
+		}
+	}
+}

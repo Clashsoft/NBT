@@ -7,6 +7,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.clashsoft.nbt.*;
 
@@ -276,17 +277,70 @@ public class NBTHelper
 		return -1;
 	}
 	
-	public static NamedBinaryTag createFromObject(Object value)
-	{
-		String name = value instanceof NamedBinaryTag ? ((NamedBinaryTag) value).getName() : "";
-		return createFromObject(name, value);
-	}
-	
-	public static NamedBinaryTag createFromObject(String tagName, Object value)
+	public static boolean isWrappable(Object value)
 	{
 		if (value instanceof NamedBinaryTag)
 		{
+			return true;
+		}
+		else if (value instanceof Map || value instanceof List || value.getClass().isArray())
+		{
+			return true;
+		}
+		else if (value instanceof Boolean)
+		{
+			return true;
+		}
+		else if (value instanceof Byte || value instanceof Short || value instanceof Character || value instanceof Integer || value instanceof Long)
+		{
+			return true;
+		}
+		else if (value instanceof Float || value instanceof Double)
+		{
+			return true;
+		}
+		else if (value instanceof String)
+		{
+			return true;
+		}
+		else if (value instanceof Date || value instanceof BufferedImage || value instanceof Class)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public static Object unwrap(NamedBinaryTag tag)
+	{
+		return tag == null ? null : tag.getValue();
+	}
+	
+	public static NamedBinaryTag wrap(Object value)
+	{
+		return wrap("", value);
+	}
+	
+	public static NamedBinaryTag wrap(String tagName, Object value)
+	{
+		if (value == null)
+		{
+			return null;
+		}
+		else if (value instanceof NamedBinaryTag)
+		{
 			return (NamedBinaryTag) value;
+		}
+		else if (value instanceof Map)
+		{
+			return new NBTTagCompound(tagName, (Map) value);
+		}
+		else if (value instanceof List)
+		{
+			return new NBTTagList(tagName, (List) value);
+		}
+		else if (value.getClass().isArray())
+		{
+			return new NBTTagArray(tagName, value);
 		}
 		else if (value instanceof Boolean)
 		{
@@ -331,6 +385,10 @@ public class NBTHelper
 		else if (value instanceof BufferedImage)
 		{
 			return new NBTTagImage(tagName, (BufferedImage) value);
+		}
+		else if (value instanceof Class)
+		{
+			return new NBTTagClass(tagName, (Class) value);
 		}
 		return null;
 	}
@@ -392,6 +450,10 @@ public class NBTHelper
 		else if (type == TYPE_IMAGE)
 		{
 			return new NBTTagImage(tagName);
+		}
+		else if (type == TYPE_CLASS)
+		{
+			return new NBTTagClass(tagName);
 		}
 		else
 		{

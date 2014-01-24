@@ -17,6 +17,8 @@ public abstract class NamedBinaryTag
 	public static final byte		TYPE_LIST		= 2;
 	public static final byte		TYPE_ARRAY		= 3;
 	
+	public static final byte		TYPE_CUSTOM		= 9;
+	
 	public static final byte		TYPE_BOOLEAN	= 10;
 	public static final byte		TYPE_BYTE		= 11;
 	public static final byte		TYPE_SHORT		= 12;
@@ -29,6 +31,7 @@ public abstract class NamedBinaryTag
 	
 	public static final byte		TYPE_DATE		= 30;
 	public static final byte		TYPE_IMAGE		= 31;
+	public static final byte		TYPE_CLASS		= 32;
 	
 	public static final Class[]		TYPES			= new Class[256];
 	
@@ -38,6 +41,8 @@ public abstract class NamedBinaryTag
 		TYPES[TYPE_COMPOUND] = NBTTagCompound.class;
 		TYPES[TYPE_LIST] = NBTTagList.class;
 		TYPES[TYPE_ARRAY] = NBTTagArray.class;
+		
+		TYPES[TYPE_CUSTOM] = NBTTagCustom.class;
 		
 		TYPES[TYPE_BOOLEAN] = NBTTagBoolean.class;
 		TYPES[TYPE_BYTE] = NBTTagByte.class;
@@ -51,6 +56,7 @@ public abstract class NamedBinaryTag
 		
 		TYPES[TYPE_DATE] = NBTTagDate.class;
 		TYPES[TYPE_IMAGE] = NBTTagImage.class;
+		TYPES[TYPE_CLASS] = NBTTagClass.class;
 	}
 	
 	public static final NBTTagEnd	END				= new NBTTagEnd();

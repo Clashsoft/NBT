@@ -1,27 +1,18 @@
 package com.clashsoft.nbt;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.clashsoft.nbt.util.NBTHelper;
-
-public class NBTTagCompound extends NamedBinaryTag implements NBTTagContainer<String>
+public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 {
-	private Map<String, NamedBinaryTag>	tags;
-	
 	public NBTTagCompound(String name)
 	{
-		this(name, new HashMap());
+		super(TYPE_COMPOUND, name);
 	}
 	
 	public NBTTagCompound(String name, Map<String, NamedBinaryTag> tags)
 	{
-		super(TYPE_COMPOUND, name);
-		this.tags = tags;
+		super(TYPE_COMPOUND, name, tags);
 	}
 	
 	@Override
@@ -52,27 +43,6 @@ public class NBTTagCompound extends NamedBinaryTag implements NBTTagContainer<St
 	public Iterator<String> iterator()
 	{
 		return this.tags.keySet().iterator();
-	}
-	
-	public NamedBinaryTag setTag(String name, NamedBinaryTag tag)
-	{
-		tag.setName(name);
-		return this.setTag(name, tag);
-	}
-	
-	public NamedBinaryTag setTag(NamedBinaryTag tag)
-	{
-		return this.tags.put(tag.getName(), tag);
-	}
-	
-	public boolean hasTag(String name)
-	{
-		return this.tags.containsKey(name);
-	}
-	
-	public NamedBinaryTag getTag(String name)
-	{
-		return this.tags.get(name);
 	}
 	
 	public void setBoolean(String name, boolean value)
@@ -207,74 +177,5 @@ public class NBTTagCompound extends NamedBinaryTag implements NBTTagContainer<St
 	public void clear()
 	{
 		this.tags.clear();
-	}
-	
-	@Override
-	public boolean valueEquals(NamedBinaryTag that)
-	{
-		return this.tags.equals(((NBTTagCompound) that).tags);
-	}
-	
-	@Override
-	public String writeString()
-	{
-		int len = this.tags.size();
-		StringBuilder sb = new StringBuilder(len << 6).append("{");
-		
-		NamedBinaryTag value;
-		for (String key : this.tags.keySet())
-		{
-			value = this.tags.get(key);
-			sb.append(value.toString()).append(',');
-		}
-		sb.append("}");
-		
-		return sb.toString();
-	}
-	
-	@Override
-	public void readString(String dataString)
-	{
-		int pos1 = dataString.indexOf('{') + 1;
-		int pos2 = dataString.lastIndexOf('}');
-		if (pos1 < 0 || pos2 < 0)
-		{
-			return;
-		}
-		
-		dataString = dataString.substring(pos1, pos2);
-		
-		for (String sub : NBTHelper.split(dataString, ','))
-		{
-			NamedBinaryTag tag = NBTHelper.createTag(sub);
-			this.addTag(tag);
-		}
-	}
-	
-	@Override
-	public void writeValue(DataOutput output) throws IOException
-	{
-		for (String key : this.tags.keySet())
-		{
-			NamedBinaryTag value = this.tags.get(key);
-			value.write(output);
-		}
-		END.write(output);
-	}
-	
-	@Override
-	public void readValue(DataInput input) throws IOException
-	{
-		while (true)
-		{
-			NamedBinaryTag nbt = NamedBinaryTag.read(input);
-			
-			if (nbt == NamedBinaryTag.END)
-			{
-				break;
-			}
-			
-			this.setTag(nbt);
-		}
 	}
 }

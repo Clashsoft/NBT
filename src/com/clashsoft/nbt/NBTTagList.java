@@ -173,7 +173,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		for (int i = 0; i < args.length; i++)
 		{
 			String tagName = name + i;
-			NamedBinaryTag base = NBTHelper.createFromObject(tagName, args[i]);
+			NamedBinaryTag base = NBTHelper.wrap(tagName, args[i]);
 			if (base != null)
 			{
 				list.addTag(base);
@@ -188,7 +188,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		for (int i = 0; i < args.size(); i++)
 		{
 			String tagName = name + i;
-			NamedBinaryTag base = NBTHelper.createFromObject(tagName, args.get(i));
+			NamedBinaryTag base = NBTHelper.wrap(tagName, args.get(i));
 			if (base != null)
 			{
 				list.addTag(base);
