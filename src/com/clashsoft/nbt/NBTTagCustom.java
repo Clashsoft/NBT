@@ -1,7 +1,6 @@
 package com.clashsoft.nbt;
 
 import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -15,8 +14,7 @@ public class NBTTagCustom extends NBTTagMap
 {
 	private static final String	TAG_CLASS_NAME	= "$class$";
 	
-	private Object				object;
-	
+	private Object				value;
 	private int					mapDepth		= 0;
 	
 	public NBTTagCustom(String name)
@@ -27,20 +25,20 @@ public class NBTTagCustom extends NBTTagMap
 	public NBTTagCustom(String name, Object object)
 	{
 		super(TYPE_CUSTOM, name);
-		this.object = object;
+		this.setValue(object);
 	}
 	
 	@Override
 	public Object getValue()
 	{
-		return this.object;
+		return this.value;
 	}
 	
-	@Override
-	public void writeValue(DataOutput output) throws IOException
+	public NBTTagCustom setValue(Object object)
 	{
+		this.value = object;
 		this.map();
-		super.writeValue(output);
+		return this;
 	}
 	
 	@Override
@@ -48,13 +46,6 @@ public class NBTTagCustom extends NBTTagMap
 	{
 		super.readValue(input);
 		this.object();
-	}
-	
-	@Override
-	public String writeString()
-	{
-		this.map();
-		return super.writeString();
 	}
 	
 	@Override
@@ -86,19 +77,16 @@ public class NBTTagCustom extends NBTTagMap
 	
 	protected void map()
 	{
-		if (this.tags == null)
-		{
-			this.mapDepth = 0;
-			this.tags = new HashMap();
-			this.map(this.tags, this.object);
-		}
+		this.mapDepth = 0;
+		this.tags = new HashMap();
+		this.map(this.tags, this.value);
 	}
 	
 	protected void object()
 	{
-		if (this.object == null)
+		if (this.value == null)
 		{
-			this.object = this.object(this.tags);
+			this.value = this.object(this.tags);
 		}
 	}
 	
@@ -114,13 +102,14 @@ public class NBTTagCustom extends NBTTagMap
 			Class clazz = object.getClass();
 			int subclass = 0;
 			
+			map.put(TAG_CLASS_NAME, new NBTTagClass(TAG_CLASS_NAME, clazz));
+			
 			while (clazz != Object.class)
 			{
 				this.map(map, clazz, subclass, object);
 				clazz = clazz.getSuperclass();
 				subclass++;
 			}
-			map.put(TAG_CLASS_NAME, new NBTTagClass(TAG_CLASS_NAME, clazz));
 			
 			this.mapDepth++;
 		}
