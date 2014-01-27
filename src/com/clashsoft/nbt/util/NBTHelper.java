@@ -14,7 +14,7 @@ import com.clashsoft.nbt.*;
 
 public class NBTHelper
 {
-	public static String parseName(String name)
+	public static String parseString(String name)
 	{
 		int len = name.length();
 		if (len >= 2 && name.startsWith("\"") && name.endsWith("\""))
@@ -38,13 +38,13 @@ public class NBTHelper
 		}
 		else if (split.length == 2)
 		{
-			name = parseName(split[0]);
+			name = parseString(split[0]);
 			value = split[1];
 		}
 		else if (split.length == 3)
 		{
 			type = split[0];
-			name = parseName(split[1]);
+			name = parseString(split[1]);
 			value = split[2];
 		}
 		
@@ -71,15 +71,15 @@ public class NBTHelper
 			return 0;
 		}
 		
-		if (value.startsWith("{"))
+		if (value.startsWith("{") && value.endsWith("}"))
 		{
 			return TYPE_COMPOUND;
 		}
-		else if (value.startsWith("["))
+		else if (value.startsWith("[") && value.endsWith("]"))
 		{
 			return TYPE_LIST;
 		}
-		else if (value.startsWith("<"))
+		else if (value.startsWith("<") && value.endsWith(">"))
 		{
 			return TYPE_ARRAY;
 		}
@@ -102,6 +102,10 @@ public class NBTHelper
 		else if (value.endsWith("I"))
 		{
 			return TYPE_INT;
+		}
+		else if (value.endsWith("L"))
+		{
+			return TYPE_LONG;
 		}
 		else if (value.endsWith("F"))
 		{
@@ -140,10 +144,11 @@ public class NBTHelper
 				{
 				}
 			}
+			
 			try
 			{
-				Long.parseLong(value);
-				return TYPE_LONG;
+				Integer.parseInt(value);
+				return TYPE_INT;
 			}
 			catch (NumberFormatException ex)
 			{
@@ -417,7 +422,11 @@ public class NBTHelper
 	
 	public static NamedBinaryTag createFromType(String tagName, byte type)
 	{
-		if (type == TYPE_COMPOUND)
+		if (type == TYPE_END)
+		{
+			return NamedBinaryTag.END;
+		}
+		else if (type == TYPE_COMPOUND)
 		{
 			return new NBTTagCompound(tagName);
 		}

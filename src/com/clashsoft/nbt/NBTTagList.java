@@ -223,15 +223,20 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 	public String writeString()
 	{
 		int len = this.tags.size();
-		StringBuilder sb = new StringBuilder(len << 6).append("\n[");
-		
+		StringBuilder sb = new StringBuilder(len << 6).append("[");
 		NamedBinaryTag value;
-		for (int key = 0; key < len; key++)
+		
+		for (int i = 0; i < len; i++)
 		{
-			value = this.tags.get(key);
-			sb.append("\n").append(key).append(':').append(value.toString()).append(',');
+			value = this.tags.get(i);
+			sb.append(i).append(':').append(value.toString()).append(',');
 		}
-		sb.append("\n]");
+		sb.append("]");
+		
+		if (len > 0)
+		{
+			sb.deleteCharAt(sb.length() - 2);
+		}
 		
 		return sb.toString();
 	}

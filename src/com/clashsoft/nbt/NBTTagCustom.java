@@ -55,11 +55,10 @@ public class NBTTagCustom extends NBTTagMap
 		this.object();
 	}
 	
-	protected Object newInstance(String className)
+	protected Object newInstance(Class clazz)
 	{
 		try
 		{
-			Class clazz = Class.forName(className);
 			Constructor c = clazz.getConstructor();
 			return c.newInstance();
 		}
@@ -117,19 +116,23 @@ public class NBTTagCustom extends NBTTagMap
 	
 	protected Object object(Map<String, NamedBinaryTag> map)
 	{
-		String className = ((NBTTagString) map.get(TAG_CLASS_NAME)).getValue();
-		Object object = this.newInstance(className);
-		Class clazz = object.getClass();
-		int subclass = 0;
-		
-		while (clazz != Object.class)
+		NBTTagClass classTag = (NBTTagClass) map.get(TAG_CLASS_NAME);
+		if (classTag != null)
 		{
-			this.object(map, clazz, subclass, object);
-			clazz = clazz.getSuperclass();
-			subclass++;
+			Class clazz = classTag.clazz;
+			Object object = this.newInstance(clazz);
+			int subclass = 0;
+			
+			while (clazz != Object.class)
+			{
+				this.object(map, clazz, subclass, object);
+				clazz = clazz.getSuperclass();
+				subclass++;
+			}
+			
+			return object;
 		}
-		
-		return object;
+		return null;
 	}
 	
 	protected void object(Map<String, NamedBinaryTag> map, Class clazz, int subclass, Object object)

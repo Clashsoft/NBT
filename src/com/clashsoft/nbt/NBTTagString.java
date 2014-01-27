@@ -4,6 +4,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import com.clashsoft.nbt.util.NBTHelper;
+
 public class NBTTagString extends NamedBinaryTag
 {
 	public String	value;
@@ -40,7 +42,7 @@ public class NBTTagString extends NamedBinaryTag
 	@Override
 	public void readString(String dataString)
 	{
-		this.value = dataString.substring(1, dataString.length() - 1);
+		this.value = NBTHelper.parseString(dataString);
 	}
 	
 	@Override
