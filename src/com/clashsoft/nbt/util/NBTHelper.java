@@ -68,7 +68,14 @@ public class NBTHelper
 		}
 		else if (value.startsWith("\"") && value.endsWith("\""))
 		{
-			return TYPE_STRING;
+			if (value.length() < 32770)
+			{
+				return TYPE_STRING;
+			}
+			else
+			{
+				return TYPE_STRING_BUILDER;
+			}
 		}
 		else if (value.startsWith("class"))
 		{
@@ -82,30 +89,36 @@ public class NBTHelper
 		{
 			return TYPE_FILE;
 		}
-		else
+		
+		if (value.contains("."))
 		{
-			if (value.contains("."))
-			{
-				try
-				{
-					Double.parseDouble(value);
-					return TYPE_DOUBLE;
-				}
-				catch (NumberFormatException ex)
-				{
-				}
-			}
-			
 			try
 			{
-				Integer.parseInt(value);
-				return TYPE_INT;
+				Double.parseDouble(value);
+				return TYPE_DOUBLE;
 			}
 			catch (NumberFormatException ex)
 			{
 			}
 		}
-		return TYPE_STRING;
+		
+		try
+		{
+			Integer.parseInt(value);
+			return TYPE_INT;
+		}
+		catch (NumberFormatException ex)
+		{
+		}
+		
+		if (value.length() < 32768)
+		{
+			return TYPE_STRING;
+		}
+		else
+		{
+			return TYPE_STRING_BUILDER;
+		}
 	}
 	
 	public static String[] listToArray(List<String> list)
