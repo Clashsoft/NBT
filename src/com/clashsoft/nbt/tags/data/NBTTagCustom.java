@@ -1,4 +1,4 @@
-package com.clashsoft.nbt;
+package com.clashsoft.nbt.tags.data;
 
 import java.io.DataInput;
 import java.io.IOException;
@@ -8,7 +8,10 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.clashsoft.nbt.util.NBTHelper;
+import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.tags.collection.NBTTagCompound;
+import com.clashsoft.nbt.tags.collection.NBTTagMap;
+import com.clashsoft.nbt.util.NBTParser;
 
 public class NBTTagCustom extends NBTTagMap
 {
@@ -151,7 +154,7 @@ public class NBTTagCustom extends NBTTagMap
 				{
 					String name = this.getFieldName(sub, field);
 					NamedBinaryTag nbt = map.get(name);
-					Object obj = NBTHelper.unwrap(nbt);
+					Object obj = NBTParser.unwrap(nbt);
 					
 					if (obj instanceof Map)
 					{
@@ -186,7 +189,7 @@ public class NBTTagCustom extends NBTTagMap
 					Object obj = field.get(object);
 					if (obj != null)
 					{
-						NamedBinaryTag nbt = NBTHelper.wrap(name, obj);
+						NamedBinaryTag nbt = NBTParser.wrap(name, obj);
 						if (nbt == null && !name.contains("this$") && this.mapDepth < 32)
 						{
 							Map<String, NamedBinaryTag> map1 = new HashMap();

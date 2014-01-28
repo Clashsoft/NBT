@@ -1,4 +1,4 @@
-package com.clashsoft.nbt;
+package com.clashsoft.nbt.tags.collection;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -8,7 +8,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.tags.primitive.*;
+import com.clashsoft.nbt.tags.string.NBTTagString;
 import com.clashsoft.nbt.util.NBTHelper;
+import com.clashsoft.nbt.util.NBTParser;
 
 public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedBinaryTag>
 {
@@ -174,7 +178,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		for (int i = 0; i < args.length; i++)
 		{
 			String tagName = name + i;
-			NamedBinaryTag base = NBTHelper.wrap(tagName, args[i]);
+			NamedBinaryTag base = NBTParser.wrap(tagName, args[i]);
 			if (base != null)
 			{
 				list.addTag(base);
@@ -189,7 +193,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		for (int i = 0; i < args.size(); i++)
 		{
 			String tagName = name + i;
-			NamedBinaryTag base = NBTHelper.wrap(tagName, args.get(i));
+			NamedBinaryTag base = NBTParser.wrap(tagName, args.get(i));
 			if (base != null)
 			{
 				list.addTag(base);
@@ -260,7 +264,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		for (int i = 0; i < len; i++)
 		{
 			String sub = tags.get(i);
-			NamedBinaryTag tag = NBTHelper.createTag(sub);
+			NamedBinaryTag tag = NBTParser.createTag(sub);
 			int index = Integer.parseInt(tag.getName());
 			this.setTag(index, tag);
 		}
@@ -274,7 +278,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 			NamedBinaryTag value = this.tagAt(i);
 			value.write(output);
 		}
-		END.write(output);
+		NBTHelper.END.write(output);
 	}
 	
 	@Override
@@ -284,7 +288,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		{
 			NamedBinaryTag nbt = NamedBinaryTag.read(input);
 			
-			if (nbt == NamedBinaryTag.END)
+			if (nbt == NBTHelper.END)
 			{
 				break;
 			}

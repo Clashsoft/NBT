@@ -1,8 +1,10 @@
-package com.clashsoft.nbt;
+package com.clashsoft.nbt.tags.data;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+
+import com.clashsoft.nbt.NamedBinaryTag;
 
 public class NBTTagClass extends NamedBinaryTag
 {

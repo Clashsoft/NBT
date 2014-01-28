@@ -1,45 +1,45 @@
-package com.clashsoft.nbt;
+package com.clashsoft.nbt.tags.primitive;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class NBTTagFloat extends NBTTagNumber
+public class NBTTagByte extends NBTTagNumber
 {
-	public float	value;
+	public byte	value;
 	
-	public NBTTagFloat(String name)
+	public NBTTagByte(String name)
 	{
-		this(name, 0F);
+		this(name, (byte) 0);
 	}
 	
-	public NBTTagFloat(String name, float value)
+	public NBTTagByte(String name, byte value)
 	{
-		super(TYPE_FLOAT, name, value);
+		super(TYPE_BYTE, name, value);
 		this.value = value;
 	}
 	
 	@Override
 	public char getPostfixChar()
 	{
-		return 'F';
+		return 'B';
 	}
 	
 	@Override
 	public Number readNumber(String number)
 	{
-		return Float.parseFloat(number);
+		return this.value = Byte.parseByte(number);
 	}
 	
 	@Override
 	public void writeNumber(DataOutput output) throws IOException
 	{
-		output.writeFloat(this.value);
+		output.writeByte(this.value);
 	}
 	
 	@Override
 	public Number readNumber(DataInput input) throws IOException
 	{
-		return this.value = input.readFloat();
+		return this.value = input.readByte();
 	}
 }

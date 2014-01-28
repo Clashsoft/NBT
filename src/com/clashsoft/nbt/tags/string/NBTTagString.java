@@ -1,26 +1,29 @@
-package com.clashsoft.nbt;
+package com.clashsoft.nbt.tags.string;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class NBTTagChar extends NamedBinaryTag
+import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.util.NBTParser;
+
+public class NBTTagString extends NamedBinaryTag
 {
-	public char	value;
+	public String	value;
 	
-	public NBTTagChar(String name)
+	public NBTTagString(String name)
 	{
-		this(name, (char) 0);
+		this(name, "");
 	}
 	
-	public NBTTagChar(String name, char value)
+	public NBTTagString(String name, String value)
 	{
 		super(TYPE_STRING, name);
 		this.value = value;
 	}
 	
 	@Override
-	public Character getValue()
+	public String getValue()
 	{
 		return this.value;
 	}
@@ -28,30 +31,30 @@ public class NBTTagChar extends NamedBinaryTag
 	@Override
 	public boolean valueEquals(NamedBinaryTag that)
 	{
-		return this.value == ((NBTTagChar) that).value;
+		return this.value.equals(((NBTTagString) that).value);
 	}
 	
 	@Override
 	public String writeString()
 	{
-		return "'" + this.value + "'";
+		return "\"" + this.value + "\"";
 	}
 	
 	@Override
 	public void readString(String dataString)
 	{
-		this.value = dataString.charAt(1);
+		this.value = NBTParser.parseString(dataString);
 	}
 	
 	@Override
 	public void writeValue(DataOutput output) throws IOException
 	{
-		output.writeChar(this.value);
+		output.writeUTF(this.value);
 	}
 	
 	@Override
 	public void readValue(DataInput input) throws IOException
 	{
-		this.value = input.readChar();
+		this.value = input.readUTF();
 	}
 }

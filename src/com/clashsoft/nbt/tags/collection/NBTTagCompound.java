@@ -1,6 +1,10 @@
-package com.clashsoft.nbt;
+package com.clashsoft.nbt.tags.collection;
 
 import java.util.Map;
+
+import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.tags.primitive.*;
+import com.clashsoft.nbt.tags.string.NBTTagString;
 
 public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 {

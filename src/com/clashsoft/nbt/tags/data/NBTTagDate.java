@@ -1,4 +1,4 @@
-package com.clashsoft.nbt;
+package com.clashsoft.nbt.tags.data;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -7,6 +7,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.clashsoft.nbt.NamedBinaryTag;
 
 public class NBTTagDate extends NamedBinaryTag
 {

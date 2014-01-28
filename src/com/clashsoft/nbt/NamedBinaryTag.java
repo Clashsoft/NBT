@@ -1,6 +1,6 @@
 package com.clashsoft.nbt;
 
-import static com.clashsoft.nbt.util.NBTHelper.createFromType;
+import static com.clashsoft.nbt.util.NBTParser.createFromType;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -8,33 +8,42 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
+import com.clashsoft.nbt.tags.NBTTagEnd;
+import com.clashsoft.nbt.tags.collection.NBTTagArray;
+import com.clashsoft.nbt.tags.collection.NBTTagCompound;
+import com.clashsoft.nbt.tags.collection.NBTTagContainer;
+import com.clashsoft.nbt.tags.collection.NBTTagList;
+import com.clashsoft.nbt.tags.data.*;
+import com.clashsoft.nbt.tags.primitive.*;
+import com.clashsoft.nbt.tags.string.NBTTagString;
+import com.clashsoft.nbt.util.NBTHelper;
 import com.clashsoft.nbt.util.NBTSerializer;
 
 public abstract class NamedBinaryTag
 {
-	public static final byte		TYPE_END		= 0;
-	public static final byte		TYPE_COMPOUND	= 1;
-	public static final byte		TYPE_LIST		= 2;
-	public static final byte		TYPE_ARRAY		= 3;
+	public static final byte	TYPE_END		= 0;
+	public static final byte	TYPE_COMPOUND	= 1;
+	public static final byte	TYPE_LIST		= 2;
+	public static final byte	TYPE_ARRAY		= 3;
 	
-	public static final byte		TYPE_CUSTOM		= 9;
+	public static final byte	TYPE_CUSTOM		= 9;
 	
-	public static final byte		TYPE_BOOLEAN	= 10;
-	public static final byte		TYPE_BYTE		= 11;
-	public static final byte		TYPE_SHORT		= 12;
-	public static final byte		TYPE_CHAR		= 13;
-	public static final byte		TYPE_INT		= 14;
-	public static final byte		TYPE_LONG		= 15;
-	public static final byte		TYPE_FLOAT		= 16;
-	public static final byte		TYPE_DOUBLE		= 17;
-	public static final byte		TYPE_STRING		= 18;
+	public static final byte	TYPE_BOOLEAN	= 10;
+	public static final byte	TYPE_BYTE		= 11;
+	public static final byte	TYPE_SHORT		= 12;
+	public static final byte	TYPE_CHAR		= 13;
+	public static final byte	TYPE_INT		= 14;
+	public static final byte	TYPE_LONG		= 15;
+	public static final byte	TYPE_FLOAT		= 16;
+	public static final byte	TYPE_DOUBLE		= 17;
+	public static final byte	TYPE_STRING		= 18;
 	
-	public static final byte		TYPE_DATE		= 30;
-	public static final byte		TYPE_IMAGE		= 31;
-	public static final byte		TYPE_CLASS		= 32;
-	public static final byte		TYPE_FILE		= 33;
+	public static final byte	TYPE_DATE		= 30;
+	public static final byte	TYPE_IMAGE		= 31;
+	public static final byte	TYPE_CLASS		= 32;
+	public static final byte	TYPE_FILE		= 33;
 	
-	public static final Class[]		TYPES			= new Class[256];
+	public static final Class[]	TYPES			= new Class[256];
 	
 	static
 	{
@@ -61,12 +70,10 @@ public abstract class NamedBinaryTag
 		TYPES[TYPE_FILE] = NBTTagFile.class;
 	}
 	
-	public static final NBTTagEnd	END				= new NBTTagEnd();
+	private String				name;
+	private final byte			type;
 	
-	private String					name;
-	private final byte				type;
-	
-	private NBTTagContainer			container		= null;
+	private NBTTagContainer		container		= null;
 	
 	public NamedBinaryTag(byte type, String name)
 	{
@@ -89,7 +96,7 @@ public abstract class NamedBinaryTag
 		return this.type;
 	}
 	
-	protected NamedBinaryTag setName(String name)
+	public NamedBinaryTag setName(String name)
 	{
 		if (this.container != null)
 		{
@@ -105,7 +112,7 @@ public abstract class NamedBinaryTag
 		return this;
 	}
 	
-	protected NamedBinaryTag setContainer(NBTTagContainer container)
+	public NamedBinaryTag setContainer(NBTTagContainer container)
 	{
 		this.container = container;
 		return this;
@@ -202,7 +209,7 @@ public abstract class NamedBinaryTag
 		
 		if (type == TYPE_END)
 		{
-			return END;
+			return NBTHelper.END;
 		}
 		
 		String name = input.readUTF();

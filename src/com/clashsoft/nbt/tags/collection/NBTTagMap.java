@@ -1,4 +1,4 @@
-package com.clashsoft.nbt;
+package com.clashsoft.nbt.tags.collection;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.clashsoft.nbt.NamedBinaryTag;
 import com.clashsoft.nbt.util.NBTHelper;
+import com.clashsoft.nbt.util.NBTParser;
 
 public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<String>
 {
@@ -108,7 +110,7 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 		
 		for (String sub : NBTHelper.split(dataString, ','))
 		{
-			NamedBinaryTag tag = NBTHelper.createTag(sub);
+			NamedBinaryTag tag = NBTParser.createTag(sub);
 			this.setTag(tag);
 		}
 	}
@@ -121,7 +123,7 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 			NamedBinaryTag value = this.tags.get(key);
 			value.write(output);
 		}
-		END.write(output);
+		NBTHelper.END.write(output);
 	}
 	
 	@Override
@@ -131,7 +133,7 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 		{
 			NamedBinaryTag nbt = NamedBinaryTag.read(input);
 			
-			if (nbt == NamedBinaryTag.END)
+			if (nbt == NBTHelper.END)
 			{
 				break;
 			}

@@ -1,5 +1,6 @@
-package com.clashsoft.nbt;
+package com.clashsoft.nbt.tags.collection;
 
+import com.clashsoft.nbt.NamedBinaryTag;
 
 public interface NBTTagContainer<T> extends Iterable<T>
 {

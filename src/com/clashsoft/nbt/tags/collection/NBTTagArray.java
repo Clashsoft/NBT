@@ -1,4 +1,4 @@
-package com.clashsoft.nbt;
+package com.clashsoft.nbt.tags.collection;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -8,7 +8,11 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.tags.primitive.*;
+import com.clashsoft.nbt.tags.string.NBTTagString;
 import com.clashsoft.nbt.util.NBTHelper;
+import com.clashsoft.nbt.util.NBTParser;
 
 /**
  * A named binary tag representing an array with constant size.
@@ -567,7 +571,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		for (int i = 0; i < len; i++)
 		{
 			String sub = tags.get(i);
-			NamedBinaryTag tag = NBTHelper.createTag(sub);
+			NamedBinaryTag tag = NBTParser.createTag(sub);
 			int index = Integer.parseInt(tag.getName());
 			nbts[index] = tag;
 		}
@@ -697,7 +701,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		for (int i = 0; i < len; i++)
 		{
 			Object obj = Array.get(array, i);
-			NamedBinaryTag tag = NBTHelper.wrap(obj);
+			NamedBinaryTag tag = NBTParser.wrap(obj);
 			nbtArray[i] = tag;
 		}
 		
@@ -711,7 +715,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	
 	public NamedBinaryTag getWrapper(int index)
 	{
-		return NBTHelper.wrap(this.getObject(index));
+		return NBTParser.wrap(this.getObject(index));
 	}
 	
 	public Object getObject(int index)
