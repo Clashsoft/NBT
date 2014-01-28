@@ -232,7 +232,7 @@ public class NBTParser
 		{
 			return new NBTTagString(tagName);
 		}
-		else if (type == TYPE_STRING_BUILDER)
+		else if (type == TYPE_STRING_LONG)
 		{
 			return new NBTTagLongString(tagName);
 		}

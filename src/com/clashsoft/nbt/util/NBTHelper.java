@@ -74,7 +74,7 @@ public class NBTHelper
 			}
 			else
 			{
-				return TYPE_STRING_BUILDER;
+				return TYPE_STRING_LONG;
 			}
 		}
 		else if (value.startsWith("class"))
@@ -117,7 +117,7 @@ public class NBTHelper
 		}
 		else
 		{
-			return TYPE_STRING_BUILDER;
+			return TYPE_STRING_LONG;
 		}
 	}
 	

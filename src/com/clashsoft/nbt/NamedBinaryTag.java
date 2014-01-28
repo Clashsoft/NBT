@@ -37,8 +37,9 @@ public abstract class NamedBinaryTag
 	public static final byte	TYPE_LONG			= 15;
 	public static final byte	TYPE_FLOAT			= 16;
 	public static final byte	TYPE_DOUBLE			= 17;
+	
 	public static final byte	TYPE_STRING			= 18;
-	public static final byte	TYPE_STRING_BUILDER	= 19;
+	public static final byte	TYPE_STRING_LONG	= 19;
 	
 	public static final byte	TYPE_DATE			= 30;
 	public static final byte	TYPE_IMAGE			= 31;
@@ -65,7 +66,7 @@ public abstract class NamedBinaryTag
 		TYPES[TYPE_FLOAT] = NBTTagFloat.class;
 		TYPES[TYPE_DOUBLE] = NBTTagDouble.class;
 		TYPES[TYPE_STRING] = NBTTagString.class;
-		TYPES[TYPE_STRING_BUILDER] = NBTTagLongString.class;
+		TYPES[TYPE_STRING_LONG] = NBTTagLongString.class;
 		
 		TYPES[TYPE_DATE] = NBTTagDate.class;
 		TYPES[TYPE_IMAGE] = NBTTagImage.class;

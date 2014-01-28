@@ -18,7 +18,7 @@ public class NBTTagLongString extends NamedBinaryTag
 	
 	public NBTTagLongString(String name, String value)
 	{
-		super(TYPE_STRING_BUILDER, name);
+		super(TYPE_STRING_LONG, name);
 		this.value = value;
 	}
 	
