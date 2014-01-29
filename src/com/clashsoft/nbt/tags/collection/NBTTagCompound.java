@@ -42,6 +42,11 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 		return !this.hasTag(name);
 	}
 	
+	public void clear()
+	{
+		this.tags.clear();
+	}
+	
 	public void setBoolean(String name, boolean value)
 	{
 		this.setTag(new NBTTagBoolean(name, value));
@@ -164,27 +169,50 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 	
 	public String getString(String name)
 	{
-		NBTTagString tag = (NBTTagString) this.getTag(name);
-		return tag != null ? tag.getString() : "";
+		try
+		{
+			NBTTagString tag = (NBTTagString) this.getTag(name);
+			return tag != null ? tag.getString() : "";
+		}
+		catch (ClassCastException ex)
+		{
+			return "";
+		}
 	}
 	
 	public NBTTagList getTagList(String name)
 	{
-		return (NBTTagList) this.getTag(name);
+		try
+		{
+			return (NBTTagList) this.getTag(name);
+		}
+		catch (ClassCastException ex)
+		{
+			return null;
+		}
 	}
 	
 	public NBTTagCompound getTagCompound(String name)
 	{
-		return (NBTTagCompound) this.getTag(name);
+		try
+		{
+			return (NBTTagCompound) this.getTag(name);
+		}
+		catch (ClassCastException ex)
+		{
+			return null;
+		}
 	}
 	
 	public NBTTagArray getTagArray(String name)
 	{
-		return (NBTTagArray) this.getTag(name);
-	}
-	
-	public void clear()
-	{
-		this.tags.clear();
+		try
+		{
+			return (NBTTagArray) this.getTag(name);
+		}
+		catch (ClassCastException ex)
+		{
+			return null;
+		}
 	}
 }

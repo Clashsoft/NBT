@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import com.clashsoft.nbt.NamedBinaryTag;
 
-public class NBTTagBoolean extends NamedBinaryTag
+public class NBTTagBoolean extends NamedBinaryTag implements NBTTagPrimitive
 {
 	protected boolean	value;
 	
@@ -22,20 +22,63 @@ public class NBTTagBoolean extends NamedBinaryTag
 	}
 	
 	@Override
-	public Object getValue()
+	public Boolean getValue()
 	{
 		return Boolean.valueOf(this.getBool());
 	}
 	
+	@Override
 	public boolean getBool()
 	{
 		return this.value;
+	}
+
+	@Override
+	public byte getByte()
+	{
+		return (byte) (this.value ? 1 : 0);
+	}
+
+	@Override
+	public short getShort()
+	{
+		return (short) (this.value ? 1 : 0);
+	}
+
+	@Override
+	public char getChar()
+	{
+		return (char) (this.value ? '1' : '0');
+	}
+
+	@Override
+	public int getInt()
+	{
+		return this.value ? 1 : 0;
+	}
+
+	@Override
+	public long getLong()
+	{
+		return this.value ? 1L : 0L;
+	}
+
+	@Override
+	public float getFloat()
+	{
+		return this.value ? 1F : 0F;
+	}
+
+	@Override
+	public double getDouble()
+	{
+		return this.value ? 1D : 0D;
 	}
 	
 	@Override
 	public boolean valueEquals(NamedBinaryTag that)
 	{
-		return this.value == ((NBTTagBoolean) that).value;
+		return this.value == ((NBTTagPrimitive) that).getBool();
 	}
 	
 	@Override
