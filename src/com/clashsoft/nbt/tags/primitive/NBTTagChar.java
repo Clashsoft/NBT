@@ -6,9 +6,9 @@ import java.io.IOException;
 
 import com.clashsoft.nbt.NamedBinaryTag;
 
-public class NBTTagChar extends NamedBinaryTag
+public class NBTTagChar extends NamedBinaryTag implements NBTTagPrimitive
 {
-	public char	value;
+	protected char	value;
 	
 	public NBTTagChar(String name)
 	{
@@ -24,9 +24,57 @@ public class NBTTagChar extends NamedBinaryTag
 	@Override
 	public Character getValue()
 	{
-		return this.value;
+		return Character.valueOf(this.getChar());
 	}
 	
+	@Override
+	public boolean getBool()
+	{
+		return false;
+	}
+
+	@Override
+	public byte getByte()
+	{
+		return (byte) this.value;
+	}
+
+	@Override
+	public short getShort()
+	{
+		return (short) this.value;
+	}
+	
+	@Override
+	public char getChar()
+	{
+		return this.value;
+	}
+
+	@Override
+	public int getInt()
+	{
+		return (int) this.value;
+	}
+
+	@Override
+	public long getLong()
+	{
+		return (long) this.value;
+	}
+
+	@Override
+	public float getFloat()
+	{
+		return (float) this.value;
+	}
+
+	@Override
+	public double getDouble()
+	{
+		return (double) this.value;
+	}
+
 	@Override
 	public boolean valueEquals(NamedBinaryTag that)
 	{
@@ -34,26 +82,26 @@ public class NBTTagChar extends NamedBinaryTag
 	}
 	
 	@Override
+	public void writeValue(DataOutput output) throws IOException
+	{
+		output.writeChar(this.value);
+	}
+
+	@Override
 	public String writeString()
 	{
 		return "'" + this.value + "'";
 	}
 	
 	@Override
-	public void readString(String dataString)
-	{
-		this.value = dataString.charAt(1);
-	}
-	
-	@Override
-	public void writeValue(DataOutput output) throws IOException
-	{
-		output.writeChar(this.value);
-	}
-	
-	@Override
 	public void readValue(DataInput input) throws IOException
 	{
 		this.value = input.readChar();
+	}
+
+	@Override
+	public void readString(String dataString)
+	{
+		this.value = dataString.charAt(1);
 	}
 }

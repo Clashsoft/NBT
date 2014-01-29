@@ -6,52 +6,52 @@ import java.io.IOException;
 
 import com.clashsoft.nbt.NamedBinaryTag;
 
-public abstract class NBTTagNumber extends NamedBinaryTag
+public abstract class NBTTagNumber extends NamedBinaryTag implements NBTTagPrimitive
 {
-	protected Number	value;
-	
-	public NBTTagNumber(byte type, String name, Number value)
+	public NBTTagNumber(byte type, String name)
 	{
 		super(type, name);
-		this.value = value;
 	}
 	
 	@Override
-	public Number getValue()
-	{
-		return this.value;
-	}
+	public abstract Number getValue();
 	
 	@Override
-	public String writeString()
+	public boolean getBool()
 	{
-		return this.value.toString() + this.getPostfixChar();
+		return false;
 	}
-	
+
 	@Override
 	public void writeValue(DataOutput output) throws IOException
 	{
 		this.writeNumber(output);
 	}
 	
+	protected abstract char getPostfix();
+
 	@Override
-	public void readString(String dataString)
+	public String writeString()
 	{
-		int pos = dataString.indexOf(this.getPostfixChar());
-		this.value = this.readNumber(pos == -1 ? dataString : dataString.substring(0, pos));
+		return this.getValue().toString() + this.getPostfix();
 	}
 	
+	public abstract void writeNumber(DataOutput output) throws IOException;
+
 	@Override
 	public void readValue(DataInput input) throws IOException
 	{
-		this.value = this.readNumber(input);
+		this.readNumber(input);
+	}
+
+	@Override
+	public void readString(String dataString)
+	{
+		int pos = dataString.indexOf(this.getPostfix());
+		this.readNumber(pos == -1 ? dataString : dataString.substring(0, pos));
 	}
 	
-	public abstract char getPostfixChar();
-	
-	public abstract void writeNumber(DataOutput output) throws IOException;
-	
-	public abstract Number readNumber(String number);
-	
-	public abstract Number readNumber(DataInput input) throws IOException;
+	public abstract void readNumber(DataInput input) throws IOException;
+
+	public abstract void readNumber(String number);
 }

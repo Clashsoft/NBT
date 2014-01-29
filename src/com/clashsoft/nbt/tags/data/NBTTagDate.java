@@ -14,7 +14,7 @@ public class NBTTagDate extends NamedBinaryTag
 {
 	public static DateFormat	FORMAT	= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
-	public Date					date;
+	protected Date				date;
 	
 	public NBTTagDate(String name)
 	{
@@ -29,6 +29,11 @@ public class NBTTagDate extends NamedBinaryTag
 	
 	@Override
 	public Date getValue()
+	{
+		return this.getDate();
+	}
+	
+	public Date getDate()
 	{
 		return this.date;
 	}

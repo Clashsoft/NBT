@@ -2,7 +2,7 @@ package com.clashsoft.nbt.tags.collection;
 
 import com.clashsoft.nbt.NamedBinaryTag;
 
-public interface NBTTagContainer<T> extends Iterable<T>
+public interface NBTTagContainer<K> extends Iterable<K>
 {
 	/**
 	 * Adds a new tag to the container.

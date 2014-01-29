@@ -9,7 +9,7 @@ import com.clashsoft.nbt.NamedBinaryTag;
 
 public class NBTTagImage extends NamedBinaryTag
 {
-	public BufferedImage	image;
+	protected BufferedImage	image;
 	
 	public NBTTagImage(String name)
 	{
@@ -23,7 +23,12 @@ public class NBTTagImage extends NamedBinaryTag
 	}
 	
 	@Override
-	public Object getValue()
+	public BufferedImage getValue()
+	{
+		return this.getImage();
+	}
+	
+	public BufferedImage getImage()
 	{
 		return this.image;
 	}

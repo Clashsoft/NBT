@@ -9,7 +9,7 @@ import com.clashsoft.nbt.util.NBTParser;
 
 public class NBTTagString extends NamedBinaryTag
 {
-	public String	value;
+	protected String	value;
 	
 	public NBTTagString(String name)
 	{
@@ -24,6 +24,11 @@ public class NBTTagString extends NamedBinaryTag
 	
 	@Override
 	public String getValue()
+	{
+		return this.getString();
+	}
+	
+	public String getString()
 	{
 		return this.value;
 	}

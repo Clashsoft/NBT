@@ -9,17 +9,20 @@ import java.io.IOException;
 import java.util.Objects;
 
 import com.clashsoft.nbt.tags.NBTTagEnd;
-import com.clashsoft.nbt.tags.collection.NBTTagArray;
-import com.clashsoft.nbt.tags.collection.NBTTagCompound;
-import com.clashsoft.nbt.tags.collection.NBTTagContainer;
-import com.clashsoft.nbt.tags.collection.NBTTagList;
+import com.clashsoft.nbt.tags.collection.*;
 import com.clashsoft.nbt.tags.data.*;
 import com.clashsoft.nbt.tags.primitive.*;
-import com.clashsoft.nbt.tags.string.NBTTagString;
 import com.clashsoft.nbt.tags.string.NBTTagLongString;
+import com.clashsoft.nbt.tags.string.NBTTagString;
 import com.clashsoft.nbt.util.NBTHelper;
 import com.clashsoft.nbt.util.NBTSerializer;
 
+/**
+ * The main superclass for all NBT classes. This class stores the name, the type
+ * and the container that contains this tag.
+ * 
+ * @author Clashsoft
+ */
 public abstract class NamedBinaryTag
 {
 	public static final byte	TYPE_END			= 0;
@@ -74,35 +77,78 @@ public abstract class NamedBinaryTag
 		TYPES[TYPE_FILE] = NBTTagFile.class;
 	}
 	
+	/**
+	 * The name of this tag
+	 */
 	private String				name;
+	
+	/**
+	 * The type of this tag
+	 */
 	private final byte			type;
 	
+	/**
+	 * The container that contains this tag
+	 */
 	private NBTTagContainer		container			= null;
 	
+	/**
+	 * Creates a new abstract NBT without a value.
+	 * 
+	 * @param type
+	 *            the tag type
+	 * @param name
+	 *            the tag name
+	 */
 	public NamedBinaryTag(byte type, String name)
 	{
 		this.type = type;
 		this.name = name;
 	}
 	
+	/**
+	 * Returns the name of this tag
+	 * 
+	 * @return the name
+	 */
 	public String getName()
 	{
 		return this.name;
 	}
 	
+	/**
+	 * Returns the container that contains this tag. Possibly {@code null}.
+	 * 
+	 * @return the container
+	 */
 	public NBTTagContainer getContainer()
 	{
 		return this.container;
 	}
 	
+	/**
+	 * Returns the tag type of this tag
+	 * 
+	 * @return the tag type
+	 */
 	public byte getType()
 	{
 		return this.type;
 	}
 	
+	/**
+	 * Sets the new name of this tag to {@code name}. If a container of type
+	 * {@link NBTTagMap} contains this tag, this tag will be removed from that
+	 * container before renaming and then added to the container. This makes
+	 * sure the container uses the right key to store this tag.
+	 * 
+	 * @param name
+	 *            the new name
+	 * @return this tag
+	 */
 	public NamedBinaryTag setName(String name)
 	{
-		if (this.container != null)
+		if (this.container instanceof NBTTagMap)
 		{
 			this.container.removeTag(this);
 			this.name = name;
@@ -116,6 +162,13 @@ public abstract class NamedBinaryTag
 		return this;
 	}
 	
+	/**
+	 * Sets the new container of this tag to {@code container}.
+	 * 
+	 * @param container
+	 *            the new container
+	 * @return this tag
+	 */
 	public NamedBinaryTag setContainer(NBTTagContainer container)
 	{
 		this.container = container;
@@ -176,26 +229,91 @@ public abstract class NamedBinaryTag
 		return "\"" + this.getName() + "\":" + this.writeString();
 	}
 	
+	/**
+	 * Returns true if and if only the value of the other tag {@code that} is
+	 * the same as this tag's value.
+	 * 
+	 * @param that
+	 *            the other tag
+	 * @return true if the values are equal
+	 */
 	public boolean valueEquals(NamedBinaryTag that)
 	{
 		return Objects.equals(this.getValue(), that.getValue());
 	}
 	
+	/**
+	 * Returns the value of this tag.
+	 * 
+	 * @return this tag's value
+	 */
 	public abstract Object getValue();
 	
+	/**
+	 * Writes this tag's value to an output stream.
+	 * 
+	 * @param output
+	 *            the output stream
+	 * @throws IOException
+	 *             if an exception occurred
+	 */
 	public abstract void writeValue(DataOutput output) throws IOException;
 	
+	/**
+	 * Reads this tag's value from an input stream.
+	 * 
+	 * @param input
+	 *            the input stream
+	 * @throws IOException
+	 *             if an exception occurred
+	 */
 	public abstract void readValue(DataInput input) throws IOException;
 	
+	/**
+	 * Writes this tag's value as a textual representation. If this method is no
+	 * implemented, string parsing does not work with this tag. This means this
+	 * tag type cannot be edited or created with editors.
+	 * 
+	 * @return the textual representation of this tag's value
+	 */
 	public abstract String writeString();
 	
+	/**
+	 * Reads this tag's value from a textual representation. If this method is
+	 * no implemented, string parsing does not work with this tag. This means
+	 * this tag type cannot be edited or created with editors.
+	 * 
+	 * @param the
+	 *            textual representation of this tag's value
+	 */
 	public abstract void readString(String dataString);
 	
+	/**
+	 * Serializes this tag to an output file. If the {@code compressed} flag is
+	 * set, the file will be compressed using GZIP.
+	 * 
+	 * @param out
+	 *            the output file
+	 * @param compressed
+	 *            if the file should be compressed using GZIP
+	 * @return true if successful
+	 */
 	public final boolean serialize(File out, boolean compressed)
 	{
 		return NBTSerializer.serialize(this, out, compressed);
 	}
 	
+	/**
+	 * Writes this tag's data to an output stream. At first, the type is written
+	 * to the output stream as a byte value. If the type is not END, the tag
+	 * name and value are written to the output stream. The value is written by
+	 * the {@link NamedBinaryTag#writeValue(DataOutput)} method.
+	 * 
+	 * @param output
+	 *            the output stream
+	 * @throws IOException
+	 *             if an exception occurred
+	 */
 	public final void write(DataOutput output) throws IOException
 	{
 		output.writeByte(this.type);
@@ -207,6 +325,21 @@ public abstract class NamedBinaryTag
 		}
 	}
 	
+	/**
+	 * Reads a new tag from an input stream. At first, a byte is read from the
+	 * input stream that represents the tag type. If the type is END, the static
+	 * {@link NBTTagEnd} instance {@link NBTHelper#END} is returned. Otherwise,
+	 * a UTF string is read from the input stream and set as the name. Using the
+	 * name and the type, a new tag object is created. Then the object reads
+	 * it's data from the input stream using the
+	 * {@link NBTTagCompound#readValue(DataInput)} method.
+	 * 
+	 * @param input
+	 *            the input stream
+	 * @throws IOException
+	 *             if an exception occurred
+	 * @return the new NBT object
+	 */
 	public static NamedBinaryTag read(DataInput input) throws IOException
 	{
 		byte type = input.readByte();

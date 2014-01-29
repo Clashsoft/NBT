@@ -17,7 +17,7 @@ public class NBTTagCustom extends NBTTagMap
 {
 	private static final String	TAG_CLASS_NAME	= "$class$";
 	
-	private Object				value;
+	protected Object			value;
 	private int					mapDepth		= 0;
 	
 	public NBTTagCustom(String name)

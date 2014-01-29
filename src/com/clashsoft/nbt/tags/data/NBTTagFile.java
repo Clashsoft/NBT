@@ -9,7 +9,7 @@ import com.clashsoft.nbt.NamedBinaryTag;
 
 public class NBTTagFile extends NamedBinaryTag
 {
-	public File	file;
+	protected File	file;
 	
 	public NBTTagFile(String name)
 	{
@@ -24,6 +24,11 @@ public class NBTTagFile extends NamedBinaryTag
 	
 	@Override
 	public File getValue()
+	{
+		return this.getFile();
+	}
+	
+	public File getFile()
 	{
 		return this.file;
 	}

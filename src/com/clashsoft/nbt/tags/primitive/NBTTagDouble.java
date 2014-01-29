@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class NBTTagDouble extends NBTTagNumber
 {
-	public double	value;
+	protected double	value;
 	
 	public NBTTagDouble(String name)
 	{
@@ -15,20 +15,62 @@ public class NBTTagDouble extends NBTTagNumber
 	
 	public NBTTagDouble(String name, double value)
 	{
-		super(TYPE_DOUBLE, name, value);
+		super(TYPE_DOUBLE, name);
 		this.value = value;
 	}
 	
 	@Override
-	public char getPostfixChar()
+	public Double getValue()
 	{
-		return 'D';
+		return Double.valueOf(this.getDouble());
 	}
 	
 	@Override
-	public Number readNumber(String number)
+	public byte getByte()
 	{
-		return this.value = Double.parseDouble(number);
+		return (byte) this.value;
+	}
+	
+	@Override
+	public short getShort()
+	{
+		return (short) this.value;
+	}
+
+	@Override
+	public char getChar()
+	{
+		return (char) this.value;
+	}
+	
+	@Override
+	public int getInt()
+	{
+		return (int) this.value;
+	}
+	
+	@Override
+	public long getLong()
+	{
+		return (long) this.value;
+	}
+	
+	@Override
+	public float getFloat()
+	{
+		return (float) this.value;
+	}
+	
+	@Override
+	public double getDouble()
+	{
+		return this.value;
+	}
+	
+	@Override
+	public char getPostfix()
+	{
+		return 'D';
 	}
 	
 	@Override
@@ -38,8 +80,14 @@ public class NBTTagDouble extends NBTTagNumber
 	}
 	
 	@Override
-	public Number readNumber(DataInput input) throws IOException
+	public void readNumber(String number)
 	{
-		return this.value = input.readDouble();
+		this.value = Double.parseDouble(number);
+	}
+	
+	@Override
+	public void readNumber(DataInput input) throws IOException
+	{
+		this.value = input.readDouble();
 	}
 }

@@ -8,7 +8,7 @@ import com.clashsoft.nbt.NamedBinaryTag;
 
 public class NBTTagClass extends NamedBinaryTag
 {
-	public Class	clazz;
+	protected Class	clazz;
 	
 	public NBTTagClass(String name)
 	{
@@ -23,6 +23,11 @@ public class NBTTagClass extends NamedBinaryTag
 	
 	@Override
 	public Class getValue()
+	{
+		return this.getClazz();
+	}
+	
+	public Class getClazz()
 	{
 		return this.clazz;
 	}

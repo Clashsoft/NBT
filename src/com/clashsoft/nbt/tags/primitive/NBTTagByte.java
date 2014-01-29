@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class NBTTagByte extends NBTTagNumber
 {
-	public byte	value;
+	protected byte	value;
 	
 	public NBTTagByte(String name)
 	{
@@ -15,20 +15,62 @@ public class NBTTagByte extends NBTTagNumber
 	
 	public NBTTagByte(String name, byte value)
 	{
-		super(TYPE_BYTE, name, value);
+		super(TYPE_BYTE, name);
 		this.value = value;
 	}
 	
 	@Override
-	public char getPostfixChar()
+	public Byte getValue()
 	{
-		return 'B';
+		return Byte.valueOf(this.getByte());
 	}
 	
 	@Override
-	public Number readNumber(String number)
+	public byte getByte()
 	{
-		return this.value = Byte.parseByte(number);
+		return this.value;
+	}
+	
+	@Override
+	public short getShort()
+	{
+		return (short) this.value;
+	}
+	
+	@Override
+	public char getChar()
+	{
+		return (char) this.value;
+	}
+	
+	@Override
+	public int getInt()
+	{
+		return (int) this.value;
+	}
+	
+	@Override
+	public long getLong()
+	{
+		return (long) this.value;
+	}
+	
+	@Override
+	public float getFloat()
+	{
+		return (float) this.value;
+	}
+	
+	@Override
+	public double getDouble()
+	{
+		return (double) this.value;
+	}
+	
+	@Override
+	public char getPostfix()
+	{
+		return 'B';
 	}
 	
 	@Override
@@ -38,8 +80,14 @@ public class NBTTagByte extends NBTTagNumber
 	}
 	
 	@Override
-	public Number readNumber(DataInput input) throws IOException
+	public void readNumber(String number)
 	{
-		return this.value = input.readByte();
+		this.value = Byte.parseByte(number);
+	}
+	
+	@Override
+	public void readNumber(DataInput input) throws IOException
+	{
+		this.value = input.readByte();
 	}
 }

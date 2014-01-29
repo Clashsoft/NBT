@@ -102,58 +102,70 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 		this.setTag(array);
 	}
 	
-	public boolean getBoolean(String name)
+	public NBTTagPrimitive getPrimitiveTag(String name)
 	{
-		NBTTagBoolean tag = (NBTTagBoolean) this.getTag(name);
-		return tag != null ? tag.value : false;
+		try
+		{
+			return (NBTTagPrimitive) this.getTag(name);
+		}
+		catch (ClassCastException ex)
+		{
+			return null;
+		}
 	}
 	
-	public Number getNumber(String name)
+	public boolean getBoolean(String name)
 	{
-		NBTTagNumber tag = (NBTTagNumber) this.getTag(name);
-		return tag != null ? tag.getValue() : 0;
+		NBTTagPrimitive tag = this.getPrimitiveTag(name);
+		return tag != null ? tag.getBool() : false;
 	}
 	
 	public byte getByte(String name)
 	{
-		return this.getNumber(name).byteValue();
+		NBTTagPrimitive tag = this.getPrimitiveTag(name);
+		return tag != null ? tag.getByte() : 0;
 	}
 	
 	public short getShort(String name)
 	{
-		return this.getNumber(name).shortValue();
+		NBTTagPrimitive tag = this.getPrimitiveTag(name);
+		return tag != null ? tag.getShort() : 0;
 	}
 	
 	public char getChar(String name)
 	{
-		NBTTagChar tag = (NBTTagChar) this.getTag(name);
-		return tag != null ? tag.value : 0;
+		NBTTagPrimitive tag = this.getPrimitiveTag(name);
+		return tag != null ? tag.getChar() : 0;
 	}
 	
 	public int getInteger(String name)
 	{
-		return this.getNumber(name).intValue();
+		NBTTagPrimitive tag = this.getPrimitiveTag(name);
+		return tag != null ? tag.getInt() : 0;
 	}
 	
 	public long getLong(String name)
 	{
-		return this.getNumber(name).longValue();
+		NBTTagPrimitive tag = this.getPrimitiveTag(name);
+		return tag != null ? tag.getLong() : 0;
 	}
 	
 	public float getFloat(String name)
 	{
-		return this.getNumber(name).floatValue();
+		NBTTagPrimitive tag = this.getPrimitiveTag(name);
+		return tag != null ? tag.getFloat() : 0;
 	}
 	
 	public double getDouble(String name)
 	{
-		return this.getNumber(name).doubleValue();
+		NBTTagPrimitive tag = this.getPrimitiveTag(name);
+		return tag != null ? tag.getDouble() : 0;
 	}
 	
 	public String getString(String name)
 	{
 		NBTTagString tag = (NBTTagString) this.getTag(name);
-		return tag != null ? tag.value : "";
+		return tag != null ? tag.getString() : "";
 	}
 	
 	public NBTTagList getTagList(String name)

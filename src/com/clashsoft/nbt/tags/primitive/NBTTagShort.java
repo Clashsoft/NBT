@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class NBTTagShort extends NBTTagNumber
 {
-	public short	value;
+	protected short	value;
 	
 	public NBTTagShort(String name)
 	{
@@ -15,20 +15,68 @@ public class NBTTagShort extends NBTTagNumber
 	
 	public NBTTagShort(String name, short value)
 	{
-		super(TYPE_SHORT, name, value);
+		super(TYPE_SHORT, name);
 		this.value = value;
 	}
 	
 	@Override
-	public char getPostfixChar()
+	public Short getValue()
+	{
+		return Short.valueOf(this.getShort());
+	}
+	
+	@Override
+	public byte getByte()
+	{
+		return (byte) this.value;
+	}
+	
+	@Override
+	public short getShort()
+	{
+		return this.value;
+	}
+	
+	@Override
+	public char getChar()
+	{
+		return (char) this.value;
+	}
+	
+	@Override
+	public int getInt()
+	{
+		return (int) this.value;
+	}
+	
+	@Override
+	public long getLong()
+	{
+		return (long) this.value;
+	}
+	
+	@Override
+	public float getFloat()
+	{
+		return (float) this.value;
+	}
+	
+	@Override
+	public double getDouble()
+	{
+		return (double) this.value;
+	}
+	
+	@Override
+	public char getPostfix()
 	{
 		return 'S';
 	}
 	
 	@Override
-	public Number readNumber(String number)
+	public void readNumber(String number)
 	{
-		return this.value = Short.parseShort(number);
+		this.value = Short.parseShort(number);
 	}
 	
 	@Override
@@ -38,8 +86,8 @@ public class NBTTagShort extends NBTTagNumber
 	}
 	
 	@Override
-	public Number readNumber(DataInput input) throws IOException
+	public void readNumber(DataInput input) throws IOException
 	{
-		return this.value = input.readShort();
+		this.value = input.readShort();
 	}
 }

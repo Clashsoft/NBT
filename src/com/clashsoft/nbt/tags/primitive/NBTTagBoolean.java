@@ -8,7 +8,7 @@ import com.clashsoft.nbt.NamedBinaryTag;
 
 public class NBTTagBoolean extends NamedBinaryTag
 {
-	public boolean	value;
+	protected boolean	value;
 	
 	public NBTTagBoolean(String name)
 	{
@@ -24,19 +24,12 @@ public class NBTTagBoolean extends NamedBinaryTag
 	@Override
 	public Object getValue()
 	{
+		return Boolean.valueOf(this.getBool());
+	}
+	
+	public boolean getBool()
+	{
 		return this.value;
-	}
-	
-	@Override
-	public String writeString()
-	{
-		return this.value ? "true" : "false";
-	}
-	
-	@Override
-	public void readString(String dataString)
-	{
-		this.value = Boolean.parseBoolean(dataString);
 	}
 	
 	@Override
@@ -52,8 +45,20 @@ public class NBTTagBoolean extends NamedBinaryTag
 	}
 	
 	@Override
+	public String writeString()
+	{
+		return this.value ? "true" : "false";
+	}
+	
+	@Override
 	public void readValue(DataInput input) throws IOException
 	{
 		this.value = input.readBoolean();
+	}
+	
+	@Override
+	public void readString(String dataString)
+	{
+		this.value = Boolean.parseBoolean(dataString);
 	}
 }

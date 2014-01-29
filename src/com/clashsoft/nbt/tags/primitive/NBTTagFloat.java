@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class NBTTagFloat extends NBTTagNumber
 {
-	public float	value;
+	protected float	value;
 	
 	public NBTTagFloat(String name)
 	{
@@ -15,20 +15,62 @@ public class NBTTagFloat extends NBTTagNumber
 	
 	public NBTTagFloat(String name, float value)
 	{
-		super(TYPE_FLOAT, name, value);
+		super(TYPE_FLOAT, name);
 		this.value = value;
 	}
 	
 	@Override
-	public char getPostfixChar()
+	public Float getValue()
 	{
-		return 'F';
+		return Float.valueOf(this.getFloat());
 	}
 	
 	@Override
-	public Number readNumber(String number)
+	public byte getByte()
 	{
-		return Float.parseFloat(number);
+		return (byte) this.value;
+	}
+	
+	@Override
+	public short getShort()
+	{
+		return (short) this.value;
+	}
+
+	@Override
+	public char getChar()
+	{
+		return (char) this.value;
+	}
+	
+	@Override
+	public int getInt()
+	{
+		return (int) this.value;
+	}
+	
+	@Override
+	public long getLong()
+	{
+		return (long) this.value;
+	}
+	
+	@Override
+	public float getFloat()
+	{
+		return this.value;
+	}
+	
+	@Override
+	public double getDouble()
+	{
+		return (double) this.value;
+	}
+	
+	@Override
+	public char getPostfix()
+	{
+		return 'F';
 	}
 	
 	@Override
@@ -38,8 +80,14 @@ public class NBTTagFloat extends NBTTagNumber
 	}
 	
 	@Override
-	public Number readNumber(DataInput input) throws IOException
+	public void readNumber(String number)
 	{
-		return this.value = input.readFloat();
+		this.value = Float.parseFloat(number);
+	}
+	
+	@Override
+	public void readNumber(DataInput input) throws IOException
+	{
+		this.value = input.readFloat();
 	}
 }

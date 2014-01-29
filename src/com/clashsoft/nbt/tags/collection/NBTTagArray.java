@@ -134,66 +134,77 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	public NamedBinaryTag addTag(NamedBinaryTag tag)
 	{
 		byte type = this.subtype;
-		int len = this.length + 1;
+		int oldlen = this.length;
+		int newlen = this.length + 1;
 		if (type == TYPE_NBT)
 		{
 			NamedBinaryTag[] oldArray = this.getNBTArray();
-			NamedBinaryTag[] newArray = new NamedBinaryTag[len];
-			System.arraycopy(oldArray, 0, newArray, 0, len);
+			NamedBinaryTag[] newArray = new NamedBinaryTag[newlen];
+			System.arraycopy(oldArray, 0, newArray, 0, newlen);
+			newArray[oldlen] = tag;
 		}
 		else if (type == TYPE_BOOLEAN)
 		{
 			boolean[] oldArray = this.getBooleanArray();
-			boolean[] newArray = new boolean[len];
-			System.arraycopy(oldArray, 0, newArray, 0, len);
+			boolean[] newArray = new boolean[newlen];
+			System.arraycopy(oldArray, 0, newArray, 0, newlen);
+			newArray[oldlen] = ((NBTTagBoolean)tag).getBool();
 		}
 		else if (type == TYPE_BYTE)
 		{
 			byte[] oldArray = this.getByteArray();
-			byte[] newArray = new byte[len];
-			System.arraycopy(oldArray, 0, newArray, 0, len);
+			byte[] newArray = new byte[newlen];
+			System.arraycopy(oldArray, 0, newArray, 0, newlen);
+			newArray[oldlen] = ((NBTTagNumber)tag).getByte();
 		}
 		else if (type == TYPE_SHORT)
 		{
 			short[] oldArray = this.getShortArray();
-			short[] newArray = new short[len];
-			System.arraycopy(oldArray, 0, newArray, 0, len);
+			short[] newArray = new short[newlen];
+			System.arraycopy(oldArray, 0, newArray, 0, newlen);
+			newArray[oldlen] = ((NBTTagNumber)tag).getShort();
 		}
 		else if (type == TYPE_CHAR)
 		{
 			char[] oldArray = this.getCharArray();
-			char[] newArray = new char[len];
-			System.arraycopy(oldArray, 0, newArray, 0, len);
+			char[] newArray = new char[newlen];
+			System.arraycopy(oldArray, 0, newArray, 0, newlen);
+			newArray[oldlen] = ((NBTTagChar)tag).getChar();
 		}
 		else if (type == TYPE_INT)
 		{
 			int[] oldArray = this.getIntArray();
-			int[] newArray = new int[len];
-			System.arraycopy(oldArray, 0, newArray, 0, len);
+			int[] newArray = new int[newlen];
+			System.arraycopy(oldArray, 0, newArray, 0, newlen);
+			newArray[oldlen] = ((NBTTagNumber)tag).getInt();
 		}
 		else if (type == TYPE_LONG)
 		{
 			long[] oldArray = this.getLongArray();
-			long[] newArray = new long[len];
-			System.arraycopy(oldArray, 0, newArray, 0, len);
+			long[] newArray = new long[newlen];
+			System.arraycopy(oldArray, 0, newArray, 0, newlen);
+			newArray[oldlen] = ((NBTTagNumber)tag).getLong();
 		}
 		else if (type == TYPE_FLOAT)
 		{
 			float[] oldArray = this.getFloatArray();
-			float[] newArray = new float[len];
-			System.arraycopy(oldArray, 0, newArray, 0, len);
+			float[] newArray = new float[newlen];
+			System.arraycopy(oldArray, 0, newArray, 0, newlen);
+			newArray[oldlen] = ((NBTTagNumber)tag).getFloat();
 		}
 		else if (type == TYPE_DOUBLE)
 		{
 			double[] oldArray = this.getDoubleArray();
-			double[] newArray = new double[len];
-			System.arraycopy(oldArray, 0, newArray, 0, len);
+			double[] newArray = new double[newlen];
+			System.arraycopy(oldArray, 0, newArray, 0, newlen);
+			newArray[oldlen] = ((NBTTagNumber)tag).getDouble();
 		}
 		else if (type == TYPE_STRING)
 		{
 			String[] oldArray = this.getStringArray();
-			String[] newArray = new String[len];
-			System.arraycopy(oldArray, 0, newArray, 0, len);
+			String[] newArray = new String[newlen];
+			System.arraycopy(oldArray, 0, newArray, 0, newlen);
+			newArray[oldlen] = ((NBTTagString)tag).getValue();
 		}
 		return null;
 	}
@@ -607,7 +618,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			for (int i = 0; i < len; i++)
 			{
 				NBTTagBoolean tag = (NBTTagBoolean) nbtArray[i];
-				booleanArray[i] = tag.value;
+				booleanArray[i] = tag.getBool();
 			}
 			this.array = booleanArray;
 		}
@@ -616,8 +627,8 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			byte[] byteArray = new byte[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagByte tag = (NBTTagByte) nbtArray[i];
-				byteArray[i] = tag.value;
+				NBTTagNumber tag = (NBTTagNumber) nbtArray[i];
+				byteArray[i] = tag.getByte();
 			}
 			this.array = byteArray;
 		}
@@ -626,8 +637,8 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			short[] shortArray = new short[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagShort tag = (NBTTagShort) nbtArray[i];
-				shortArray[i] = tag.value;
+				NBTTagNumber tag = (NBTTagNumber) nbtArray[i];
+				shortArray[i] = tag.getShort();
 			}
 			this.array = shortArray;
 		}
@@ -637,7 +648,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			for (int i = 0; i < len; i++)
 			{
 				NBTTagChar tag = (NBTTagChar) nbtArray[i];
-				charArray[i] = tag.value;
+				charArray[i] = tag.getChar();
 			}
 			this.array = charArray;
 		}
@@ -646,8 +657,8 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			int[] intArray = new int[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagInteger tag = (NBTTagInteger) nbtArray[i];
-				intArray[i] = tag.value;
+				NBTTagNumber tag = (NBTTagNumber) nbtArray[i];
+				intArray[i] = tag.getInt();
 			}
 			this.array = intArray;
 		}
@@ -656,8 +667,8 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			long[] longArray = new long[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagLong tag = (NBTTagLong) nbtArray[i];
-				longArray[i] = tag.value;
+				NBTTagNumber tag = (NBTTagNumber) nbtArray[i];
+				longArray[i] = tag.getLong();
 			}
 			this.array = longArray;
 		}
@@ -666,8 +677,8 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			float[] floatArray = new float[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagFloat tag = (NBTTagFloat) nbtArray[i];
-				floatArray[i] = tag.value;
+				NBTTagNumber tag = (NBTTagNumber) nbtArray[i];
+				floatArray[i] = tag.getFloat();
 			}
 			this.array = floatArray;
 		}
@@ -676,8 +687,8 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			double[] doubleArray = new double[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagDouble tag = (NBTTagDouble) nbtArray[i];
-				doubleArray[i] = tag.value;
+				NBTTagNumber tag = (NBTTagNumber) nbtArray[i];
+				doubleArray[i] = tag.getDouble();
 			}
 			this.array = doubleArray;
 		}
@@ -687,7 +698,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			for (int i = 0; i < len; i++)
 			{
 				NBTTagString tag = (NBTTagString) nbtArray[i];
-				stringArray[i] = tag.value;
+				stringArray[i] = tag.getString();
 			}
 			this.array = stringArray;
 		}
