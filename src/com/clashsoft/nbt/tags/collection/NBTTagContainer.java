@@ -36,4 +36,8 @@ public interface NBTTagContainer<K> extends Iterable<K>
 	 *         this container
 	 */
 	public boolean canAddTag(String name);
+	
+	public int size();
+	
+	public void clear();
 }

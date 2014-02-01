@@ -131,6 +131,12 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	}
 	
 	@Override
+	public Object getValue()
+	{
+		return this.array;
+	}
+
+	@Override
 	public NamedBinaryTag addTag(NamedBinaryTag tag)
 	{
 		byte type = this.subtype;
@@ -212,6 +218,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	@Override
 	public void removeTag(NamedBinaryTag tag)
 	{
+		// TODO
 	}
 	
 	@Override
@@ -250,15 +257,21 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			@Override
 			public void remove()
 			{
-				throw new UnsupportedOperationException();
+				// TODO
 			}
 		};
 	}
 	
 	@Override
-	public Object getValue()
+	public int size()
 	{
-		return this.array;
+		return this.length;
+	}
+	
+	@Override
+	public void clear()
+	{
+		// TODO
 	}
 	
 	public static byte[] boolToByte(int l, boolean[] booleanArray)
@@ -717,11 +730,6 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		}
 		
 		this.unwrap(nbtArray);
-	}
-	
-	public int getLength()
-	{
-		return this.length;
 	}
 	
 	public NamedBinaryTag getWrapper(int index)

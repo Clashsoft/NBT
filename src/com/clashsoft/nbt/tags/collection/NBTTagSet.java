@@ -3,10 +3,10 @@ package com.clashsoft.nbt.tags.collection;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.clashsoft.nbt.NamedBinaryTag;
 import com.clashsoft.nbt.tags.primitive.*;
@@ -14,38 +14,32 @@ import com.clashsoft.nbt.tags.string.NBTTagString;
 import com.clashsoft.nbt.util.NBTHelper;
 import com.clashsoft.nbt.util.NBTParser;
 
-public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedBinaryTag>
+public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBinaryTag>
 {
-	private List<NamedBinaryTag>	tags;
+	protected Set<NamedBinaryTag> tags;
 	
-	public NBTTagList(String name)
+	public NBTTagSet(String name)
 	{
 		this(name, 10);
 	}
 	
-	public NBTTagList(String name, int capacity)
+	public NBTTagSet(String name, int capacity)
 	{
-		this(name, new ArrayList(capacity));
+		this(name, new HashSet(capacity));
 	}
 	
-	public NBTTagList(String name, List<NamedBinaryTag> tags)
+	public NBTTagSet(String name, Set<NamedBinaryTag> tags)
 	{
 		super(TYPE_LIST, name);
 		this.tags = tags;
 	}
 	
 	@Override
-	public List<NamedBinaryTag> getValue()
+	public Set<NamedBinaryTag> getValue()
 	{
 		return this.tags;
 	}
 	
-	@Override
-	public boolean valueEquals(NamedBinaryTag that)
-	{
-		return this.tags.equals(((NBTTagList) that).tags);
-	}
-
 	@Override
 	public NamedBinaryTag addTag(NamedBinaryTag tag)
 	{
@@ -53,36 +47,31 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		this.tags.add(tag);
 		return null;
 	}
-
-	public void setTag(int index, NamedBinaryTag tag)
+	
+	public void addTag(String name, NamedBinaryTag tag)
 	{
-		this.ensureSize(index + 1);
-		this.tags.set(index, tag);
+		tag.setName(name);
+		this.addTag(tag);
 	}
-
+	
 	@Override
 	public void removeTag(NamedBinaryTag tag)
 	{
 		this.tags.remove(tag);
 	}
-
-	public NamedBinaryTag removeTag(int index)
-	{
-		return this.tags.remove(index);
-	}
-
+	
 	@Override
 	public boolean canAddTag(String name)
 	{
 		return true;
 	}
-
+	
 	@Override
 	public Iterator iterator()
 	{
 		return this.tags.iterator();
 	}
-
+	
 	@Override
 	public int size()
 	{
@@ -93,30 +82,6 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 	public void clear()
 	{
 		this.tags.clear();
-	}
-
-	public NamedBinaryTag tagAt(int index)
-	{
-		return this.tags.get(index);
-	}
-
-	public int indexOf(NamedBinaryTag nbt)
-	{
-		return this.tags.indexOf(nbt);
-	}
-
-	private void ensureSize(int size)
-	{
-		List tags = this.tags;
-		
-		if (tags instanceof ArrayList)
-		{
-			((ArrayList) tags).ensureCapacity(size);
-		}
-		while (tags.size() < size)
-		{
-			tags.add(null);
-		}
 	}
 	
 	public void addBoolean(String name, boolean value)
@@ -184,52 +149,6 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		this.addTag(array);
 	}
 	
-	public static <T> NBTTagList fromArray(String name, T[] args)
-	{
-		NBTTagList list = new NBTTagList(name, args.length);
-		for (int i = 0; i < args.length; i++)
-		{
-			String tagName = name + i;
-			NamedBinaryTag base = NBTParser.wrap(tagName, args[i]);
-			if (base != null)
-			{
-				list.addTag(base);
-			}
-		}
-		return list;
-	}
-	
-	public static NBTTagList fromList(String name, List args)
-	{
-		NBTTagList list = new NBTTagList(name, args.size());
-		for (int i = 0; i < args.size(); i++)
-		{
-			String tagName = name + i;
-			NamedBinaryTag base = NBTParser.wrap(tagName, args.get(i));
-			if (base != null)
-			{
-				list.addTag(base);
-			}
-		}
-		return list;
-	}
-	
-	public <T> T[] toArray(Class<T> arrayType)
-	{
-		int len = this.size();
-		T[] array = (T[]) Array.newInstance(arrayType, len);
-		for (int i = 0; i < len; i++)
-		{
-			array[i] = (T) this.tagAt(i).getValue();
-		}
-		return array;
-	}
-	
-	public <T> T[] toArray()
-	{
-		return (T[]) this.tags.toArray();
-	}
-	
 	@Override
 	public String writeString()
 	{
@@ -237,10 +156,9 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		StringBuilder sb = new StringBuilder(len << 6).append("[");
 		NamedBinaryTag value;
 		
-		for (int i = 0; i < len; i++)
+		for (NamedBinaryTag tag : this.tags)
 		{
-			value = this.tags.get(i);
-			sb.append(i).append(':').append(value.toString()).append(',');
+			sb.append(tag.toString()).append(',');
 		}
 		sb.append("]");
 		
@@ -266,24 +184,21 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		
 		List<String> tags = NBTHelper.split(dataString, ',');
 		int len = tags.size();
-		this.ensureSize(len);
 		
 		for (int i = 0; i < len; i++)
 		{
 			String sub = tags.get(i);
 			NamedBinaryTag tag = NBTParser.createTag(sub);
 			int index = Integer.parseInt(tag.getName());
-			this.setTag(index, tag);
+			this.addTag(tag);
 		}
 	}
 	
 	@Override
 	public void writeValue(DataOutput output) throws IOException
 	{
-		int len = this.size();
-		for (int i = 0; i < len; i++)
+		for (NamedBinaryTag value : this.tags)
 		{
-			NamedBinaryTag value = this.tagAt(i);
 			value.write(output);
 		}
 		NBTHelper.END.write(output);

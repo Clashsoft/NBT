@@ -42,6 +42,13 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 		return !this.hasTag(name);
 	}
 	
+	@Override
+	public int size()
+	{
+		return this.tags.size();
+	}
+	
+	@Override
 	public void clear()
 	{
 		this.tags.clear();
@@ -95,6 +102,11 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 	public void setTagList(NBTTagList list)
 	{
 		this.setTag(list);
+	}
+	
+	public void setTagSet(NBTTagSet set)
+	{
+		this.setTag(set);
 	}
 	
 	public void setTagCompound(NBTTagCompound compound)

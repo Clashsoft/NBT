@@ -29,6 +29,7 @@ public abstract class NamedBinaryTag
 	public static final byte	TYPE_COMPOUND		= 1;
 	public static final byte	TYPE_LIST			= 2;
 	public static final byte	TYPE_ARRAY			= 3;
+	public static final byte	TYPE_SET			= 4;
 	
 	public static final byte	TYPE_CUSTOM			= 9;
 	
@@ -57,6 +58,7 @@ public abstract class NamedBinaryTag
 		TYPES[TYPE_COMPOUND] = NBTTagCompound.class;
 		TYPES[TYPE_LIST] = NBTTagList.class;
 		TYPES[TYPE_ARRAY] = NBTTagArray.class;
+		TYPES[TYPE_SET] = NBTTagSet.class;
 		
 		TYPES[TYPE_CUSTOM] = NBTTagCustom.class;
 		
