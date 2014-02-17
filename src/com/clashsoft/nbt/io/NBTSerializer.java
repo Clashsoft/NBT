@@ -1,10 +1,8 @@
-package com.clashsoft.nbt.util;
+package com.clashsoft.nbt.io;
 
 import java.io.*;
 
 import com.clashsoft.nbt.NamedBinaryTag;
-import com.clashsoft.nbt.io.NBTInputStream;
-import com.clashsoft.nbt.io.NBTOutputStream;
 
 public class NBTSerializer
 {

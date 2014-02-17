@@ -10,13 +10,13 @@ import java.util.Objects;
 
 import com.clashsoft.nbt.io.NBTInputStream;
 import com.clashsoft.nbt.io.NBTOutputStream;
+import com.clashsoft.nbt.io.NBTSerializer;
 import com.clashsoft.nbt.tags.NBTTagEnd;
 import com.clashsoft.nbt.tags.collection.*;
 import com.clashsoft.nbt.tags.data.*;
 import com.clashsoft.nbt.tags.primitive.*;
 import com.clashsoft.nbt.tags.string.NBTTagString;
 import com.clashsoft.nbt.util.NBTHelper;
-import com.clashsoft.nbt.util.NBTSerializer;
 
 /**
  * The main superclass for all NBT classes. This class stores the name, the type

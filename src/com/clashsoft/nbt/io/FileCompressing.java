@@ -1,4 +1,4 @@
-package com.clashsoft.nbt.util;
+package com.clashsoft.nbt.io;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,9 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-
-import com.clashsoft.nbt.io.NBTInputStream;
-import com.clashsoft.nbt.io.NBTOutputStream;
 
 public class FileCompressing
 {
