@@ -1,10 +1,10 @@
 package com.clashsoft.nbt.tags.string;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
 import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
 import com.clashsoft.nbt.util.NBTParser;
 
 public class NBTTagLongString extends NamedBinaryTag
@@ -35,6 +35,28 @@ public class NBTTagLongString extends NamedBinaryTag
 	}
 	
 	@Override
+	public void writeValue(NBTOutputStream output) throws IOException
+	{
+		int len = this.value.length();
+		for (int i = 0; i < len; i++)
+		{
+			output.writeChar(this.value.charAt(i));
+		}
+	}
+
+	@Override
+	public void readValue(NBTInputStream input) throws IOException
+	{
+		int len = input.readInt();
+		char[] chars = new char[len];
+		for (int i = 0; i < len; i++)
+		{
+			chars[i] = input.readChar();
+		}
+		this.value = new String(chars);
+	}
+
+	@Override
 	public String writeString()
 	{
 		return "\"" + this.value.toString() + "\"";
@@ -44,27 +66,5 @@ public class NBTTagLongString extends NamedBinaryTag
 	public void readString(String dataString)
 	{
 		this.value = NBTParser.parseString(dataString);
-	}
-	
-	@Override
-	public void writeValue(DataOutput output) throws IOException
-	{
-		int len = this.value.length();
-		for (int i = 0; i < len; i++)
-		{
-			output.writeChar(this.value.charAt(i));
-		}
-	}
-	
-	@Override
-	public void readValue(DataInput input) throws IOException
-	{
-		int len = input.readInt();
-		char[] chars = new char[len];
-		for (int i = 0; i < len; i++)
-		{
-			chars[i] = input.readChar();
-		}
-		this.value = new String(chars);
 	}
 }

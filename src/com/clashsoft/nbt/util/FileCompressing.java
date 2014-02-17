@@ -1,39 +1,25 @@
 package com.clashsoft.nbt.util;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
+
 public class FileCompressing
 {
-	public static DataOutputStream outputStream(File file, boolean compressed) throws IOException
+	public static NBTOutputStream outputStream(File file, boolean compressed) throws IOException
 	{
-		return compressed ? compressedOutputStream(file) : outputStream(file);
+		return new NBTOutputStream(file, compressed);
 	}
 	
-	public static DataOutputStream outputStream(File file) throws IOException
+	public static NBTInputStream inputStream(File file, boolean compressed) throws IOException
 	{
-		return new DataOutputStream(new FileOutputStream(file));
-	}
-	
-	public static DataOutputStream compressedOutputStream(File file) throws IOException
-	{
-		return new DataOutputStream(new GZIPOutputStream(new FileOutputStream(file)));
-	}
-	
-	public static DataInputStream inputStream(File file, boolean compressed) throws IOException
-	{
-		return compressed ? compressedInputStream(file) : inputStream(file);
-	}
-	
-	public static DataInputStream inputStream(File file) throws IOException
-	{
-		return new DataInputStream(new FileInputStream(file));
-	}
-	
-	public static DataInputStream compressedInputStream(File file) throws IOException
-	{
-		return new DataInputStream(new GZIPInputStream(new FileInputStream(file)));
+		return new NBTInputStream(file, compressed);
 	}
 	
 	public static File compressFile(File source, File dest)

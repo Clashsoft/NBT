@@ -1,7 +1,5 @@
 package com.clashsoft.nbt.tags.collection;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -9,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
 import com.clashsoft.nbt.tags.primitive.*;
 import com.clashsoft.nbt.tags.string.NBTTagString;
 import com.clashsoft.nbt.util.NBTHelper;
@@ -236,6 +236,34 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 	}
 	
 	@Override
+	public void writeValue(NBTOutputStream output) throws IOException
+	{
+		int len = this.size();
+		for (int i = 0; i < len; i++)
+		{
+			NamedBinaryTag value = this.tagAt(i);
+			value.write(output);
+		}
+		NBTHelper.END.write(output);
+	}
+
+	@Override
+	public void readValue(NBTInputStream input) throws IOException
+	{
+		while (true)
+		{
+			NamedBinaryTag nbt = NamedBinaryTag.read(input);
+			
+			if (nbt == NBTHelper.END)
+			{
+				break;
+			}
+			
+			this.addTag(nbt);
+		}
+	}
+
+	@Override
 	public String writeString()
 	{
 		int len = this.tags.size();
@@ -279,34 +307,6 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 			NamedBinaryTag tag = NBTParser.createTag(sub);
 			int index = Integer.parseInt(tag.getName());
 			this.setTag(index, tag);
-		}
-	}
-	
-	@Override
-	public void writeValue(DataOutput output) throws IOException
-	{
-		int len = this.size();
-		for (int i = 0; i < len; i++)
-		{
-			NamedBinaryTag value = this.tagAt(i);
-			value.write(output);
-		}
-		NBTHelper.END.write(output);
-	}
-	
-	@Override
-	public void readValue(DataInput input) throws IOException
-	{
-		while (true)
-		{
-			NamedBinaryTag nbt = NamedBinaryTag.read(input);
-			
-			if (nbt == NBTHelper.END)
-			{
-				break;
-			}
-			
-			this.addTag(nbt);
 		}
 	}
 }

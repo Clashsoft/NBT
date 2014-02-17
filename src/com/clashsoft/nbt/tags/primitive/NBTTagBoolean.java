@@ -1,10 +1,10 @@
 package com.clashsoft.nbt.tags.primitive;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
 import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
 
 public class NBTTagBoolean extends NamedBinaryTag implements NBTTagPrimitive
 {
@@ -82,21 +82,21 @@ public class NBTTagBoolean extends NamedBinaryTag implements NBTTagPrimitive
 	}
 	
 	@Override
-	public void writeValue(DataOutput output) throws IOException
+	public void writeValue(NBTOutputStream output) throws IOException
 	{
 		output.writeBoolean(this.value);
 	}
 	
 	@Override
+	public void readValue(NBTInputStream input) throws IOException
+	{
+		this.value = input.readBoolean();
+	}
+
+	@Override
 	public String writeString()
 	{
 		return this.value ? "true" : "false";
-	}
-	
-	@Override
-	public void readValue(DataInput input) throws IOException
-	{
-		this.value = input.readBoolean();
 	}
 	
 	@Override

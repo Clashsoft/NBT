@@ -1,7 +1,5 @@
 package com.clashsoft.nbt.tags.collection;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -9,7 +7,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.clashsoft.nbt.NamedBinaryTag;
-import com.clashsoft.nbt.tags.primitive.*;
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
+import com.clashsoft.nbt.tags.primitive.NBTTagBoolean;
+import com.clashsoft.nbt.tags.primitive.NBTTagChar;
+import com.clashsoft.nbt.tags.primitive.NBTTagNumber;
 import com.clashsoft.nbt.tags.string.NBTTagString;
 import com.clashsoft.nbt.util.NBTHelper;
 import com.clashsoft.nbt.util.NBTParser;
@@ -304,7 +306,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	}
 	
 	@Override
-	public void writeValue(DataOutput output) throws IOException
+	public void writeValue(NBTOutputStream output) throws IOException
 	{
 		byte type = this.subtype;
 		int len = this.length;
@@ -407,7 +409,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	}
 	
 	@Override
-	public void readValue(DataInput input) throws IOException
+	public void readValue(NBTInputStream input) throws IOException
 	{
 		byte type = input.readByte();
 		int len = input.readInt();

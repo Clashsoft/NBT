@@ -1,6 +1,5 @@
 package com.clashsoft.nbt.tags.data;
 
-import java.io.DataInput;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -9,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.io.NBTInputStream;
 import com.clashsoft.nbt.tags.collection.NBTTagCompound;
 import com.clashsoft.nbt.tags.collection.NBTTagMap;
 import com.clashsoft.nbt.util.NBTParser;
@@ -45,7 +45,7 @@ public class NBTTagCustom extends NBTTagMap
 	}
 	
 	@Override
-	public void readValue(DataInput input) throws IOException
+	public void readValue(NBTInputStream input) throws IOException
 	{
 		super.readValue(input);
 		this.object();

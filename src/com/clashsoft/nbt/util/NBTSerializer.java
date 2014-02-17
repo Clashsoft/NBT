@@ -3,6 +3,8 @@ package com.clashsoft.nbt.util;
 import java.io.*;
 
 import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
 
 public class NBTSerializer
 {
@@ -19,7 +21,7 @@ public class NBTSerializer
 		
 		try
 		{
-			DataInputStream input = FileCompressing.inputStream(in, compressed);
+			NBTInputStream input = FileCompressing.inputStream(in, compressed);
 			readHeader(input);
 			NamedBinaryTag nbt = NamedBinaryTag.read(input);
 			input.close();
@@ -46,7 +48,7 @@ public class NBTSerializer
 				out.createNewFile();
 			}
 			
-			DataOutputStream output = FileCompressing.outputStream(out, compressed);
+			NBTOutputStream output = FileCompressing.outputStream(out, compressed);
 			writeHeader(output);
 			nbt.write(output);
 			output.close();

@@ -1,8 +1,9 @@
 package com.clashsoft.nbt.tags.primitive;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
+
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
 
 public class NBTTagShort extends NBTTagNumber
 {
@@ -74,20 +75,20 @@ public class NBTTagShort extends NBTTagNumber
 	}
 	
 	@Override
-	public void readNumber(String number)
-	{
-		this.value = Short.parseShort(number);
-	}
-	
-	@Override
-	public void writeNumber(DataOutput output) throws IOException
+	public void writeNumber(NBTOutputStream output) throws IOException
 	{
 		output.writeShort(this.value);
 	}
 	
 	@Override
-	public void readNumber(DataInput input) throws IOException
+	public void readNumber(NBTInputStream input) throws IOException
 	{
 		this.value = input.readShort();
+	}
+
+	@Override
+	public void readNumber(String number)
+	{
+		this.value = Short.parseShort(number);
 	}
 }

@@ -1,11 +1,11 @@
 package com.clashsoft.nbt.tags.data;
 
 import java.awt.image.BufferedImage;
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
 import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
 
 public class NBTTagImage extends NamedBinaryTag
 {
@@ -34,7 +34,7 @@ public class NBTTagImage extends NamedBinaryTag
 	}
 	
 	@Override
-	public void writeValue(DataOutput output) throws IOException
+	public void writeValue(NBTOutputStream output) throws IOException
 	{
 		BufferedImage img = this.image;
 		
@@ -62,7 +62,7 @@ public class NBTTagImage extends NamedBinaryTag
 	}
 	
 	@Override
-	public void readValue(DataInput input) throws IOException
+	public void readValue(NBTInputStream input) throws IOException
 	{
 		int t = input.readInt();
 		

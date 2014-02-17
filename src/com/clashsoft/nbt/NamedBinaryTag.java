@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
 import com.clashsoft.nbt.tags.NBTTagEnd;
 import com.clashsoft.nbt.tags.collection.*;
 import com.clashsoft.nbt.tags.data.*;
@@ -261,7 +263,7 @@ public abstract class NamedBinaryTag
 	 * @throws IOException
 	 *             if an exception occurred
 	 */
-	public abstract void writeValue(DataOutput output) throws IOException;
+	public abstract void writeValue(NBTOutputStream output) throws IOException;
 	
 	/**
 	 * Reads this tag's value from an input stream.
@@ -271,7 +273,7 @@ public abstract class NamedBinaryTag
 	 * @throws IOException
 	 *             if an exception occurred
 	 */
-	public abstract void readValue(DataInput input) throws IOException;
+	public abstract void readValue(NBTInputStream input) throws IOException;
 	
 	/**
 	 * Writes this tag's value as a textual representation. If this method is no
@@ -318,7 +320,7 @@ public abstract class NamedBinaryTag
 	 * @throws IOException
 	 *             if an exception occurred
 	 */
-	public final void write(DataOutput output) throws IOException
+	public final void write(NBTOutputStream output) throws IOException
 	{
 		output.writeByte(this.type);
 		
@@ -344,7 +346,7 @@ public abstract class NamedBinaryTag
 	 *             if an exception occurred
 	 * @return the new NBT object
 	 */
-	public static NamedBinaryTag read(DataInput input) throws IOException
+	public static NamedBinaryTag read(NBTInputStream input) throws IOException
 	{
 		byte type = input.readByte();
 		

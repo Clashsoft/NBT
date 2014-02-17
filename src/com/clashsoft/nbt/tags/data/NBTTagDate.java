@@ -1,7 +1,5 @@
 package com.clashsoft.nbt.tags.data;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -9,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
 
 public class NBTTagDate extends NamedBinaryTag
 {
@@ -39,14 +39,14 @@ public class NBTTagDate extends NamedBinaryTag
 	}
 	
 	@Override
-	public void writeValue(DataOutput output) throws IOException
+	public void writeValue(NBTOutputStream output) throws IOException
 	{
 		long date = this.date == null ? -1 : this.date.getTime();
 		output.writeLong(date);
 	}
 	
 	@Override
-	public void readValue(DataInput input) throws IOException
+	public void readValue(NBTInputStream input) throws IOException
 	{
 		long date = input.readLong();
 		this.date = date == -1 ? null : new Date(date);

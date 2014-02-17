@@ -1,10 +1,10 @@
 package com.clashsoft.nbt.tags.primitive;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
 import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
 
 public abstract class NBTTagNumber extends NamedBinaryTag implements NBTTagPrimitive
 {
@@ -22,13 +22,19 @@ public abstract class NBTTagNumber extends NamedBinaryTag implements NBTTagPrimi
 		return false;
 	}
 
+	protected abstract char getPostfix();
+
 	@Override
-	public void writeValue(DataOutput output) throws IOException
+	public void writeValue(NBTOutputStream output) throws IOException
 	{
 		this.writeNumber(output);
 	}
 	
-	protected abstract char getPostfix();
+	@Override
+	public void readValue(NBTInputStream input) throws IOException
+	{
+		this.readNumber(input);
+	}
 
 	@Override
 	public String writeString()
@@ -36,14 +42,6 @@ public abstract class NBTTagNumber extends NamedBinaryTag implements NBTTagPrimi
 		return this.getValue().toString() + this.getPostfix();
 	}
 	
-	public abstract void writeNumber(DataOutput output) throws IOException;
-
-	@Override
-	public void readValue(DataInput input) throws IOException
-	{
-		this.readNumber(input);
-	}
-
 	@Override
 	public void readString(String dataString)
 	{
@@ -51,7 +49,9 @@ public abstract class NBTTagNumber extends NamedBinaryTag implements NBTTagPrimi
 		this.readNumber(pos == -1 ? dataString : dataString.substring(0, pos));
 	}
 	
-	public abstract void readNumber(DataInput input) throws IOException;
+	public abstract void writeNumber(NBTOutputStream output) throws IOException;
+
+	public abstract void readNumber(NBTInputStream input) throws IOException;
 
 	public abstract void readNumber(String number);
 }

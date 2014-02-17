@@ -1,8 +1,9 @@
 package com.clashsoft.nbt.tags.primitive;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
+
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
 
 public class NBTTagInteger extends NBTTagNumber
 {
@@ -80,20 +81,20 @@ public class NBTTagInteger extends NBTTagNumber
 	}
 	
 	@Override
-	public void writeNumber(DataOutput output) throws IOException
+	public void writeNumber(NBTOutputStream output) throws IOException
 	{
 		output.writeInt(this.value);
 	}
 	
 	@Override
+	public void readNumber(NBTInputStream input) throws IOException
+	{
+		this.value = input.readInt();
+	}
+
+	@Override
 	public void readNumber(String number)
 	{
 		this.value = Integer.parseInt(number);
-	}
-	
-	@Override
-	public void readNumber(DataInput input) throws IOException
-	{
-		this.value = input.readInt();
 	}
 }

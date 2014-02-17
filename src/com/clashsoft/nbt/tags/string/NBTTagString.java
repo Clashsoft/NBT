@@ -1,10 +1,10 @@
 package com.clashsoft.nbt.tags.string;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
 import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
 import com.clashsoft.nbt.util.NBTParser;
 
 public class NBTTagString extends NamedBinaryTag
@@ -40,6 +40,18 @@ public class NBTTagString extends NamedBinaryTag
 	}
 	
 	@Override
+	public void writeValue(NBTOutputStream output) throws IOException
+	{
+		output.writeUTF(this.value);
+	}
+
+	@Override
+	public void readValue(NBTInputStream input) throws IOException
+	{
+		this.value = input.readUTF();
+	}
+
+	@Override
 	public String writeString()
 	{
 		return "\"" + this.value + "\"";
@@ -49,17 +61,5 @@ public class NBTTagString extends NamedBinaryTag
 	public void readString(String dataString)
 	{
 		this.value = NBTParser.parseString(dataString);
-	}
-	
-	@Override
-	public void writeValue(DataOutput output) throws IOException
-	{
-		output.writeUTF(this.value);
-	}
-	
-	@Override
-	public void readValue(DataInput input) throws IOException
-	{
-		this.value = input.readUTF();
 	}
 }

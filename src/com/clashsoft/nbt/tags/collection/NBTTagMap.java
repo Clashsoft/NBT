@@ -1,13 +1,13 @@
 package com.clashsoft.nbt.tags.collection;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
 import com.clashsoft.nbt.util.NBTHelper;
 import com.clashsoft.nbt.util.NBTParser;
 
@@ -75,6 +75,33 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 	}
 	
 	@Override
+	public void writeValue(NBTOutputStream output) throws IOException
+	{
+		for (String key : this.tags.keySet())
+		{
+			NamedBinaryTag value = this.tags.get(key);
+			value.write(output);
+		}
+		NBTHelper.END.write(output);
+	}
+
+	@Override
+	public void readValue(NBTInputStream input) throws IOException
+	{
+		while (true)
+		{
+			NamedBinaryTag nbt = NamedBinaryTag.read(input);
+			
+			if (nbt == NBTHelper.END)
+			{
+				break;
+			}
+			
+			this.setTag(nbt);
+		}
+	}
+
+	@Override
 	public String writeString()
 	{
 		int len = this.tags.size();
@@ -112,33 +139,6 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 		{
 			NamedBinaryTag tag = NBTParser.createTag(sub);
 			this.setTag(tag);
-		}
-	}
-	
-	@Override
-	public void writeValue(DataOutput output) throws IOException
-	{
-		for (String key : this.tags.keySet())
-		{
-			NamedBinaryTag value = this.tags.get(key);
-			value.write(output);
-		}
-		NBTHelper.END.write(output);
-	}
-	
-	@Override
-	public void readValue(DataInput input) throws IOException
-	{
-		while (true)
-		{
-			NamedBinaryTag nbt = NamedBinaryTag.read(input);
-			
-			if (nbt == NBTHelper.END)
-			{
-				break;
-			}
-			
-			this.setTag(nbt);
 		}
 	}
 }
