@@ -104,6 +104,11 @@ public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBi
 		this.addTag(new NBTTagChar(name, value));
 	}
 	
+	public void addMedium(String name, int value)
+	{
+		this.addTag(new NBTTagMedium(name, value));
+	}
+	
 	public void addInteger(String name, int value)
 	{
 		this.addTag(new NBTTagInteger(name, value));

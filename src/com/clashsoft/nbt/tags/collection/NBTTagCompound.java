@@ -74,6 +74,11 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 		this.setTag(new NBTTagInteger(name, value));
 	}
 	
+	public void setMedium(String name, int value)
+	{
+		this.setTag(new NBTTagMedium(name, value));
+	}
+	
 	public void setInteger(String name, int value)
 	{
 		this.setTag(new NBTTagInteger(name, value));

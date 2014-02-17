@@ -50,6 +50,10 @@ public class NBTHelper
 		{
 			return TYPE_CHAR;
 		}
+		else if (value.endsWith("M"))
+		{
+			return TYPE_MEDIUM;
+		}
 		else if (value.endsWith("I"))
 		{
 			return TYPE_INT;
