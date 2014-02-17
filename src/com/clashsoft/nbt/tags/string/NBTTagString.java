@@ -42,13 +42,13 @@ public class NBTTagString extends NamedBinaryTag
 	@Override
 	public void writeValue(NBTOutputStream output) throws IOException
 	{
-		output.writeUTF(this.value);
+		output.writeString(this.value);
 	}
 
 	@Override
 	public void readValue(NBTInputStream input) throws IOException
 	{
-		this.value = input.readUTF();
+		this.value = input.readString();
 	}
 
 	@Override

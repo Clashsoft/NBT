@@ -14,7 +14,6 @@ import com.clashsoft.nbt.tags.NBTTagEnd;
 import com.clashsoft.nbt.tags.collection.*;
 import com.clashsoft.nbt.tags.data.*;
 import com.clashsoft.nbt.tags.primitive.*;
-import com.clashsoft.nbt.tags.string.NBTTagLongString;
 import com.clashsoft.nbt.tags.string.NBTTagString;
 import com.clashsoft.nbt.util.NBTHelper;
 import com.clashsoft.nbt.util.NBTSerializer;
@@ -46,7 +45,6 @@ public abstract class NamedBinaryTag
 	public static final byte	TYPE_DOUBLE			= 18;
 	
 	public static final byte	TYPE_STRING			= 20;
-	public static final byte	TYPE_STRING_LONG	= 21;
 	
 	public static final byte	TYPE_DATE			= 30;
 	public static final byte	TYPE_IMAGE			= 31;
@@ -75,7 +73,6 @@ public abstract class NamedBinaryTag
 		TYPES[TYPE_FLOAT] = NBTTagFloat.class;
 		TYPES[TYPE_DOUBLE] = NBTTagDouble.class;
 		TYPES[TYPE_STRING] = NBTTagString.class;
-		TYPES[TYPE_STRING_LONG] = NBTTagLongString.class;
 		
 		TYPES[TYPE_DATE] = NBTTagDate.class;
 		TYPES[TYPE_IMAGE] = NBTTagImage.class;

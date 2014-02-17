@@ -32,4 +32,25 @@ public class NBTInputStream extends DataInputStream
 			throw new EOFException();
 		return (ch1 << 16) + (ch2 << 8) + (ch3 << 0);
 	}
+	
+	public String readString() throws IOException
+	{
+		boolean b = this.readBoolean();
+		if (b)
+		{
+			return this.readUTF();
+		}
+		else
+		{
+			int len = this.readInt();
+			char[] chars = new char[len];
+			
+			for (int i = 0; i < len; i++)
+			{
+				chars[i] = this.readChar();
+			}
+			
+			return String.valueOf(chars);
+		}
+	}
 }

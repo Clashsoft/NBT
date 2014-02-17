@@ -72,14 +72,7 @@ public class NBTHelper
 		}
 		else if (value.startsWith("\"") && value.endsWith("\""))
 		{
-			if (value.length() < 32770)
-			{
-				return TYPE_STRING;
-			}
-			else
-			{
-				return TYPE_STRING_LONG;
-			}
+			return TYPE_STRING;
 		}
 		else if (value.startsWith("class"))
 		{
@@ -115,14 +108,7 @@ public class NBTHelper
 		{
 		}
 		
-		if (value.length() < 32768)
-		{
-			return TYPE_STRING;
-		}
-		else
-		{
-			return TYPE_STRING_LONG;
-		}
+		return TYPE_STRING;
 	}
 	
 	public static String[] listToArray(List<String> list)

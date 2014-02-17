@@ -20,7 +20,6 @@ import com.clashsoft.nbt.tags.data.NBTTagFile;
 import com.clashsoft.nbt.tags.data.NBTTagImage;
 import com.clashsoft.nbt.tags.primitive.*;
 import com.clashsoft.nbt.tags.string.NBTTagString;
-import com.clashsoft.nbt.tags.string.NBTTagLongString;
 
 public class NBTParser
 {
@@ -149,15 +148,7 @@ public class NBTParser
 		}
 		else if (value instanceof String)
 		{
-			String val = (String) value;
-			if (val.length() < 32768)
-			{
-				return new NBTTagString(tagName, val);
-			}
-			else
-			{
-				return new NBTTagLongString(tagName, val);
-			}
+			return new NBTTagString(tagName, (String) value);
 		}
 		else if (value instanceof Date)
 		{
@@ -231,10 +222,6 @@ public class NBTParser
 		else if (type == TYPE_STRING)
 		{
 			return new NBTTagString(tagName);
-		}
-		else if (type == TYPE_STRING_LONG)
-		{
-			return new NBTTagLongString(tagName);
 		}
 		else if (type == TYPE_DATE)
 		{
