@@ -100,6 +100,11 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		this.setCharArray(charArray);
 	}
 	
+	public static NBTTagArray mediumArray(String name, int[] mediumArray)
+	{
+		return new NBTTagArray(name).setMediumArray(mediumArray);
+	}
+	
 	public NBTTagArray(String name, int[] intArray)
 	{
 		this(name);
@@ -177,7 +182,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
 			newArray[oldlen] = ((NBTTagChar)tag).getChar();
 		}
-		else if (type == TYPE_INT)
+		else if (type == TYPE_INT || type == TYPE_MEDIUM)
 		{
 			int[] oldArray = this.getIntArray();
 			int[] newArray = new int[newlen];
@@ -341,6 +346,11 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			char[] charArray = (char[]) this.array;
 			output.writeCharArray(charArray);
 		}
+		else if (type == TYPE_MEDIUM)
+		{
+			int[] mediumArray = (int[]) this.array;
+			output.writeMediumArray(mediumArray);
+		}
 		else if (type == TYPE_INT)
 		{
 			int[] intArray = (int[]) this.array;
@@ -407,6 +417,12 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			this.length = a.length;
 			this.array = a;
 		}
+		else if (type == TYPE_MEDIUM)
+		{
+			int[] a = input.readMediumArray();
+			this.length = a.length;
+			this.array = a;
+		}
 		else if (type == TYPE_INT)
 		{
 			int[] a = input.readIntArray();
@@ -465,7 +481,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		{
 			return Arrays.toString(this.getCharArray());
 		}
-		else if (type == TYPE_INT)
+		else if (type == TYPE_INT || type == TYPE_MEDIUM)
 		{
 			return Arrays.toString(this.getIntArray());
 		}
@@ -585,7 +601,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			}
 			this.array = charArray;
 		}
-		else if (type == TYPE_INT)
+		else if (type == TYPE_INT || type == TYPE_MEDIUM)
 		{
 			int[] intArray = new int[len];
 			for (int i = 0; i < len; i++)
@@ -687,6 +703,11 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		return (char[]) this.array;
 	}
 	
+	public int[] getMediumArray()
+	{
+		return (int[]) this.array;
+	}
+	
 	public int[] getIntArray()
 	{
 		return (int[]) this.array;
@@ -749,6 +770,14 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		this.array = charArray;
 		this.subtype = TYPE_CHAR;
 		this.length = charArray.length;
+		return this;
+	}
+	
+	protected NBTTagArray setMediumArray(int[] mediumArray)
+	{
+		this.array = mediumArray;
+		this.subtype = TYPE_MEDIUM;
+		this.length = mediumArray.length;
 		return this;
 	}
 	
