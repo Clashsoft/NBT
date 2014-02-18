@@ -28,11 +28,9 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 {
 	public static final byte	TYPE_NBT			= 0;
 	
-	public static final boolean	CONVERT_BOOLEANS	= false;
-	
 	private Object				array;
 	private byte				subtype;
-	private int					length;
+	private int length;
 	
 	/**
 	 * Constructor used for deserialization
@@ -309,14 +307,15 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	public void writeValue(NBTOutputStream output) throws IOException
 	{
 		byte type = this.subtype;
-		int len = this.length;
 		
 		output.writeByte(type);
-		output.writeInt(len);
 		
 		if (type == TYPE_NBT)
 		{
 			NamedBinaryTag[] nbtArray = (NamedBinaryTag[]) this.array;
+			int len = nbtArray.length;
+			
+			output.writeInt(len);
 			for (int i = 0; i < len; i++)
 			{
 				nbtArray[i].write(output);
@@ -325,86 +324,47 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		else if (type == TYPE_BOOLEAN)
 		{
 			boolean[] booleanArray = (boolean[]) this.array;
-			if (CONVERT_BOOLEANS)
-			{
-				int l = (len >> 3) + 1;
-				byte[] bytes = boolToByte(l, booleanArray);
-				for (int i = 0; i < l; i++)
-				{
-					output.writeByte(bytes[i]);
-				}
-			}
-			else
-			{
-				for (int i = 0; i < len; i++)
-				{
-					output.writeBoolean(booleanArray[i]);
-				}
-			}
+			output.writeBooleanArray(booleanArray);
 		}
 		else if (type == TYPE_BYTE)
 		{
 			byte[] byteArray = (byte[]) this.array;
-			for (int i = 0; i < len; i++)
-			{
-				output.writeByte(byteArray[i]);
-			}
+			output.writeByteArray(byteArray);
 		}
 		else if (type == TYPE_SHORT)
 		{
 			short[] shortArray = (short[]) this.array;
-			for (int i = 0; i < len; i++)
-			{
-				output.writeShort(shortArray[i]);
-			}
+			output.writeShortArray(shortArray);
 		}
 		else if (type == TYPE_CHAR)
 		{
 			char[] charArray = (char[]) this.array;
-			for (int i = 0; i < len; i++)
-			{
-				output.writeChar(charArray[i]);
-			}
+			output.writeCharArray(charArray);
 		}
 		else if (type == TYPE_INT)
 		{
 			int[] intArray = (int[]) this.array;
-			for (int i = 0; i < len; i++)
-			{
-				output.writeInt(intArray[i]);
-			}
+			output.writeIntArray(intArray);
 		}
 		else if (type == TYPE_LONG)
 		{
 			long[] longArray = (long[]) this.array;
-			for (int i = 0; i < len; i++)
-			{
-				output.writeLong(longArray[i]);
-			}
+			output.writeLongArray(longArray);
 		}
 		else if (type == TYPE_FLOAT)
 		{
 			float[] floatArray = (float[]) this.array;
-			for (int i = 0; i < len; i++)
-			{
-				output.writeFloat(floatArray[i]);
-			}
+			output.writeFloatArray(floatArray);
 		}
 		else if (type == TYPE_DOUBLE)
 		{
 			double[] doubleArray = (double[]) this.array;
-			for (int i = 0; i < len; i++)
-			{
-				output.writeDouble(doubleArray[i]);
-			}
+			output.writeDoubleArray(doubleArray);
 		}
 		else if (type == TYPE_STRING)
 		{
 			String[] stringArray = (String[]) this.array;
-			for (int i = 0; i < len; i++)
-			{
-				output.writeUTF(stringArray[i]);
-			}
+			output.writeStringArray(stringArray);
 		}
 	}
 	
@@ -412,10 +372,10 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	public void readValue(NBTInputStream input) throws IOException
 	{
 		byte type = input.readByte();
-		int len = input.readInt();
 		
 		if (type == TYPE_NBT)
 		{
+			int len = input.readInt();
 			NamedBinaryTag[] nbtArray = new NamedBinaryTag[len];
 			for (int i = 0; i < len; i++)
 			{
@@ -425,102 +385,60 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		}
 		else if (type == TYPE_BOOLEAN)
 		{
-			boolean[] booleanArray;
-			if (CONVERT_BOOLEANS)
-			{
-				int l = (len >> 3) + 1;
-				byte[] bytes = new byte[l];
-				for (int i = 0; i < l; i++)
-				{
-					bytes[i] = input.readByte();
-				}
-				booleanArray = byteToBool(l, bytes);
-			}
-			else
-			{
-				booleanArray = new boolean[len];
-				for (int i = 0; i < len; i++)
-				{
-					booleanArray[i] = input.readBoolean();
-				}
-			}
-			this.array = booleanArray;
+			boolean[] a = input.readBooleanArray();
+			this.length = a.length;
+			this.array = a;
 		}
 		else if (type == TYPE_BYTE)
 		{
-			byte[] byteArray = new byte[len];
-			for (int i = 0; i < len; i++)
-			{
-				byteArray[i] = input.readByte();
-			}
-			this.array = byteArray;
+			byte[] a = input.readByteArray();
+			this.length = a.length;
+			this.array = a;
 		}
 		else if (type == TYPE_SHORT)
 		{
-			short[] shortArray = new short[len];
-			for (int i = 0; i < len; i++)
-			{
-				shortArray[i] = input.readShort();
-			}
-			this.array = shortArray;
+			short[] a = input.readShortArray();
+			this.length = a.length;
+			this.array = a;
 		}
 		else if (type == TYPE_CHAR)
 		{
-			char[] charArray = new char[len];
-			for (int i = 0; i < len; i++)
-			{
-				charArray[i] = input.readChar();
-			}
-			this.array = charArray;
+			char[] a = input.readCharArray();
+			this.length = a.length;
+			this.array = a;
 		}
 		else if (type == TYPE_INT)
 		{
-			int[] intArray = new int[len];
-			for (int i = 0; i < len; i++)
-			{
-				intArray[i] = input.readInt();
-			}
-			this.array = intArray;
+			int[] a = input.readIntArray();
+			this.length = a.length;
+			this.array = a;
 		}
 		else if (type == TYPE_LONG)
 		{
-			long[] longArray = new long[len];
-			for (int i = 0; i < len; i++)
-			{
-				longArray[i] = input.readLong();
-			}
-			this.array = longArray;
+			long[] a = input.readLongArray();
+			this.length = a.length;
+			this.array = a;
 		}
 		else if (type == TYPE_FLOAT)
 		{
-			float[] floatArray = new float[len];
-			for (int i = 0; i < len; i++)
-			{
-				floatArray[i] = input.readFloat();
-			}
-			this.array = floatArray;
+			float[] a = input.readFloatArray();
+			this.length = a.length;
+			this.array = a;
 		}
 		else if (type == TYPE_DOUBLE)
 		{
-			double[] doubleArray = new double[len];
-			for (int i = 0; i < len; i++)
-			{
-				doubleArray[i] = input.readDouble();
-			}
-			this.array = doubleArray;
+			double[] a = input.readDoubleArray();
+			this.length = a.length;
+			this.array = a;
 		}
 		else if (type == TYPE_STRING)
 		{
-			String[] stringArray = new String[len];
-			for (int i = 0; i < len; i++)
-			{
-				stringArray[i] = input.readUTF();
-			}
-			this.array = stringArray;
+			String[] a = input.readStringArray();
+			this.length = a.length;
+			this.array = a;
 		}
 		
 		this.subtype = type;
-		this.length = len;
 	}
 	
 	@Override
