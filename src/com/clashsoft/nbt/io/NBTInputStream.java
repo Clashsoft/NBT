@@ -3,11 +3,18 @@ package com.clashsoft.nbt.io;
 import java.io.*;
 import java.util.zip.GZIPInputStream;
 
+import com.clashsoft.nbt.util.NBTHelper;
+
 public class NBTInputStream extends DataInputStream
 {
+	public NBTInputStream(InputStream is)
+	{
+		super(is);
+	}
+	
 	public NBTInputStream(File file, boolean compressed) throws IOException
 	{
-		super(getStream(file, compressed));
+		this(getStream(file, compressed));
 	}
 	
 	protected static InputStream getStream(File file, boolean compressed) throws IOException
@@ -21,6 +28,14 @@ public class NBTInputStream extends DataInputStream
 		{
 			return fis;
 		}
+	}
+	
+	public byte readNibble() throws IOException
+	{
+		int ch1 = in.read();
+		if (ch1 < 0)
+			throw new EOFException();
+		return (byte) (ch1 & 0xF);
 	}
 	
 	public int readMedium() throws IOException
@@ -57,24 +72,47 @@ public class NBTInputStream extends DataInputStream
 	public boolean[] readBooleanArray() throws IOException
 	{
 		int len = this.readInt();
-		byte[] data = this.readByteArray();
-		
+		int len1 = NBTHelper.ceil(len / 8F);
 		boolean[] bools = new boolean[len];
+		byte[] data = new byte[len1];
+		
+		in.read(data);
 		for (int i = 0, j = 0, k = 7; i < len; i++)
 		{
-			if ((data[j] & (1 << k--)) == 1)
-			{
-				bools[i] = true;
-			}
+			int l = (1 << k);
+			bools[i] = (data[j] & l) != 0;
 			
+			k--;
 			if (k < 0)
 			{
 				j++;
 				k = 7;
 			}
 		}
-		
 		return bools;
+	}
+	
+	public byte[] readNibbleArray() throws IOException
+	{
+		int len = this.readInt();
+		int len1 = NBTHelper.ceil(len / 2F);
+		byte[] nibbles = new byte[len];
+		byte[] data = new byte[len1];
+		
+		in.read(data);
+		for (int i = 0, j = 0, k = 1; i < len; i++)
+		{
+			int l = k << 2;
+			nibbles[i] |= (data[j] >> l) & 0xF;
+			--k;
+			
+			if (k < 0)
+			{
+				j++;
+				k = 1;
+			}
+		}
+		return nibbles;
 	}
 	
 	public byte[] readByteArray() throws IOException

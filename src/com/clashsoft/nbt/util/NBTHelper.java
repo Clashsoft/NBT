@@ -15,6 +15,12 @@ public class NBTHelper
 	{
 	}
 	
+	public static int ceil(float f)
+	{
+		int i = (int) f;
+		return ((f > i) ? i + 1 : i);
+	}
+	
 	public static byte getTypeFromValue(String value)
 	{
 		if (value == null)

@@ -3,11 +3,18 @@ package com.clashsoft.nbt.io;
 import java.io.*;
 import java.util.zip.GZIPOutputStream;
 
+import com.clashsoft.nbt.util.NBTHelper;
+
 public class NBTOutputStream extends DataOutputStream
 {
+	public NBTOutputStream(OutputStream os)
+	{
+		super(os);
+	}
+	
 	public NBTOutputStream(File file, boolean compressed) throws IOException
 	{
-		super(getStream(file, compressed));
+		this(getStream(file, compressed));
 	}
 	
 	protected static OutputStream getStream(File file, boolean compressed) throws IOException
@@ -35,6 +42,12 @@ public class NBTOutputStream extends DataOutputStream
 			temp = Integer.MAX_VALUE;
 		}
 		written = temp;
+	}
+	
+	public void writeNibble(byte v) throws IOException
+	{
+		out.write(v & 0xF);
+		incCount(1);
 	}
 	
 	public void writeMedium(int v) throws IOException
@@ -68,17 +81,17 @@ public class NBTOutputStream extends DataOutputStream
 	public void writeBooleanArray(boolean[] v) throws IOException
 	{
 		int len = v.length;
-		this.writeInt(len);
-		
-		int len1 = (len / 8) + ((len & 7) != 0 ? 1 : 0);
+		int len1 = NBTHelper.ceil(len / 8F);
 		byte[] data = new byte[len1];
 		
+		this.writeInt(len);
 		for (int i = 0, j = 0, k = 7; i < len; i++)
 		{
 			if (v[i])
 			{
-				data[j] |= 1 << k--;
+				data[j] |= 1 << k;
 			}
+			--k;
 			
 			if (k < 0)
 			{
@@ -86,8 +99,31 @@ public class NBTOutputStream extends DataOutputStream
 				k = 7;
 			}
 		}
+		out.write(data);
+		this.incCount(len1);
+	}
+	
+	public void writeNibbleArray(byte[] v) throws IOException
+	{
+		int len = v.length;
+		int len1 = NBTHelper.ceil(len / 2F);
+		byte[] data = new byte[len1];
 		
-		this.writeByteArray(data);
+		this.writeInt(len);
+		for (int i = 0, j = 0, k = 1; i < len; i++)
+		{
+			int k1 = k << 2;
+			data[j] |= v[i] << k1;
+			--k;
+			
+			if (k < 0)
+			{
+				j++;
+				k = 1;
+			}
+		}
+		out.write(data);
+		this.incCount(len1);
 	}
 	
 	public void writeByteArray(byte[] v) throws IOException
