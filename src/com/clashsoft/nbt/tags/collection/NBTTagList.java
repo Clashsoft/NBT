@@ -124,6 +124,11 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		this.addTag(new NBTTagBoolean(name, value));
 	}
 	
+	public void addNibble(String name, byte value)
+	{
+		this.addTag(new NBTTagNibble(name, value));
+	}
+	
 	public void addByte(String name, byte value)
 	{
 		this.addTag(new NBTTagByte(name, value));

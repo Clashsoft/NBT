@@ -161,7 +161,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
 			newArray[oldlen] = ((NBTTagBoolean) tag).getBool();
 		}
-		else if (type == TYPE_BYTE)
+		else if (type == TYPE_BYTE || type == TYPE_NIBBLE)
 		{
 			byte[] oldArray = this.getByteArray();
 			byte[] newArray = new byte[newlen];
@@ -279,35 +279,6 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		// TODO
 	}
 	
-	public static byte[] boolToByte(int l, boolean[] booleanArray)
-	{
-		int len = booleanArray.length;
-		byte[] bytes = new byte[l];
-		for (int i = 0; i < len; i++)
-		{
-			if (booleanArray[i])
-			{
-				int a = i >> 3;
-				int p = i & 7;
-				bytes[a] |= 1 << p;
-			}
-		}
-		return bytes;
-	}
-	
-	public static boolean[] byteToBool(int l, byte[] byteArray)
-	{
-		int len = byteArray.length;
-		boolean[] bools = new boolean[l];
-		for (int i = 0; i < l; i++)
-		{
-			int a = i >> 3;
-			int p = i & 7;
-			bools[i] = (byteArray[a] & 1 << p) != 0;
-		}
-		return bools;
-	}
-	
 	@Override
 	public void writeValue(NBTOutputStream output) throws IOException
 	{
@@ -330,6 +301,11 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		{
 			boolean[] booleanArray = (boolean[]) this.array;
 			output.writeBooleanArray(booleanArray);
+		}
+		else if (type == TYPE_NIBBLE)
+		{
+			byte[] nibbleArray = (byte[]) this.array;
+			output.writeNibbleArray(nibbleArray);
 		}
 		else if (type == TYPE_BYTE)
 		{
@@ -396,6 +372,12 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		else if (type == TYPE_BOOLEAN)
 		{
 			boolean[] a = input.readBooleanArray();
+			this.length = a.length;
+			this.array = a;
+		}
+		else if (type == TYPE_NIBBLE)
+		{
+			byte[] a = input.readNibbleArray();
 			this.length = a.length;
 			this.array = a;
 		}
@@ -469,7 +451,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		{
 			return Arrays.toString(this.getBooleanArray());
 		}
-		else if (type == TYPE_BYTE)
+		else if (type == TYPE_BYTE || type == TYPE_NIBBLE)
 		{
 			return Arrays.toString(this.getByteArray());
 		}
@@ -571,7 +553,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			}
 			this.array = booleanArray;
 		}
-		else if (type == TYPE_BYTE)
+		else if (type == TYPE_BYTE || type == TYPE_NIBBLE)
 		{
 			byte[] byteArray = new byte[len];
 			for (int i = 0; i < len; i++)
@@ -701,11 +683,6 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	public char[] getCharArray()
 	{
 		return (char[]) this.array;
-	}
-	
-	public int[] getMediumArray()
-	{
-		return (int[]) this.array;
 	}
 	
 	public int[] getIntArray()

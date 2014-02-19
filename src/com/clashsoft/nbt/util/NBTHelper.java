@@ -44,6 +44,10 @@ public class NBTHelper
 		{
 			return TYPE_BOOLEAN;
 		}
+		else if (value.endsWith("N"))
+		{
+			return TYPE_NIBBLE;
+		}
 		else if (value.endsWith("B"))
 		{
 			return TYPE_BYTE;

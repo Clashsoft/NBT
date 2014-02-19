@@ -59,6 +59,11 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 		this.setTag(new NBTTagBoolean(name, value));
 	}
 	
+	public void setNibble(String name, byte value)
+	{
+		this.setTag(new NBTTagNibble(name, value));
+	}
+	
 	public void setByte(String name, byte value)
 	{
 		this.setTag(new NBTTagByte(name, value));
@@ -124,22 +129,15 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 		this.setTag(array);
 	}
 	
-	public NBTTagPrimitive getPrimitiveTag(String name)
-	{
-		try
-		{
-			return (NBTTagPrimitive) this.getTag(name);
-		}
-		catch (ClassCastException ex)
-		{
-			return null;
-		}
-	}
-	
 	public boolean getBoolean(String name)
 	{
 		NBTTagPrimitive tag = this.getPrimitiveTag(name);
 		return tag != null ? tag.getBool() : false;
+	}
+	
+	public byte getNibble(String name)
+	{
+		return (byte) (this.getByte(name) & 0xF);
 	}
 	
 	public byte getByte(String name)
@@ -158,6 +156,11 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 	{
 		NBTTagPrimitive tag = this.getPrimitiveTag(name);
 		return tag != null ? tag.getChar() : 0;
+	}
+	
+	public int getMedium(String name)
+	{
+		return this.getInteger(name) & 0xFFFFFF;
 	}
 	
 	public int getInteger(String name)
@@ -194,6 +197,18 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 		catch (ClassCastException ex)
 		{
 			return "";
+		}
+	}
+	
+	public NBTTagPrimitive getPrimitiveTag(String name)
+	{
+		try
+		{
+			return (NBTTagPrimitive) this.getTag(name);
+		}
+		catch (ClassCastException ex)
+		{
+			return null;
 		}
 	}
 	

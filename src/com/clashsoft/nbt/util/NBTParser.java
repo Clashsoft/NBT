@@ -120,7 +120,15 @@ public class NBTParser
 		}
 		else if (value instanceof Byte)
 		{
-			return new NBTTagByte(tagName, (Byte) value);
+			byte b = ((Byte) value).byteValue();
+			if (b < 16)
+			{
+				return new NBTTagNibble(tagName, b);
+			}
+			else
+			{
+				return new NBTTagByte(tagName, b);
+			}
 		}
 		else if (value instanceof Short)
 		{
@@ -169,7 +177,7 @@ public class NBTParser
 		return null;
 	}
 	
-	public static NamedBinaryTag createFromType(String tagName, byte type)
+	public static NamedBinaryTag createFromType(String name, byte type)
 	{
 		if (type == TYPE_END)
 		{
@@ -177,67 +185,71 @@ public class NBTParser
 		}
 		else if (type == TYPE_COMPOUND)
 		{
-			return new NBTTagCompound(tagName);
+			return new NBTTagCompound(name);
 		}
 		else if (type == TYPE_LIST)
 		{
-			return new NBTTagList(tagName);
+			return new NBTTagList(name);
 		}
 		else if (type == TYPE_ARRAY)
 		{
-			return new NBTTagArray(tagName);
+			return new NBTTagArray(name);
 		}
 		else if (type == TYPE_BOOLEAN)
 		{
-			return new NBTTagBoolean(tagName);
+			return new NBTTagBoolean(name);
+		}
+		else if (type == TYPE_NIBBLE)
+		{
+			return new NBTTagNibble(name);
 		}
 		else if (type == TYPE_BYTE)
 		{
-			return new NBTTagByte(tagName);
+			return new NBTTagByte(name);
 		}
 		else if (type == TYPE_SHORT)
 		{
-			return new NBTTagShort(tagName);
+			return new NBTTagShort(name);
 		}
 		else if (type == TYPE_CHAR)
 		{
-			return new NBTTagChar(tagName);
+			return new NBTTagChar(name);
 		}
 		else if (type == TYPE_INT)
 		{
-			return new NBTTagInteger(tagName);
+			return new NBTTagInteger(name);
 		}
 		else if (type == TYPE_LONG)
 		{
-			return new NBTTagLong(tagName);
+			return new NBTTagLong(name);
 		}
 		else if (type == TYPE_FLOAT)
 		{
-			return new NBTTagFloat(tagName);
+			return new NBTTagFloat(name);
 		}
 		else if (type == TYPE_DOUBLE)
 		{
-			return new NBTTagDouble(tagName);
+			return new NBTTagDouble(name);
 		}
 		else if (type == TYPE_STRING)
 		{
-			return new NBTTagString(tagName);
+			return new NBTTagString(name);
 		}
 		else if (type == TYPE_DATE)
 		{
-			return new NBTTagDate(tagName);
+			return new NBTTagDate(name);
 		}
 		else if (type == TYPE_IMAGE)
 		{
-			return new NBTTagImage(tagName);
+			return new NBTTagImage(name);
 		}
 		else if (type == TYPE_CLASS)
 		{
-			return new NBTTagClass(tagName);
+			return new NBTTagClass(name);
 		}
 		else if (type == TYPE_FILE)
 		{
-			return new NBTTagFile(tagName);
+			return new NBTTagFile(name);
 		}
 		else
 		{
@@ -247,7 +259,7 @@ public class NBTParser
 				try
 				{
 					Constructor<NamedBinaryTag> c = clazz.getConstructor(String.class);
-					return c.newInstance(tagName);
+					return c.newInstance(name);
 				}
 				catch (ReflectiveOperationException ex)
 				{
