@@ -13,6 +13,9 @@ import com.clashsoft.nbt.util.NBTParser;
 
 public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<String>
 {
+	public static final String				START	= "{";
+	public static final String				END		= "}";
+	
 	protected Map<String, NamedBinaryTag>	tags;
 	
 	public NBTTagMap(byte type, String name)
@@ -105,7 +108,7 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 	public String writeString()
 	{
 		int len = this.tags.size();
-		StringBuilder sb = new StringBuilder(len << 6).append("{");
+		StringBuilder sb = new StringBuilder(len << 6).append(START);
 		NamedBinaryTag value;
 		
 		for (String key : this.tags.keySet())
@@ -113,7 +116,7 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 			value = this.tags.get(key);
 			sb.append(String.valueOf(value)).append(',');
 		}
-		sb.append("}");
+		sb.append(END);
 		
 		if (len > 0)
 		{
@@ -126,8 +129,8 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 	@Override
 	public void readString(String dataString)
 	{
-		int pos1 = dataString.indexOf('{') + 1;
-		int pos2 = dataString.lastIndexOf('}');
+		int pos1 = dataString.indexOf(START) + 1;
+		int pos2 = dataString.lastIndexOf(END);
 		if (pos1 < 0 || pos2 < 0)
 		{
 			return;

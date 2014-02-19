@@ -9,11 +9,13 @@ import java.lang.reflect.Constructor;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.clashsoft.nbt.NamedBinaryTag;
 import com.clashsoft.nbt.tags.collection.NBTTagArray;
 import com.clashsoft.nbt.tags.collection.NBTTagCompound;
 import com.clashsoft.nbt.tags.collection.NBTTagList;
+import com.clashsoft.nbt.tags.collection.NBTTagSet;
 import com.clashsoft.nbt.tags.data.NBTTagClass;
 import com.clashsoft.nbt.tags.data.NBTTagDate;
 import com.clashsoft.nbt.tags.data.NBTTagFile;
@@ -109,6 +111,10 @@ public class NBTParser
 		else if (value instanceof List)
 		{
 			return new NBTTagList(tagName, (List) value);
+		}
+		else if (value instanceof Set)
+		{
+			return new NBTTagSet(tagName, (Set) value);
 		}
 		else if (value.getClass().isArray())
 		{
@@ -214,6 +220,10 @@ public class NBTParser
 		else if (type == TYPE_CHAR)
 		{
 			return new NBTTagChar(name);
+		}
+		else if (type == TYPE_MEDIUM)
+		{
+			return new NBTTagMedium(name);
 		}
 		else if (type == TYPE_INT)
 		{

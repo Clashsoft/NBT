@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.clashsoft.nbt.tags.NBTTagEnd;
+import com.clashsoft.nbt.tags.collection.NBTTagArray;
+import com.clashsoft.nbt.tags.collection.NBTTagList;
+import com.clashsoft.nbt.tags.collection.NBTTagMap;
+import com.clashsoft.nbt.tags.collection.NBTTagSet;
 
 public class NBTHelper
 {
@@ -28,17 +32,21 @@ public class NBTHelper
 			return 0;
 		}
 		
-		if (value.startsWith("{") && value.endsWith("}"))
+		if (value.startsWith(NBTTagMap.START) && value.endsWith(NBTTagMap.END))
 		{
 			return TYPE_COMPOUND;
 		}
-		else if (value.startsWith("[") && value.endsWith("]"))
+		else if (value.startsWith(NBTTagList.START) && value.endsWith(NBTTagList.END))
 		{
 			return TYPE_LIST;
 		}
-		else if (value.startsWith("<") && value.endsWith(">"))
+		else if (value.startsWith(NBTTagArray.START) && value.endsWith(NBTTagArray.END))
 		{
 			return TYPE_ARRAY;
+		}
+		else if (value.startsWith(NBTTagSet.START) && value.endsWith(NBTTagSet.END))
+		{
+			return TYPE_SET;
 		}
 		else if ("true".equals(value) || "false".equals(value))
 		{

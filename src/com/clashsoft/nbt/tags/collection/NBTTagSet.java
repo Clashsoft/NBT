@@ -16,6 +16,9 @@ import com.clashsoft.nbt.util.NBTParser;
 
 public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBinaryTag>
 {
+	public static final String START = "([";
+	public static final String END = "])";
+	
 	protected Set<NamedBinaryTag>	tags;
 	
 	public NBTTagSet(String name)
@@ -189,18 +192,18 @@ public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBi
 	public String writeString()
 	{
 		int len = this.tags.size();
-		StringBuilder sb = new StringBuilder(len << 6).append("[");
+		StringBuilder sb = new StringBuilder(len << 6).append(START);
 		NamedBinaryTag value;
 		
 		for (NamedBinaryTag tag : this.tags)
 		{
 			sb.append(tag.toString()).append(',');
 		}
-		sb.append("]");
+		sb.append(END);
 		
 		if (len > 0)
 		{
-			sb.deleteCharAt(sb.length() - 2);
+			sb.deleteCharAt(sb.length() - 3);
 		}
 		
 		return sb.toString();
@@ -209,8 +212,8 @@ public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBi
 	@Override
 	public void readString(String dataString)
 	{
-		int pos1 = dataString.indexOf('{') + 1;
-		int pos2 = dataString.lastIndexOf('}');
+		int pos1 = dataString.indexOf(START) + 1;
+		int pos2 = dataString.lastIndexOf(END);
 		if (pos1 < 0 || pos2 < 0)
 		{
 			return;
