@@ -84,7 +84,7 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 		}
 		NBTHelper.END.write(output);
 	}
-
+	
 	@Override
 	public void readValue(NBTInputStream input) throws IOException
 	{
@@ -100,7 +100,7 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 			this.setTag(nbt);
 		}
 	}
-
+	
 	@Override
 	public String writeString()
 	{

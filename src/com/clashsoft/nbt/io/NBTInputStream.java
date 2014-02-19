@@ -32,19 +32,23 @@ public class NBTInputStream extends DataInputStream
 	
 	public byte readNibble() throws IOException
 	{
-		int ch1 = in.read();
+		int ch1 = this.in.read();
 		if (ch1 < 0)
+		{
 			throw new EOFException();
+		}
 		return (byte) (ch1 & 0xF);
 	}
 	
 	public int readMedium() throws IOException
 	{
-		int ch1 = in.read();
-		int ch2 = in.read();
-		int ch3 = in.read();
+		int ch1 = this.in.read();
+		int ch2 = this.in.read();
+		int ch3 = this.in.read();
 		if ((ch1 | ch2 | ch3) < 0)
+		{
 			throw new EOFException();
+		}
 		return (ch1 << 16) + (ch2 << 8) + (ch3 << 0);
 	}
 	
@@ -76,10 +80,10 @@ public class NBTInputStream extends DataInputStream
 		boolean[] bools = new boolean[len];
 		byte[] data = new byte[len1];
 		
-		in.read(data);
+		this.in.read(data);
 		for (int i = 0, j = 0, k = 7; i < len; i++)
 		{
-			int l = (1 << k);
+			int l = 1 << k;
 			bools[i] = (data[j] & l) != 0;
 			
 			k--;
@@ -99,11 +103,11 @@ public class NBTInputStream extends DataInputStream
 		byte[] nibbles = new byte[len];
 		byte[] data = new byte[len1];
 		
-		in.read(data);
+		this.in.read(data);
 		for (int i = 0, j = 0, k = 1; i < len; i++)
 		{
 			int l = k << 2;
-			nibbles[i] |= (data[j] >> l) & 0xF;
+			nibbles[i] |= data[j] >> l & 0xF;
 			--k;
 			
 			if (k < 0)

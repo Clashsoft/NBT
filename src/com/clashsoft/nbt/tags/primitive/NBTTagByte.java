@@ -35,7 +35,7 @@ public class NBTTagByte extends NBTTagNumber
 	@Override
 	public short getShort()
 	{
-		return (short) this.value;
+		return this.value;
 	}
 	
 	@Override
@@ -47,25 +47,25 @@ public class NBTTagByte extends NBTTagNumber
 	@Override
 	public int getInt()
 	{
-		return (int) this.value;
+		return this.value;
 	}
 	
 	@Override
 	public long getLong()
 	{
-		return (long) this.value;
+		return this.value;
 	}
 	
 	@Override
 	public float getFloat()
 	{
-		return (float) this.value;
+		return this.value;
 	}
 	
 	@Override
 	public double getDouble()
 	{
-		return (double) this.value;
+		return this.value;
 	}
 	
 	@Override
@@ -85,7 +85,7 @@ public class NBTTagByte extends NBTTagNumber
 	{
 		this.value = input.readByte();
 	}
-
+	
 	@Override
 	public void readNumber(String number)
 	{

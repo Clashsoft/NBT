@@ -32,43 +32,43 @@ public class NBTTagBoolean extends NamedBinaryTag implements NBTTagPrimitive
 	{
 		return this.value;
 	}
-
+	
 	@Override
 	public byte getByte()
 	{
 		return (byte) (this.value ? 1 : 0);
 	}
-
+	
 	@Override
 	public short getShort()
 	{
 		return (short) (this.value ? 1 : 0);
 	}
-
+	
 	@Override
 	public char getChar()
 	{
-		return (char) (this.value ? '1' : '0');
+		return this.value ? '1' : '0';
 	}
-
+	
 	@Override
 	public int getInt()
 	{
 		return this.value ? 1 : 0;
 	}
-
+	
 	@Override
 	public long getLong()
 	{
 		return this.value ? 1L : 0L;
 	}
-
+	
 	@Override
 	public float getFloat()
 	{
 		return this.value ? 1F : 0F;
 	}
-
+	
 	@Override
 	public double getDouble()
 	{
@@ -92,7 +92,7 @@ public class NBTTagBoolean extends NamedBinaryTag implements NBTTagPrimitive
 	{
 		this.value = input.readBoolean();
 	}
-
+	
 	@Override
 	public String writeString()
 	{

@@ -44,13 +44,13 @@ public class NBTTagString extends NamedBinaryTag
 	{
 		output.writeString(this.value);
 	}
-
+	
 	@Override
 	public void readValue(NBTInputStream input) throws IOException
 	{
 		this.value = input.readString();
 	}
-
+	
 	@Override
 	public String writeString()
 	{

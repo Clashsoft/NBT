@@ -37,7 +37,7 @@ public class NBTTagDouble extends NBTTagNumber
 	{
 		return (short) this.value;
 	}
-
+	
 	@Override
 	public char getChar()
 	{
@@ -85,7 +85,7 @@ public class NBTTagDouble extends NBTTagNumber
 	{
 		this.value = input.readDouble();
 	}
-
+	
 	@Override
 	public void readNumber(String number)
 	{

@@ -26,32 +26,32 @@ import com.clashsoft.nbt.util.NBTHelper;
  */
 public abstract class NamedBinaryTag
 {
-	public static final byte	TYPE_END			= 0;
-	public static final byte	TYPE_COMPOUND		= 1;
-	public static final byte	TYPE_LIST			= 2;
-	public static final byte	TYPE_ARRAY			= 3;
-	public static final byte	TYPE_SET			= 4;
+	public static final byte	TYPE_END		= 0;
+	public static final byte	TYPE_COMPOUND	= 1;
+	public static final byte	TYPE_LIST		= 2;
+	public static final byte	TYPE_ARRAY		= 3;
+	public static final byte	TYPE_SET		= 4;
 	
-	public static final byte	TYPE_CUSTOM			= 9;
+	public static final byte	TYPE_CUSTOM		= 9;
 	
-	public static final byte	TYPE_BOOLEAN		= 10;
-	public static final byte	TYPE_BYTE			= 11;
-	public static final byte	TYPE_SHORT			= 12;
-	public static final byte	TYPE_CHAR			= 13;
-	public static final byte	TYPE_MEDIUM			= 14;
-	public static final byte	TYPE_INT			= 15;
-	public static final byte	TYPE_LONG			= 16;
-	public static final byte	TYPE_FLOAT			= 17;
-	public static final byte	TYPE_DOUBLE			= 18;
+	public static final byte	TYPE_BOOLEAN	= 10;
+	public static final byte	TYPE_BYTE		= 11;
+	public static final byte	TYPE_SHORT		= 12;
+	public static final byte	TYPE_CHAR		= 13;
+	public static final byte	TYPE_MEDIUM		= 14;
+	public static final byte	TYPE_INT		= 15;
+	public static final byte	TYPE_LONG		= 16;
+	public static final byte	TYPE_FLOAT		= 17;
+	public static final byte	TYPE_DOUBLE		= 18;
 	
-	public static final byte	TYPE_STRING			= 20;
+	public static final byte	TYPE_STRING		= 20;
 	
-	public static final byte	TYPE_DATE			= 30;
-	public static final byte	TYPE_IMAGE			= 31;
-	public static final byte	TYPE_CLASS			= 32;
-	public static final byte	TYPE_FILE			= 33;
+	public static final byte	TYPE_DATE		= 30;
+	public static final byte	TYPE_IMAGE		= 31;
+	public static final byte	TYPE_CLASS		= 32;
+	public static final byte	TYPE_FILE		= 33;
 	
-	public static final Class[]	TYPES				= new Class[256];
+	public static final Class[]	TYPES			= new Class[256];
 	
 	static
 	{
@@ -93,7 +93,7 @@ public abstract class NamedBinaryTag
 	/**
 	 * The container that contains this tag
 	 */
-	private NBTTagContainer		container			= null;
+	private NBTTagContainer		container		= null;
 	
 	/**
 	 * Creates a new abstract NBT without a value.

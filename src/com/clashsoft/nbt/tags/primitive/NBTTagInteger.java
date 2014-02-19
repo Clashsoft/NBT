@@ -53,19 +53,19 @@ public class NBTTagInteger extends NBTTagNumber
 	@Override
 	public long getLong()
 	{
-		return (long) this.value;
+		return this.value;
 	}
 	
 	@Override
 	public float getFloat()
 	{
-		return (float) this.value;
+		return this.value;
 	}
 	
 	@Override
 	public double getDouble()
 	{
-		return (double) this.value;
+		return this.value;
 	}
 	
 	@Override
@@ -91,7 +91,7 @@ public class NBTTagInteger extends NBTTagNumber
 	{
 		this.value = input.readInt();
 	}
-
+	
 	@Override
 	public void readNumber(String number)
 	{

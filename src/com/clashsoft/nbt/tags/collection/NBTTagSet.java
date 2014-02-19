@@ -16,7 +16,7 @@ import com.clashsoft.nbt.util.NBTParser;
 
 public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBinaryTag>
 {
-	protected Set<NamedBinaryTag> tags;
+	protected Set<NamedBinaryTag>	tags;
 	
 	public NBTTagSet(String name)
 	{
@@ -163,7 +163,7 @@ public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBi
 		}
 		NBTHelper.END.write(output);
 	}
-
+	
 	@Override
 	public void readValue(NBTInputStream input) throws IOException
 	{
@@ -179,7 +179,7 @@ public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBi
 			this.addTag(nbt);
 		}
 	}
-
+	
 	@Override
 	public String writeString()
 	{

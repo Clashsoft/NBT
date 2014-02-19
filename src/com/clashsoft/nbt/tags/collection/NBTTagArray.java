@@ -26,11 +26,11 @@ import com.clashsoft.nbt.util.NBTParser;
  */
 public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 {
-	public static final byte	TYPE_NBT			= 0;
+	public static final byte	TYPE_NBT	= 0;
 	
 	private Object				array;
 	private byte				subtype;
-	private int length;
+	private int					length;
 	
 	/**
 	 * Constructor used for deserialization
@@ -140,7 +140,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	{
 		return this.array;
 	}
-
+	
 	@Override
 	public NamedBinaryTag addTag(NamedBinaryTag tag)
 	{
@@ -159,63 +159,63 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			boolean[] oldArray = this.getBooleanArray();
 			boolean[] newArray = new boolean[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
-			newArray[oldlen] = ((NBTTagBoolean)tag).getBool();
+			newArray[oldlen] = ((NBTTagBoolean) tag).getBool();
 		}
 		else if (type == TYPE_BYTE)
 		{
 			byte[] oldArray = this.getByteArray();
 			byte[] newArray = new byte[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
-			newArray[oldlen] = ((NBTTagNumber)tag).getByte();
+			newArray[oldlen] = ((NBTTagNumber) tag).getByte();
 		}
 		else if (type == TYPE_SHORT)
 		{
 			short[] oldArray = this.getShortArray();
 			short[] newArray = new short[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
-			newArray[oldlen] = ((NBTTagNumber)tag).getShort();
+			newArray[oldlen] = ((NBTTagNumber) tag).getShort();
 		}
 		else if (type == TYPE_CHAR)
 		{
 			char[] oldArray = this.getCharArray();
 			char[] newArray = new char[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
-			newArray[oldlen] = ((NBTTagChar)tag).getChar();
+			newArray[oldlen] = ((NBTTagChar) tag).getChar();
 		}
 		else if (type == TYPE_INT || type == TYPE_MEDIUM)
 		{
 			int[] oldArray = this.getIntArray();
 			int[] newArray = new int[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
-			newArray[oldlen] = ((NBTTagNumber)tag).getInt();
+			newArray[oldlen] = ((NBTTagNumber) tag).getInt();
 		}
 		else if (type == TYPE_LONG)
 		{
 			long[] oldArray = this.getLongArray();
 			long[] newArray = new long[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
-			newArray[oldlen] = ((NBTTagNumber)tag).getLong();
+			newArray[oldlen] = ((NBTTagNumber) tag).getLong();
 		}
 		else if (type == TYPE_FLOAT)
 		{
 			float[] oldArray = this.getFloatArray();
 			float[] newArray = new float[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
-			newArray[oldlen] = ((NBTTagNumber)tag).getFloat();
+			newArray[oldlen] = ((NBTTagNumber) tag).getFloat();
 		}
 		else if (type == TYPE_DOUBLE)
 		{
 			double[] oldArray = this.getDoubleArray();
 			double[] newArray = new double[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
-			newArray[oldlen] = ((NBTTagNumber)tag).getDouble();
+			newArray[oldlen] = ((NBTTagNumber) tag).getDouble();
 		}
 		else if (type == TYPE_STRING)
 		{
 			String[] oldArray = this.getStringArray();
 			String[] newArray = new String[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
-			newArray[oldlen] = ((NBTTagString)tag).getValue();
+			newArray[oldlen] = ((NBTTagString) tag).getValue();
 		}
 		return null;
 	}

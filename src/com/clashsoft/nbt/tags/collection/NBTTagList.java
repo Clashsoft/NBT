@@ -45,7 +45,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 	{
 		return this.tags.equals(((NBTTagList) that).tags);
 	}
-
+	
 	@Override
 	public NamedBinaryTag addTag(NamedBinaryTag tag)
 	{
@@ -53,36 +53,36 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		this.tags.add(tag);
 		return null;
 	}
-
+	
 	public void setTag(int index, NamedBinaryTag tag)
 	{
 		this.ensureSize(index + 1);
 		this.tags.set(index, tag);
 	}
-
+	
 	@Override
 	public void removeTag(NamedBinaryTag tag)
 	{
 		this.tags.remove(tag);
 	}
-
+	
 	public NamedBinaryTag removeTag(int index)
 	{
 		return this.tags.remove(index);
 	}
-
+	
 	@Override
 	public boolean canAddTag(String name)
 	{
 		return true;
 	}
-
+	
 	@Override
 	public Iterator iterator()
 	{
 		return this.tags.iterator();
 	}
-
+	
 	@Override
 	public int size()
 	{
@@ -94,17 +94,17 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 	{
 		this.tags.clear();
 	}
-
+	
 	public NamedBinaryTag tagAt(int index)
 	{
 		return this.tags.get(index);
 	}
-
+	
 	public int indexOf(NamedBinaryTag nbt)
 	{
 		return this.tags.indexOf(nbt);
 	}
-
+	
 	private void ensureSize(int size)
 	{
 		List tags = this.tags;
@@ -246,7 +246,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		}
 		NBTHelper.END.write(output);
 	}
-
+	
 	@Override
 	public void readValue(NBTInputStream input) throws IOException
 	{
@@ -262,7 +262,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 			this.addTag(nbt);
 		}
 	}
-
+	
 	@Override
 	public String writeString()
 	{

@@ -36,26 +36,26 @@ public class NBTOutputStream extends DataOutputStream
 	 */
 	public void incCount(int value)
 	{
-		int temp = written + value;
+		int temp = this.written + value;
 		if (temp < 0)
 		{
 			temp = Integer.MAX_VALUE;
 		}
-		written = temp;
+		this.written = temp;
 	}
 	
 	public void writeNibble(byte v) throws IOException
 	{
-		out.write(v & 0xF);
-		incCount(1);
+		this.out.write(v & 0xF);
+		this.incCount(1);
 	}
 	
 	public void writeMedium(int v) throws IOException
 	{
-		out.write((v >>> 16) & 0xFF);
-		out.write((v >>> 8) & 0xFF);
-		out.write((v >>> 0) & 0xFF);
-		incCount(3);
+		this.out.write(v >>> 16 & 0xFF);
+		this.out.write(v >>> 8 & 0xFF);
+		this.out.write(v >>> 0 & 0xFF);
+		this.incCount(3);
 	}
 	
 	public void writeString(String str) throws IOException
@@ -99,7 +99,7 @@ public class NBTOutputStream extends DataOutputStream
 				k = 7;
 			}
 		}
-		out.write(data);
+		this.out.write(data);
 		this.incCount(len1);
 	}
 	
@@ -122,7 +122,7 @@ public class NBTOutputStream extends DataOutputStream
 				k = 1;
 			}
 		}
-		out.write(data);
+		this.out.write(data);
 		this.incCount(len1);
 	}
 	
@@ -133,9 +133,9 @@ public class NBTOutputStream extends DataOutputStream
 		for (int i = 0; i < len; i++)
 		{
 			byte b = v[i];
-			out.write(b);
+			this.out.write(b);
 		}
-		incCount(len);
+		this.incCount(len);
 	}
 	
 	public void writeShortArray(short[] v) throws IOException
@@ -145,10 +145,10 @@ public class NBTOutputStream extends DataOutputStream
 		for (int i = 0; i < len; i++)
 		{
 			short s = v[i];
-			out.write((s >>> 8) & 0xFF);
-			out.write((s >>> 0) & 0xFF);
+			this.out.write(s >>> 8 & 0xFF);
+			this.out.write(s >>> 0 & 0xFF);
 		}
-		incCount(len * 2);
+		this.incCount(len * 2);
 	}
 	
 	public void writeCharArray(char[] v) throws IOException
@@ -158,10 +158,10 @@ public class NBTOutputStream extends DataOutputStream
 		for (int i = 0; i < len; i++)
 		{
 			int c = v[i];
-			out.write((c >>> 8) & 0xFF);
-			out.write((c >>> 0) & 0xFF);
+			this.out.write(c >>> 8 & 0xFF);
+			this.out.write(c >>> 0 & 0xFF);
 		}
-		incCount(len * 2);
+		this.incCount(len * 2);
 	}
 	
 	public void writeMediumArray(int[] v) throws IOException
@@ -171,11 +171,11 @@ public class NBTOutputStream extends DataOutputStream
 		for (int i = 0; i < len; i++)
 		{
 			int m = v[i];
-			out.write((m >>> 16) & 0xFF);
-			out.write((m >>> 8) & 0xFF);
-			out.write((m >>> 0) & 0xFF);
+			this.out.write(m >>> 16 & 0xFF);
+			this.out.write(m >>> 8 & 0xFF);
+			this.out.write(m >>> 0 & 0xFF);
 		}
-		incCount(len * 3);
+		this.incCount(len * 3);
 	}
 	
 	public void writeIntArray(int[] v) throws IOException
@@ -185,12 +185,12 @@ public class NBTOutputStream extends DataOutputStream
 		for (int i = 0; i < len; i++)
 		{
 			int j = v[i];
-			out.write((j >>> 24) & 0xFF);
-			out.write((j >>> 16) & 0xFF);
-			out.write((j >>> 8) & 0xFF);
-			out.write((j >>> 0) & 0xFF);
+			this.out.write(j >>> 24 & 0xFF);
+			this.out.write(j >>> 16 & 0xFF);
+			this.out.write(j >>> 8 & 0xFF);
+			this.out.write(j >>> 0 & 0xFF);
 		}
-		incCount(len * 4);
+		this.incCount(len * 4);
 	}
 	
 	public void writeLongArray(long[] v) throws IOException
@@ -200,16 +200,16 @@ public class NBTOutputStream extends DataOutputStream
 		for (int i = 0; i < len; i++)
 		{
 			long l = v[i];
-			out.write((int) ((l >>> 56L) & 0xFF));
-			out.write((int) ((l >>> 48L) & 0xFF));
-			out.write((int) ((l >>> 40) & 0xFF));
-			out.write((int) ((l >>> 32L) & 0xFF));
-			out.write((int) ((l >>> 24L) & 0xFF));
-			out.write((int) ((l >>> 16L) & 0xFF));
-			out.write((int) ((l >>> 8L) & 0xFF));
-			out.write((int) ((l >>> 0L) & 0xFF));
+			this.out.write((int) (l >>> 56L & 0xFF));
+			this.out.write((int) (l >>> 48L & 0xFF));
+			this.out.write((int) (l >>> 40 & 0xFF));
+			this.out.write((int) (l >>> 32L & 0xFF));
+			this.out.write((int) (l >>> 24L & 0xFF));
+			this.out.write((int) (l >>> 16L & 0xFF));
+			this.out.write((int) (l >>> 8L & 0xFF));
+			this.out.write((int) (l >>> 0L & 0xFF));
 		}
-		incCount(len * 8);
+		this.incCount(len * 8);
 	}
 	
 	public void writeFloatArray(float[] v) throws IOException
@@ -219,12 +219,12 @@ public class NBTOutputStream extends DataOutputStream
 		for (int i = 0; i < len; i++)
 		{
 			int j = Float.floatToIntBits(v[i]);
-			out.write((j >>> 24) & 0xFF);
-			out.write((j >>> 16) & 0xFF);
-			out.write((j >>> 8) & 0xFF);
-			out.write((j >>> 0) & 0xFF);
+			this.out.write(j >>> 24 & 0xFF);
+			this.out.write(j >>> 16 & 0xFF);
+			this.out.write(j >>> 8 & 0xFF);
+			this.out.write(j >>> 0 & 0xFF);
 		}
-		incCount(len * 4);
+		this.incCount(len * 4);
 	}
 	
 	public void writeDoubleArray(double[] v) throws IOException
@@ -234,16 +234,16 @@ public class NBTOutputStream extends DataOutputStream
 		for (int i = 0; i < len; i++)
 		{
 			long l = Double.doubleToLongBits(v[i]);
-			out.write((int) ((l >>> 56L) & 0xFF));
-			out.write((int) ((l >>> 48L) & 0xFF));
-			out.write((int) ((l >>> 40) & 0xFF));
-			out.write((int) ((l >>> 32L) & 0xFF));
-			out.write((int) ((l >>> 24L) & 0xFF));
-			out.write((int) ((l >>> 16L) & 0xFF));
-			out.write((int) ((l >>> 8L) & 0xFF));
-			out.write((int) ((l >>> 0L) & 0xFF));
+			this.out.write((int) (l >>> 56L & 0xFF));
+			this.out.write((int) (l >>> 48L & 0xFF));
+			this.out.write((int) (l >>> 40 & 0xFF));
+			this.out.write((int) (l >>> 32L & 0xFF));
+			this.out.write((int) (l >>> 24L & 0xFF));
+			this.out.write((int) (l >>> 16L & 0xFF));
+			this.out.write((int) (l >>> 8L & 0xFF));
+			this.out.write((int) (l >>> 0L & 0xFF));
 		}
-		incCount(len * 8);
+		this.incCount(len * 8);
 	}
 	
 	public void writeStringArray(String[] v) throws IOException

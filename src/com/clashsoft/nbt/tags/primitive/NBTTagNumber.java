@@ -21,9 +21,9 @@ public abstract class NBTTagNumber extends NamedBinaryTag implements NBTTagPrimi
 	{
 		return false;
 	}
-
+	
 	protected abstract char getPostfix();
-
+	
 	@Override
 	public void writeValue(NBTOutputStream output) throws IOException
 	{
@@ -35,7 +35,7 @@ public abstract class NBTTagNumber extends NamedBinaryTag implements NBTTagPrimi
 	{
 		this.readNumber(input);
 	}
-
+	
 	@Override
 	public String writeString()
 	{
@@ -50,8 +50,8 @@ public abstract class NBTTagNumber extends NamedBinaryTag implements NBTTagPrimi
 	}
 	
 	public abstract void writeNumber(NBTOutputStream output) throws IOException;
-
+	
 	public abstract void readNumber(NBTInputStream input) throws IOException;
-
+	
 	public abstract void readNumber(String number);
 }

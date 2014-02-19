@@ -1,6 +1,9 @@
 package com.clashsoft.nbt.io;
 
-import java.io.*;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.File;
+import java.io.IOException;
 
 import com.clashsoft.nbt.NamedBinaryTag;
 

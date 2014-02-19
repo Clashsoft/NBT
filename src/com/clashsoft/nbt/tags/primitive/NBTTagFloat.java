@@ -37,7 +37,7 @@ public class NBTTagFloat extends NBTTagNumber
 	{
 		return (short) this.value;
 	}
-
+	
 	@Override
 	public char getChar()
 	{
@@ -65,7 +65,7 @@ public class NBTTagFloat extends NBTTagNumber
 	@Override
 	public double getDouble()
 	{
-		return (double) this.value;
+		return this.value;
 	}
 	
 	@Override
@@ -85,7 +85,7 @@ public class NBTTagFloat extends NBTTagNumber
 	{
 		this.value = input.readFloat();
 	}
-
+	
 	@Override
 	public void readNumber(String number)
 	{
