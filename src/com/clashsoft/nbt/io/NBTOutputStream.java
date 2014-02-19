@@ -60,22 +60,7 @@ public class NBTOutputStream extends DataOutputStream
 	
 	public void writeString(String str) throws IOException
 	{
-		int len = str.length();
-		if (len < 32768)
-		{
-			this.writeBoolean(true);
-			this.writeUTF(str);
-		}
-		else
-		{
-			this.writeBoolean(false);
-			this.writeInt(len);
-			
-			for (int i = 0; i < len; i++)
-			{
-				this.writeChar(str.charAt(i));
-			}
-		}
+		this.writeUTF(str);
 	}
 	
 	public void writeBooleanArray(boolean[] v) throws IOException

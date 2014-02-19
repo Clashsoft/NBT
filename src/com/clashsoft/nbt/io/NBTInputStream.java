@@ -54,23 +54,7 @@ public class NBTInputStream extends DataInputStream
 	
 	public String readString() throws IOException
 	{
-		boolean b = this.readBoolean();
-		if (b)
-		{
-			return this.readUTF();
-		}
-		else
-		{
-			int len = this.readInt();
-			char[] chars = new char[len];
-			
-			for (int i = 0; i < len; i++)
-			{
-				chars[i] = this.readChar();
-			}
-			
-			return String.valueOf(chars);
-		}
+		return this.readUTF();
 	}
 	
 	public boolean[] readBooleanArray() throws IOException
