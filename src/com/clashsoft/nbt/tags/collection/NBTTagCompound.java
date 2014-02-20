@@ -172,19 +172,19 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 	public long getLong(String name)
 	{
 		NBTTagPrimitive tag = this.getPrimitiveTag(name);
-		return tag != null ? tag.getLong() : 0;
+		return tag != null ? tag.getLong() : 0L;
 	}
 	
 	public float getFloat(String name)
 	{
 		NBTTagPrimitive tag = this.getPrimitiveTag(name);
-		return tag != null ? tag.getFloat() : 0;
+		return tag != null ? tag.getFloat() : 0F;
 	}
 	
 	public double getDouble(String name)
 	{
 		NBTTagPrimitive tag = this.getPrimitiveTag(name);
-		return tag != null ? tag.getDouble() : 0;
+		return tag != null ? tag.getDouble() : 0D;
 	}
 	
 	public String getString(String name)
@@ -220,7 +220,7 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 		}
 		catch (ClassCastException ex)
 		{
-			return null;
+			return new NBTTagList(name);
 		}
 	}
 	
@@ -232,7 +232,7 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 		}
 		catch (ClassCastException ex)
 		{
-			return null;
+			return new NBTTagCompound(name);
 		}
 	}
 	
@@ -244,7 +244,7 @@ public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
 		}
 		catch (ClassCastException ex)
 		{
-			return null;
+			return new NBTTagArray(name);
 		}
 	}
 }
