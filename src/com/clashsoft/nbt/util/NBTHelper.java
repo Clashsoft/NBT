@@ -36,6 +36,10 @@ public class NBTHelper
 		{
 			return TYPE_COMPOUND;
 		}
+		else if (value.startsWith(NBTTagSet.START) && value.endsWith(NBTTagSet.END))
+		{
+			return TYPE_SET;
+		}
 		else if (value.startsWith(NBTTagList.START) && value.endsWith(NBTTagList.END))
 		{
 			return TYPE_LIST;
@@ -43,10 +47,6 @@ public class NBTHelper
 		else if (value.startsWith(NBTTagArray.START) && value.endsWith(NBTTagArray.END))
 		{
 			return TYPE_ARRAY;
-		}
-		else if (value.startsWith(NBTTagSet.START) && value.endsWith(NBTTagSet.END))
-		{
-			return TYPE_SET;
 		}
 		else if ("true".equals(value) || "false".equals(value))
 		{

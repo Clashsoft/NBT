@@ -16,8 +16,8 @@ import com.clashsoft.nbt.util.NBTParser;
 
 public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedBinaryTag>
 {
-	public static final String START = "(";
-	public static final String END = ")";
+	public static final String		START	= "(";
+	public static final String		END		= ")";
 	
 	private List<NamedBinaryTag>	tags;
 	
@@ -52,15 +52,21 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 	@Override
 	public NamedBinaryTag addTag(NamedBinaryTag tag)
 	{
-		tag.setContainer(this);
-		this.tags.add(tag);
+		if (tag != null)
+		{
+			tag.setContainer(this);
+			this.tags.add(tag);
+		}
 		return null;
 	}
 	
 	public void setTag(int index, NamedBinaryTag tag)
 	{
-		this.ensureSize(index + 1);
-		this.tags.set(index, tag);
+		if (tag != null)
+		{
+			this.ensureSize(index + 1);
+			this.tags.set(index, tag);
+		}
 	}
 	
 	@Override
@@ -250,7 +256,10 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		for (int i = 0; i < len; i++)
 		{
 			NamedBinaryTag value = this.tagAt(i);
-			value.write(output);
+			if (value != null)
+			{
+				value.write(output);
+			}
 		}
 		NBTHelper.END.write(output);
 	}
@@ -281,7 +290,10 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		for (int i = 0; i < len; i++)
 		{
 			value = this.tags.get(i);
-			sb.append(i).append(':').append(value.toString()).append(',');
+			if (value != null)
+			{
+				sb.append(i).append(':').append(value.writeString()).append(',');
+			}
 		}
 		sb.append(END);
 		
@@ -307,13 +319,21 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		
 		List<String> tags = NBTHelper.split(dataString, ',');
 		int len = tags.size();
-		this.ensureSize(len);
 		
 		for (int i = 0; i < len; i++)
 		{
 			String sub = tags.get(i);
 			NamedBinaryTag tag = NBTParser.createTag(sub);
-			int index = Integer.parseInt(tag.getName());
+			int index;
+			
+			try
+			{
+				index = Integer.parseInt(tag.getName());
+			}
+			catch (NumberFormatException ex)
+			{
+				index = this.size();
+			}
 			this.setTag(index, tag);
 		}
 	}

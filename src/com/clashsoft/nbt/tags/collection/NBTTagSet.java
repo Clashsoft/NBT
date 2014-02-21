@@ -197,7 +197,7 @@ public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBi
 		
 		for (NamedBinaryTag tag : this.tags)
 		{
-			sb.append(tag.toString()).append(',');
+			sb.append(tag.writeString()).append(',');
 		}
 		sb.append(END);
 		
@@ -212,7 +212,7 @@ public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBi
 	@Override
 	public void readString(String dataString)
 	{
-		int pos1 = dataString.indexOf(START) + 1;
+		int pos1 = dataString.indexOf(START) + 2;
 		int pos2 = dataString.lastIndexOf(END);
 		if (pos1 < 0 || pos2 < 0)
 		{
@@ -228,7 +228,6 @@ public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBi
 		{
 			String sub = tags.get(i);
 			NamedBinaryTag tag = NBTParser.createTag(sub);
-			int index = Integer.parseInt(tag.getName());
 			this.addTag(tag);
 		}
 	}

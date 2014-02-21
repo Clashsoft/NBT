@@ -107,6 +107,11 @@ public abstract class NamedBinaryTag
 	 */
 	public NamedBinaryTag(byte type, String name)
 	{
+		if (name == null)
+		{
+			name = "";
+		}
+		
 		this.type = type;
 		this.name = name;
 	}
