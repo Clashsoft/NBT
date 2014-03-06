@@ -9,16 +9,6 @@ import java.util.zip.GZIPOutputStream;
 
 public class FileCompressing
 {
-	public static NBTOutputStream outputStream(File file, boolean compressed) throws IOException
-	{
-		return new NBTOutputStream(file, compressed);
-	}
-	
-	public static NBTInputStream inputStream(File file, boolean compressed) throws IOException
-	{
-		return new NBTInputStream(file, compressed);
-	}
-	
 	public static File compressFile(File source, File dest)
 	{
 		byte[] buffer = new byte[1024];
@@ -59,7 +49,7 @@ public class FileCompressing
 				}
 				catch (IOException ex)
 				{
-					ex.printStackTrace();
+					;
 				}
 			}
 			if (in != null)
@@ -70,7 +60,7 @@ public class FileCompressing
 				}
 				catch (IOException ex)
 				{
-					ex.printStackTrace();
+					;
 				}
 			}
 		}
@@ -114,7 +104,7 @@ public class FileCompressing
 				}
 				catch (IOException ex)
 				{
-					ex.printStackTrace();
+					;
 				}
 			}
 			if (out != null)
@@ -125,7 +115,7 @@ public class FileCompressing
 				}
 				catch (IOException ex)
 				{
-					ex.printStackTrace();
+					;
 				}
 			}
 		}

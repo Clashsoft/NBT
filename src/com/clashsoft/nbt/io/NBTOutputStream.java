@@ -7,27 +7,34 @@ import com.clashsoft.nbt.util.NBTHelper;
 
 public class NBTOutputStream extends DataOutputStream
 {
+	protected ObjectOutputStream	objectOutput;
+	
 	public NBTOutputStream(OutputStream os)
 	{
 		super(os);
 	}
 	
-	public NBTOutputStream(File file, boolean compressed) throws IOException
+	public NBTOutputStream(File file, int flags) throws IOException
 	{
-		this(getStream(file, compressed));
+		this(getStream(file, flags));
 	}
 	
-	protected static OutputStream getStream(File file, boolean compressed) throws IOException
+	protected static OutputStream getStream(File file, int flags) throws IOException
 	{
-		FileOutputStream fos = new FileOutputStream(file);
-		if (compressed)
+		OutputStream output = new FileOutputStream(file);
+		if ((flags & NBTSerializer.BUFFERED) != 0)
 		{
-			return new GZIPOutputStream(fos);
+			output = new BufferedOutputStream(output);
 		}
-		else
+		if ((flags & NBTSerializer.COMPRESSED) != 0)
 		{
-			return fos;
+			output = new GZIPOutputStream(output);
 		}
+		if ((flags & NBTSerializer.BUFFERED2) != 0)
+		{
+			output = new BufferedOutputStream(output);
+		}
+		return output;
 	}
 	
 	/**
@@ -42,6 +49,20 @@ public class NBTOutputStream extends DataOutputStream
 			temp = Integer.MAX_VALUE;
 		}
 		this.written = temp;
+	}
+	
+	protected void initObjectOutput() throws IOException
+	{
+		if (this.objectOutput == null)
+		{
+			this.objectOutput = new ObjectOutputStream(this.out);
+		}
+	}
+	
+	public void writeObject(Object v) throws IOException
+	{
+		initObjectOutput();
+		this.objectOutput.writeObject(v);
 	}
 	
 	public void writeNibble(byte v) throws IOException

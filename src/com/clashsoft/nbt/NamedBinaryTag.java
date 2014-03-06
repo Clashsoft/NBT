@@ -304,13 +304,12 @@ public abstract class NamedBinaryTag
 	 * 
 	 * @param out
 	 *            the output file
-	 * @param compressed
-	 *            if the file should be compressed using GZIP
+	 * @param flags
 	 * @return true if successful
 	 */
-	public final boolean serialize(File out, boolean compressed)
+	public final boolean serialize(File out, int flags)
 	{
-		return NBTSerializer.serialize(this, out, compressed);
+		return NBTSerializer.serialize(this, out, flags);
 	}
 	
 	/**

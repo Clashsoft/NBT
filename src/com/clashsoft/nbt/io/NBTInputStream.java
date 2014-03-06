@@ -7,26 +7,51 @@ import com.clashsoft.nbt.util.NBTHelper;
 
 public class NBTInputStream extends DataInputStream
 {
+	protected ObjectInputStream	objectInput;
+	
 	public NBTInputStream(InputStream is)
 	{
 		super(is);
 	}
 	
-	public NBTInputStream(File file, boolean compressed) throws IOException
+	public NBTInputStream(File file, int flags) throws IOException
 	{
-		this(getStream(file, compressed));
+		this(getStream(file, flags));
 	}
 	
-	protected static InputStream getStream(File file, boolean compressed) throws IOException
+	protected static InputStream getStream(File file, int flags) throws IOException
 	{
-		FileInputStream fis = new FileInputStream(file);
-		if (compressed)
+		InputStream input = new FileInputStream(file);
+		if ((flags & NBTSerializer.BUFFERED) != 0)
 		{
-			return new GZIPInputStream(fis);
+			input = new BufferedInputStream(input);
 		}
-		else
+		if ((flags & NBTSerializer.COMPRESSED) != 0)
 		{
-			return fis;
+			input = new GZIPInputStream(input);
+		}
+		return input;
+	}
+	
+	protected void initObjectInput() throws IOException
+	{
+		if (this.objectInput == null)
+		{
+			this.objectInput = new ObjectInputStream(this.in);
+		}
+	}
+	
+	public Object readObject() throws IOException
+	{
+		this.initObjectInput();
+		try
+		{
+			return this.objectInput.readObject();
+		}
+		catch (ClassNotFoundException ex)
+		{
+			ex.printStackTrace();
+			return null;
 		}
 	}
 	
