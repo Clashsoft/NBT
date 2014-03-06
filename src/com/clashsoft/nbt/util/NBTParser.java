@@ -1,15 +1,15 @@
 package com.clashsoft.nbt.util;
 
 import static com.clashsoft.nbt.NamedBinaryTag.*;
-import static com.clashsoft.nbt.util.NBTHelper.*;
+import static com.clashsoft.nbt.util.NBTHelper.getClassFromType;
+import static com.clashsoft.nbt.util.NBTHelper.getTypeFromTypeName;
+import static com.clashsoft.nbt.util.NBTHelper.getTypeFromValue;
+import static com.clashsoft.nbt.util.NBTHelper.listToArray;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import com.clashsoft.nbt.NamedBinaryTag;
 import com.clashsoft.nbt.tags.collection.NBTTagArray;
@@ -41,7 +41,7 @@ public class NBTParser
 	
 	public static NamedBinaryTag createTag(String data)
 	{
-		String[] split = listToArray(split(data, ':'));
+		String[] split = listToArray(NBTHelper.split(data, ':'));
 		
 		String type = null;
 		String name = null;

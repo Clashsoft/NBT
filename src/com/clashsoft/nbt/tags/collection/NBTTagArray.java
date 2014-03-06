@@ -498,6 +498,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		if ("[]".equals(dataString))
 		{
 			this.length = 0;
+			return;
 		}
 		
 		int pos1 = dataString.indexOf('[') + 1;
@@ -517,7 +518,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		{
 			String sub = tags.get(i);
 			NamedBinaryTag tag = NBTParser.createTag(sub);
-			int index = Integer.parseInt(tag.getName());
+			int index = NBTHelper.parseInt(tag.getName(), i);
 			nbts[index] = tag;
 		}
 		
@@ -726,6 +727,14 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		this.array = booleanArray;
 		this.subtype = TYPE_BOOLEAN;
 		this.length = booleanArray.length;
+		return this;
+	}
+	
+	protected NBTTagArray setNibbleArray(byte[] nibbleArray)
+	{
+		this.array = nibbleArray;
+		this.subtype = TYPE_NIBBLE;
+		this.length = nibbleArray.length;
 		return this;
 	}
 	

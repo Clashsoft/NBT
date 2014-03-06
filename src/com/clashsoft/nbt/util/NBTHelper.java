@@ -25,6 +25,18 @@ public class NBTHelper
 		return f > i ? i + 1 : i;
 	}
 	
+	public static int parseInt(String string, int _default)
+	{
+		try
+		{
+			return Integer.parseInt(string);
+		}
+		catch (NumberFormatException ex)
+		{
+			return _default;
+		}
+	}
+	
 	public static byte getTypeFromValue(String value)
 	{
 		if (value == null)
@@ -134,6 +146,61 @@ public class NBTHelper
 		return list.toArray(new String[list.size()]);
 	}
 	
+	public static Class getClassFromType(byte type)
+	{
+		return TYPES[type & 255];
+	}
+	
+	public static byte getTypeFromClass(Class type)
+	{
+		for (int i = 0; i < 256; i++)
+		{
+			if (TYPES[i] == type)
+			{
+				return (byte) i;
+			}
+		}
+		return -1;
+	}
+	
+	public static String getTypeName(byte type)
+	{
+		Class clazz = getClassFromType(type);
+		if (clazz != null)
+		{
+			return clazz.getSimpleName().replace("NBTTag", "");
+		}
+		else
+		{
+			return "";
+		}
+	}
+	
+	public static byte getTypeFromTypeName(String name)
+	{
+		try
+		{
+			return Byte.parseByte(name);
+			// name is a number
+		}
+		catch (NumberFormatException ex)
+		{
+			// name is in name form
+		}
+		
+		name = name.toLowerCase();
+		
+		for (int i = 0; i < 256; i++)
+		{
+			String typeName = getTypeName((byte) i).toLowerCase();
+			if (typeName.startsWith(name))
+			{
+				return (byte) i;
+			}
+		}
+		return -1;
+	}
+	
 	public static List<String> split(String text, char split)
 	{
 		int len = text.length();
@@ -215,60 +282,5 @@ public class NBTHelper
 			i = i0;
 		}
 		return result;
-	}
-	
-	public static Class getClassFromType(byte type)
-	{
-		return TYPES[type & 255];
-	}
-	
-	public static byte getTypeFromClass(Class type)
-	{
-		for (int i = 0; i < 256; i++)
-		{
-			if (TYPES[i] == type)
-			{
-				return (byte) i;
-			}
-		}
-		return -1;
-	}
-	
-	public static String getTypeName(byte type)
-	{
-		Class clazz = getClassFromType(type);
-		if (clazz != null)
-		{
-			return clazz.getSimpleName().replace("NBTTag", "");
-		}
-		else
-		{
-			return "";
-		}
-	}
-	
-	public static byte getTypeFromTypeName(String name)
-	{
-		try
-		{
-			return Byte.parseByte(name);
-			// name is a number
-		}
-		catch (NumberFormatException ex)
-		{
-			// name is in name form
-		}
-		
-		name = name.toLowerCase();
-		
-		for (int i = 0; i < 256; i++)
-		{
-			String typeName = getTypeName((byte) i).toLowerCase();
-			if (typeName.startsWith(name))
-			{
-				return (byte) i;
-			}
-		}
-		return -1;
 	}
 }
