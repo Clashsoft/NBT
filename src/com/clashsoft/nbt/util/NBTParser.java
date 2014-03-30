@@ -32,7 +32,7 @@ public class NBTParser
 	public static String parseString(String name)
 	{
 		int len = name.length();
-		if (len >= 2 && name.startsWith("\"") && name.endsWith("\""))
+		if (len > 1 && name.startsWith("\"") && name.endsWith("\""))
 		{
 			return name.substring(1, len - 1);
 		}

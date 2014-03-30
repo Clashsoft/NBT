@@ -3,20 +3,24 @@ package com.clashsoft.nbt.io;
 import java.io.*;
 import java.util.zip.GZIPOutputStream;
 
+import com.clashsoft.nbt.NamedBinaryTag;
 import com.clashsoft.nbt.util.NBTHelper;
 
 public class NBTOutputStream extends DataOutputStream
 {
 	protected ObjectOutputStream	objectOutput;
+	protected final int				flags;
 	
 	public NBTOutputStream(OutputStream os)
 	{
 		super(os);
+		this.flags = -1;
 	}
 	
 	public NBTOutputStream(File file, int flags) throws IOException
 	{
-		this(getStream(file, flags));
+		super(getStream(file, flags));
+		this.flags = flags;
 	}
 	
 	protected static OutputStream getStream(File file, int flags) throws IOException
@@ -57,6 +61,34 @@ public class NBTOutputStream extends DataOutputStream
 		{
 			this.objectOutput = new ObjectOutputStream(this.out);
 		}
+	}
+	
+	/**
+	 * Writes this tag's data to an output stream. At first, the type is written
+	 * to the output stream as a byte value. If the type is not END, the tag
+	 * name and value are written to the output stream. The value is written by
+	 * the {@link NamedBinaryTag#writeValue(NBTOutputStream)} method.
+	 * 
+	 * @param output
+	 *            the output stream
+	 * @throws IOException
+	 *             if an exception occurred
+	 */
+	public void writeNBT(NamedBinaryTag nbt) throws IOException
+	{
+		byte type = nbt.getType();
+		this.writeByte(nbt.getType());
+		
+		if (type != NamedBinaryTag.TYPE_END)
+		{
+			this.writeUTF(nbt.getName());
+			nbt.writeValue(this);
+		}
+	}
+	
+	public void writeEnd() throws IOException
+	{
+		this.writeByte(NamedBinaryTag.TYPE_END);
 	}
 	
 	public void writeObject(Object v) throws IOException

@@ -297,7 +297,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			output.writeInt(len);
 			for (int i = 0; i < len; i++)
 			{
-				nbtArray[i].write(output);
+				output.writeNBT(nbtArray[i]);
 			}
 		}
 		else if (type == TYPE_BOOLEAN)
@@ -368,7 +368,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			NamedBinaryTag[] nbtArray = new NamedBinaryTag[len];
 			for (int i = 0; i < len; i++)
 			{
-				nbtArray[i] = NamedBinaryTag.read(input);
+				nbtArray[i] = input.readNBT();
 			}
 			this.array = nbtArray;
 		}

@@ -167,9 +167,9 @@ public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBi
 	{
 		for (NamedBinaryTag value : this.tags)
 		{
-			value.write(output);
+			output.writeNBT(value);
 		}
-		NBTHelper.END.write(output);
+		output.writeEnd();
 	}
 	
 	@Override
@@ -177,7 +177,7 @@ public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBi
 	{
 		while (true)
 		{
-			NamedBinaryTag nbt = NamedBinaryTag.read(input);
+			NamedBinaryTag nbt = input.readNBT();
 			
 			if (nbt == NBTHelper.END)
 			{

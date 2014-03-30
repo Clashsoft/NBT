@@ -3,20 +3,26 @@ package com.clashsoft.nbt.io;
 import java.io.*;
 import java.util.zip.GZIPInputStream;
 
+import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.tags.NBTTagEnd;
 import com.clashsoft.nbt.util.NBTHelper;
+import com.clashsoft.nbt.util.NBTParser;
 
 public class NBTInputStream extends DataInputStream
 {
 	protected ObjectInputStream	objectInput;
+	protected final int			flags;
 	
 	public NBTInputStream(InputStream is)
 	{
 		super(is);
+		this.flags = -1;
 	}
 	
 	public NBTInputStream(File file, int flags) throws IOException
 	{
-		this(getStream(file, flags));
+		super(getStream(file, flags));
+		this.flags = flags;
 	}
 	
 	protected static InputStream getStream(File file, int flags) throws IOException
@@ -30,6 +36,10 @@ public class NBTInputStream extends DataInputStream
 		{
 			input = new GZIPInputStream(input);
 		}
+		if ((flags & NBTSerializer.BUFFERED2) != 0)
+		{
+			input = new BufferedInputStream(input);
+		}
 		return input;
 	}
 	
@@ -39,6 +49,35 @@ public class NBTInputStream extends DataInputStream
 		{
 			this.objectInput = new ObjectInputStream(this.in);
 		}
+	}
+	
+	/**
+	 * Reads a new tag from this input stream. At first, a byte is read from
+	 * this input stream that represents the tag type. If the type is END, the
+	 * static {@link NBTTagEnd} instance {@link NBTHelper#END} is returned.
+	 * Otherwise, a UTF string is read from this input stream and set as the
+	 * name. Using the name and the type, a new tag object is created. Then the
+	 * object reads it's data from the input stream using the
+	 * {@link NamedBinaryTag#readValue(NBTInputStream)} method.
+	 * 
+	 * @param input
+	 *            the input stream
+	 * @throws IOException
+	 *             if an exception occurred
+	 * @return the new NBT object
+	 */
+	public NamedBinaryTag readNBT() throws IOException
+	{
+		byte type = this.readByte();
+		if (type == NamedBinaryTag.TYPE_END)
+		{
+			return NBTHelper.END;
+		}
+		
+		String name = this.readUTF();
+		NamedBinaryTag nbt = NBTParser.createFromType(name, type);
+		nbt.readValue(this);
+		return nbt;
 	}
 	
 	public Object readObject() throws IOException
@@ -94,8 +133,8 @@ public class NBTInputStream extends DataInputStream
 		{
 			int l = 1 << k;
 			bools[i] = (data[j] & l) != 0;
+			--k;
 			
-			k--;
 			if (k < 0)
 			{
 				j++;

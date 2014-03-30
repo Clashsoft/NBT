@@ -1,9 +1,5 @@
 package com.clashsoft.nbt;
 
-import static com.clashsoft.nbt.util.NBTParser.createFromType;
-
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
@@ -16,7 +12,6 @@ import com.clashsoft.nbt.tags.collection.*;
 import com.clashsoft.nbt.tags.data.*;
 import com.clashsoft.nbt.tags.primitive.*;
 import com.clashsoft.nbt.tags.string.NBTTagString;
-import com.clashsoft.nbt.util.NBTHelper;
 
 /**
  * The main superclass for all NBT classes. This class stores the name, the type
@@ -310,57 +305,5 @@ public abstract class NamedBinaryTag
 	public final boolean serialize(File out, int flags)
 	{
 		return NBTSerializer.serialize(this, out, flags);
-	}
-	
-	/**
-	 * Writes this tag's data to an output stream. At first, the type is written
-	 * to the output stream as a byte value. If the type is not END, the tag
-	 * name and value are written to the output stream. The value is written by
-	 * the {@link NamedBinaryTag#writeValue(DataOutput)} method.
-	 * 
-	 * @param output
-	 *            the output stream
-	 * @throws IOException
-	 *             if an exception occurred
-	 */
-	public final void write(NBTOutputStream output) throws IOException
-	{
-		output.writeByte(this.type);
-		
-		if (this.type != TYPE_END)
-		{
-			output.writeUTF(this.name);
-			this.writeValue(output);
-		}
-	}
-	
-	/**
-	 * Reads a new tag from an input stream. At first, a byte is read from the
-	 * input stream that represents the tag type. If the type is END, the static
-	 * {@link NBTTagEnd} instance {@link NBTHelper#END} is returned. Otherwise,
-	 * a UTF string is read from the input stream and set as the name. Using the
-	 * name and the type, a new tag object is created. Then the object reads
-	 * it's data from the input stream using the
-	 * {@link NBTTagCompound#readValue(DataInput)} method.
-	 * 
-	 * @param input
-	 *            the input stream
-	 * @throws IOException
-	 *             if an exception occurred
-	 * @return the new NBT object
-	 */
-	public static NamedBinaryTag read(NBTInputStream input) throws IOException
-	{
-		byte type = input.readByte();
-		
-		if (type == TYPE_END)
-		{
-			return NBTHelper.END;
-		}
-		
-		String name = input.readUTF();
-		NamedBinaryTag nbt = createFromType(name, type);
-		nbt.readValue(input);
-		return nbt;
 	}
 }

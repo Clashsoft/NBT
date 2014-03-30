@@ -83,9 +83,9 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 		for (String key : this.tags.keySet())
 		{
 			NamedBinaryTag value = this.tags.get(key);
-			value.write(output);
+			output.writeNBT(value);
 		}
-		NBTHelper.END.write(output);
+		output.writeEnd();
 	}
 	
 	@Override
@@ -93,7 +93,7 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 	{
 		while (true)
 		{
-			NamedBinaryTag nbt = NamedBinaryTag.read(input);
+			NamedBinaryTag nbt = input.readNBT();
 			
 			if (nbt == NBTHelper.END)
 			{
