@@ -245,7 +245,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		return new Iterator()
 		{
 			private Object	array	= NBTTagArray.this.array;
-			private int		len		= Array.getLength(this.array);
+			private int		len		= NBTTagArray.this.length;
 			private int		index	= 0;
 			
 			@Override
@@ -448,7 +448,27 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		byte type = this.subtype;
 		if (type == TYPE_NBT)
 		{
-			return Arrays.toString(this.getNBTArray());
+			NamedBinaryTag[] tags = (NamedBinaryTag[]) this.array;
+			
+			if (tags == null)
+				return "null";
+			int max = tags.length - 1;
+			if (max == -1)
+				return "[]";
+			
+			StringBuilder b = new StringBuilder();
+			b.append('[');
+			for (int i = 0;; i++)
+			{
+				b.append(tags[i].writeString());
+				if (i == max)
+				{
+					break;
+				}
+				b.append(',');
+			}
+			b.append(']');
+			return b.toString();
 		}
 		else if (type == TYPE_BOOLEAN)
 		{
@@ -518,8 +538,16 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 		{
 			String sub = tags.get(i);
 			NamedBinaryTag tag = NBTParser.createTag(sub);
-			int index = NBTHelper.parseInt(tag.getName(), i);
-			nbts[index] = tag;
+			
+			try
+			{
+				int index = NBTHelper.parseInt(tag.getName(), i);
+				nbts[index] = tag;
+			}
+			catch (NumberFormatException ex)
+			{
+				nbts[i] = tag;
+			}
 		}
 		
 		this.unwrap(nbts);

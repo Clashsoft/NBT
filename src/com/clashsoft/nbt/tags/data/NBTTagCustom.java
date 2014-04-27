@@ -42,7 +42,7 @@ public class NBTTagCustom extends NamedBinaryTag
 	@Override
 	public String writeString()
 	{
-		return String.format("${%s}$@%s", this.value.toString(), Integer.toHexString(System.identityHashCode(this.value)));
+		return String.format("${%s}$@%s", String.valueOf(this.value), Integer.toHexString(System.identityHashCode(this.value)));
 	}
 	
 	@Override
