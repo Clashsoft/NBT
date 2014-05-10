@@ -9,14 +9,14 @@ import com.clashsoft.nbt.NamedBinaryTag;
 
 public class NBTSerializer
 {
-	public static final int	VERSION					= 1;
+	public static final int	VERSION			= 1;
 	
-	public static final int STRING = -1;
-	public static final int BUFFERED = 1;
-	public static final int COMPRESSED = 2;
-	public static final int BUFFERED2 = 4;
+	public static final int	STRING			= -1;
+	public static final int	BUFFERED		= 1;
+	public static final int	COMPRESSED		= 2;
+	public static final int	BUFFERED2		= 4;
 	
-	public static final int DEFAULT_FLAGS = BUFFERED | COMPRESSED;
+	public static final int	DEFAULT_FLAGS	= BUFFERED | COMPRESSED;
 	
 	public static NBTOutputStream outputStream(File file, int flags) throws IOException
 	{
