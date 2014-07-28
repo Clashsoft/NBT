@@ -46,13 +46,13 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 		return this.getMap().keySet().iterator();
 	}
 	
-	protected NamedBinaryTag setTag(String name, NamedBinaryTag tag)
+	public NamedBinaryTag setTag(String name, NamedBinaryTag tag)
 	{
 		tag.setName(name);
 		return this.setTag(name, tag);
 	}
 	
-	protected NamedBinaryTag setTag(NamedBinaryTag tag)
+	public NamedBinaryTag setTag(NamedBinaryTag tag)
 	{
 		if (this instanceof NBTTagContainer)
 		{

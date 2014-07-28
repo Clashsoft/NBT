@@ -16,8 +16,8 @@ import com.clashsoft.nbt.util.NBTParser;
 
 public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBinaryTag>
 {
-	public static final String START = "<";
-	public static final String END = ">";
+	public static final String		START	= "<";
+	public static final String		END		= ">";
 	
 	protected Set<NamedBinaryTag>	tags;
 	
