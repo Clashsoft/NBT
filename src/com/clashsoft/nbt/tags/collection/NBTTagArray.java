@@ -149,13 +149,14 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	{
 		byte type = this.subtype;
 		int oldlen = this.length;
-		int newlen = this.length + 1;
+		int newlen = ++this.length;
 		if (type == TYPE_NBT)
 		{
 			NamedBinaryTag[] oldArray = this.getNBTArray();
 			NamedBinaryTag[] newArray = new NamedBinaryTag[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
 			newArray[oldlen] = tag;
+			this.array = newArray;
 		}
 		else if (type == TYPE_BOOLEAN)
 		{
@@ -163,6 +164,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			boolean[] newArray = new boolean[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
 			newArray[oldlen] = ((NBTTagBoolean) tag).getBool();
+			this.array = newArray;
 		}
 		else if (type == TYPE_BYTE || type == TYPE_NIBBLE)
 		{
@@ -170,6 +172,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			byte[] newArray = new byte[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
 			newArray[oldlen] = ((NBTTagNumber) tag).getByte();
+			this.array = newArray;
 		}
 		else if (type == TYPE_SHORT)
 		{
@@ -177,6 +180,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			short[] newArray = new short[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
 			newArray[oldlen] = ((NBTTagNumber) tag).getShort();
+			this.array = newArray;
 		}
 		else if (type == TYPE_CHAR)
 		{
@@ -184,6 +188,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			char[] newArray = new char[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
 			newArray[oldlen] = ((NBTTagChar) tag).getChar();
+			this.array = newArray;
 		}
 		else if (type == TYPE_INT || type == TYPE_MEDIUM)
 		{
@@ -191,6 +196,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			int[] newArray = new int[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
 			newArray[oldlen] = ((NBTTagNumber) tag).getInt();
+			this.array = newArray;
 		}
 		else if (type == TYPE_LONG)
 		{
@@ -198,6 +204,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			long[] newArray = new long[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
 			newArray[oldlen] = ((NBTTagNumber) tag).getLong();
+			this.array = newArray;
 		}
 		else if (type == TYPE_FLOAT)
 		{
@@ -205,6 +212,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			float[] newArray = new float[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
 			newArray[oldlen] = ((NBTTagNumber) tag).getFloat();
+			this.array = newArray;
 		}
 		else if (type == TYPE_DOUBLE)
 		{
@@ -212,6 +220,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			double[] newArray = new double[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
 			newArray[oldlen] = ((NBTTagNumber) tag).getDouble();
+			this.array = newArray;
 		}
 		else if (type == TYPE_STRING)
 		{
@@ -219,6 +228,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 			String[] newArray = new String[newlen];
 			System.arraycopy(oldArray, 0, newArray, 0, newlen);
 			newArray[oldlen] = ((NBTTagString) tag).getValue();
+			this.array = newArray;
 		}
 		return null;
 	}
@@ -279,7 +289,47 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	@Override
 	public void clear()
 	{
-		// TODO
+		byte type = this.subtype;
+		if (type == TYPE_NBT)
+		{
+			this.array = new NamedBinaryTag[0];
+		}
+		else if (type == TYPE_BOOLEAN)
+		{
+			this.array = new boolean[0];
+		}
+		else if (type == TYPE_BYTE || type == TYPE_NIBBLE)
+		{
+			this.array = new byte[0];
+		}
+		else if (type == TYPE_SHORT)
+		{
+			this.array = new short[0];
+		}
+		else if (type == TYPE_CHAR)
+		{
+			this.array = new char[0];
+		}
+		else if (type == TYPE_INT || type == TYPE_MEDIUM)
+		{
+			this.array = new int[0];
+		}
+		else if (type == TYPE_LONG)
+		{
+			this.array = new long[0];
+		}
+		else if (type == TYPE_FLOAT)
+		{
+			this.array = new float[0];
+		}
+		else if (type == TYPE_DOUBLE)
+		{
+			this.array = new double[0];
+		}
+		else if (type == TYPE_STRING)
+		{
+			this.array = new String[0];
+		}
 	}
 	
 	@Override
