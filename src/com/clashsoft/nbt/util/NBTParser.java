@@ -32,14 +32,14 @@ public class NBTParser
 	public static String parseString(String name)
 	{
 		int len = name.length();
-		if (len > 1 && name.startsWith("\"") && name.endsWith("\""))
+		if (len > 1 && name.charAt(0) == '"' && name.charAt(len - 1) == '"')
 		{
 			return name.substring(1, len - 1);
 		}
 		return name;
 	}
 	
-	public static NamedBinaryTag createTag(String data)
+	public static NamedBinaryTag createTag(String data) throws NBTParserException
 	{
 		String[] split = listToArray(NBTHelper.split(data, ':'));
 		
@@ -66,13 +66,13 @@ public class NBTParser
 		return createTag(type, name, value);
 	}
 	
-	public static NamedBinaryTag createTag(String type, String name, String value)
+	public static NamedBinaryTag createTag(String type, String name, String value) throws NBTParserException
 	{
 		byte t = type == null ? getTypeFromValue(value) : getTypeFromTypeName(type);
 		return createTag(t, name, value);
 	}
 	
-	public static NamedBinaryTag createTag(byte type, String name, String value)
+	public static NamedBinaryTag createTag(byte type, String name, String value) throws NBTParserException
 	{
 		NamedBinaryTag tag = createFromType(name, type);
 		tag.readString(value);

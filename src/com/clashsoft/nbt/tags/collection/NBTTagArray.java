@@ -15,6 +15,7 @@ import com.clashsoft.nbt.tags.primitive.NBTTagNumber;
 import com.clashsoft.nbt.tags.string.NBTTagString;
 import com.clashsoft.nbt.util.NBTHelper;
 import com.clashsoft.nbt.util.NBTParser;
+import com.clashsoft.nbt.util.NBTParserException;
 
 /**
  * A named binary tag representing an array with constant size.
@@ -563,7 +564,7 @@ public class NBTTagArray extends NamedBinaryTag implements NBTTagContainer
 	}
 	
 	@Override
-	public void readString(String dataString)
+	public void readString(String dataString) throws NBTParserException
 	{
 		if ("[]".equals(dataString))
 		{

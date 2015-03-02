@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.clashsoft.nbt.NamedBinaryTag;
 import com.clashsoft.nbt.io.NBTInputStream;
 import com.clashsoft.nbt.io.NBTOutputStream;
+import com.clashsoft.nbt.util.NBTParserException;
 
 public class NBTTagChar extends NamedBinaryTag implements NBTTagPrimitive
 {
@@ -100,8 +101,20 @@ public class NBTTagChar extends NamedBinaryTag implements NBTTagPrimitive
 	}
 	
 	@Override
-	public void readString(String dataString)
+	public void readString(String dataString) throws NBTParserException
 	{
-		this.value = dataString.charAt(1);
+		int len = dataString.length();
+		if (len == 3 && dataString.charAt(0) == '\'' && dataString.charAt(2) == '\'')
+		{
+			this.value = dataString.charAt(1);
+		}
+		else if (len == 1)
+		{
+			this.value = dataString.charAt(0);
+		}
+		else
+		{
+			throw new NBTParserException("Invalid Character Literal");
+		}
 	}
 }

@@ -10,6 +10,7 @@ import com.clashsoft.nbt.io.NBTInputStream;
 import com.clashsoft.nbt.io.NBTOutputStream;
 import com.clashsoft.nbt.util.NBTHelper;
 import com.clashsoft.nbt.util.NBTParser;
+import com.clashsoft.nbt.util.NBTParserException;
 
 public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<String>
 {
@@ -127,7 +128,7 @@ public abstract class NBTTagMap extends NamedBinaryTag implements Iterable<Strin
 	}
 	
 	@Override
-	public void readString(String dataString)
+	public void readString(String dataString) throws NBTParserException
 	{
 		int pos1 = dataString.indexOf(START) + 1;
 		int pos2 = dataString.lastIndexOf(END);

@@ -12,6 +12,7 @@ import com.clashsoft.nbt.tags.collection.*;
 import com.clashsoft.nbt.tags.data.*;
 import com.clashsoft.nbt.tags.primitive.*;
 import com.clashsoft.nbt.tags.string.NBTTagString;
+import com.clashsoft.nbt.util.NBTParserException;
 
 /**
  * The main superclass for all NBT classes. This class stores the name, the type
@@ -291,7 +292,7 @@ public abstract class NamedBinaryTag
 	 * @param the
 	 *            textual representation of this tag's value
 	 */
-	public abstract void readString(String dataString);
+	public abstract void readString(String dataString) throws NBTParserException;
 	
 	/**
 	 * Serializes this tag to an output file. If the {@code compressed} flag is

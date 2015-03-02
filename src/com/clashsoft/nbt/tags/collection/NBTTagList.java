@@ -13,6 +13,7 @@ import com.clashsoft.nbt.tags.primitive.*;
 import com.clashsoft.nbt.tags.string.NBTTagString;
 import com.clashsoft.nbt.util.NBTHelper;
 import com.clashsoft.nbt.util.NBTParser;
+import com.clashsoft.nbt.util.NBTParserException;
 
 public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedBinaryTag>
 {
@@ -306,7 +307,7 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 	}
 	
 	@Override
-	public void readString(String dataString)
+	public void readString(String dataString) throws NBTParserException
 	{
 		int pos1 = dataString.indexOf(START) + 1;
 		int pos2 = dataString.lastIndexOf(END);

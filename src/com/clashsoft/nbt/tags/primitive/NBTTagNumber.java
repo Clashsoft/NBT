@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.clashsoft.nbt.NamedBinaryTag;
 import com.clashsoft.nbt.io.NBTInputStream;
 import com.clashsoft.nbt.io.NBTOutputStream;
+import com.clashsoft.nbt.util.NBTParserException;
 
 public abstract class NBTTagNumber extends NamedBinaryTag implements NBTTagPrimitive
 {
@@ -43,10 +44,17 @@ public abstract class NBTTagNumber extends NamedBinaryTag implements NBTTagPrimi
 	}
 	
 	@Override
-	public void readString(String dataString)
+	public void readString(String dataString) throws NBTParserException
 	{
-		int pos = dataString.indexOf(this.getPostfix());
-		this.readNumber(pos == -1 ? dataString : dataString.substring(0, pos));
+		try
+		{
+			int pos = dataString.indexOf(this.getPostfix());
+			this.readNumber(pos == -1 ? dataString : dataString.substring(0, pos));
+		}
+		catch (Exception ex)
+		{
+			throw new NBTParserException("Failed to parse Number", ex);
+		}
 	}
 	
 	public abstract void writeNumber(NBTOutputStream output) throws IOException;
