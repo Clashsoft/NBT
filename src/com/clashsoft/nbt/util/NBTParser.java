@@ -6,10 +6,12 @@ import static com.clashsoft.nbt.util.NBTHelper.getTypeFromTypeName;
 import static com.clashsoft.nbt.util.NBTHelper.getTypeFromValue;
 import static com.clashsoft.nbt.util.NBTHelper.listToArray;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.clashsoft.nbt.NamedBinaryTag;
 import com.clashsoft.nbt.tags.collection.NBTTagArray;
@@ -19,7 +21,6 @@ import com.clashsoft.nbt.tags.collection.NBTTagSet;
 import com.clashsoft.nbt.tags.data.NBTTagClass;
 import com.clashsoft.nbt.tags.data.NBTTagDate;
 import com.clashsoft.nbt.tags.data.NBTTagFile;
-import com.clashsoft.nbt.tags.data.NBTTagImage;
 import com.clashsoft.nbt.tags.primitive.*;
 import com.clashsoft.nbt.tags.string.NBTTagString;
 
@@ -166,10 +167,6 @@ public class NBTParser
 		{
 			return new NBTTagDate(tagName, (Date) value);
 		}
-		else if (value instanceof BufferedImage)
-		{
-			return new NBTTagImage(tagName, (BufferedImage) value);
-		}
 		else if (value instanceof Class)
 		{
 			return new NBTTagClass(tagName, (Class) value);
@@ -246,10 +243,6 @@ public class NBTParser
 		else if (type == TYPE_DATE)
 		{
 			return new NBTTagDate(name);
-		}
-		else if (type == TYPE_IMAGE)
-		{
-			return new NBTTagImage(name);
 		}
 		else if (type == TYPE_CLASS)
 		{
