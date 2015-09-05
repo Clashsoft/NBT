@@ -41,22 +41,22 @@ public class NBTTagImage extends NamedBinaryTag
 		if (img == null)
 		{
 			output.writeInt(-1);
+			return;
 		}
-		else
+		
+		int t = img.getType();
+		int w = img.getWidth();
+		int h = img.getHeight();
+		
+		output.writeInt(t);
+		output.writeInt(w);
+		output.writeInt(h);
+		
+		for (int i = 0; i < w; i++)
 		{
-			int t = img.getType();
-			int w = img.getWidth();
-			int h = img.getHeight();
-			
-			output.writeInt(w);
-			output.writeInt(h);
-			
-			for (int i = 0; i < w; i++)
+			for (int j = 0; j < h; j++)
 			{
-				for (int j = 0; j < h; j++)
-				{
-					output.writeInt(img.getRGB(i, j));
-				}
+				output.writeInt(img.getRGB(i, j));
 			}
 		}
 	}
@@ -66,7 +66,7 @@ public class NBTTagImage extends NamedBinaryTag
 	{
 		int t = input.readInt();
 		
-		if (t > 0)
+		if (t >= 0)
 		{
 			int w = input.readInt();
 			int h = input.readInt();

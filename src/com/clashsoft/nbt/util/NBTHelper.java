@@ -13,7 +13,7 @@ import com.clashsoft.nbt.tags.collection.NBTTagSet;
 
 public class NBTHelper
 {
-	public static final NBTTagEnd	END	= new NBTTagEnd();
+	public static final NBTTagEnd END = new NBTTagEnd();
 	
 	private NBTHelper()
 	{
@@ -170,10 +170,8 @@ public class NBTHelper
 		{
 			return clazz.getSimpleName().replace("NBTTag", "");
 		}
-		else
-		{
-			return "";
-		}
+		
+		return "";
 	}
 	
 	public static byte getTypeFromTypeName(String name)

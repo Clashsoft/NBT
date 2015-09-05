@@ -194,7 +194,6 @@ public class NBTTagSet extends NamedBinaryTag implements NBTTagContainer<NamedBi
 	{
 		int len = this.tags.size();
 		StringBuilder sb = new StringBuilder(len << 6).append(START);
-		NamedBinaryTag value;
 		
 		for (NamedBinaryTag tag : this.tags)
 		{

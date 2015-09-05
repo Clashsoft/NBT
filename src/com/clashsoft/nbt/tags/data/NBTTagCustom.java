@@ -48,20 +48,5 @@ public class NBTTagCustom extends NamedBinaryTag
 	@Override
 	public void readString(String dataString)
 	{
-		int i = dataString.lastIndexOf('}');
-		if (i != -1)
-		{
-			String value = dataString.substring(2, i);
-			String hashString = dataString.substring(i + 3);
-			int hash;
-			try
-			{
-				hash = Integer.parseInt(hashString, 16);
-			}
-			catch (NumberFormatException ex)
-			{
-				hash = 0;
-			}
-		}
 	}
 }

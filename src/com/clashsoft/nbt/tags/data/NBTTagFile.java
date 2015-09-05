@@ -36,7 +36,7 @@ public class NBTTagFile extends NamedBinaryTag
 	@Override
 	public void writeValue(NBTOutputStream output) throws IOException
 	{
-		output.writeUTF(this.writeString());
+		output.writeUTF(this.file == null ? "" : this.file.getPath());
 	}
 	
 	@Override
@@ -56,14 +56,6 @@ public class NBTTagFile extends NamedBinaryTag
 	@Override
 	public void readString(String dataString)
 	{
-		dataString = dataString.substring(5);
-		if ("null".equals(dataString))
-		{
-			this.file = null;
-		}
-		else
-		{
-			this.file = new File(dataString);
-		}
+		this.file = dataString.isEmpty() ? null : new File(dataString);
 	}
 }

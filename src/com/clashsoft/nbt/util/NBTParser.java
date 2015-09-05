@@ -131,10 +131,8 @@ public class NBTParser
 			{
 				return new NBTTagNibble(tagName, b);
 			}
-			else
-			{
-				return new NBTTagByte(tagName, b);
-			}
+			
+			return new NBTTagByte(tagName, b);
 		}
 		else if (value instanceof Short)
 		{

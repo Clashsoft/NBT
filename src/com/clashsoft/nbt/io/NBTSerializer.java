@@ -106,12 +106,12 @@ public class NBTSerializer
 		}
 	}
 	
-	public static void readHeader(DataInput input) throws IOException
+	private static void readHeader(DataInput input) throws IOException
 	{
-		int ver = input.readInt();
+		input.readInt();
 	}
 	
-	public static void writeHeader(DataOutput output) throws IOException
+	private static void writeHeader(DataOutput output) throws IOException
 	{
 		output.writeInt(VERSION);
 	}
