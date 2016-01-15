@@ -3,4 +3,10 @@ bin/*
 .settings/org.eclipse.jdt.core.prefs
 .project
 .classpath
-/bin
+bin/
+build/
+.gradle/
+
+NBT.iml
+NBT.ipr
+NBT.iws
