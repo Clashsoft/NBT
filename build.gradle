@@ -3,7 +3,7 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'wrapper'
 
-version = '0.1'
+version = '0.2.0'
 jar.baseName = 'nbt'
 
 sourceSets {
