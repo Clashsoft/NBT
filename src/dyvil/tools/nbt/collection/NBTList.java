@@ -60,7 +60,7 @@ public class NBTList extends NamedBinaryTag implements Iterable<NamedBinaryTag>
 		return this.tags.iterator();
 	}
 
-	public NamedBinaryTag get(int index)
+	public NamedBinaryTag getTag(int index)
 	{
 		return this.tags.get(index);
 	}
@@ -70,7 +70,7 @@ public class NBTList extends NamedBinaryTag implements Iterable<NamedBinaryTag>
 		this.tags.clear();
 	}
 
-	public void add(NamedBinaryTag tag)
+	public void addTag(NamedBinaryTag tag)
 	{
 		this.tags.add(tag);
 	}
@@ -107,85 +107,85 @@ public class NBTList extends NamedBinaryTag implements Iterable<NamedBinaryTag>
 	@Deprecated
 	public void addBoolean(boolean value)
 	{
-		this.add(new NBTBoolean(value));
+		this.addTag(new NBTBoolean(value));
 	}
 
 	@Deprecated
 	public void addNibble(byte value)
 	{
-		this.add(new NBTNibble(value));
+		this.addTag(new NBTNibble(value));
 	}
 
 	@Deprecated
 	public void addByte(byte value)
 	{
-		this.add(new NBTByte(value));
+		this.addTag(new NBTByte(value));
 	}
 
 	@Deprecated
 	public void addShort(short value)
 	{
-		this.add(new NBTShort(value));
+		this.addTag(new NBTShort(value));
 	}
 
 	@Deprecated
 	public void addChar(char value)
 	{
-		this.add(new NBTChar(value));
+		this.addTag(new NBTChar(value));
 	}
 
 	@Deprecated
 	public void addMedium(int value)
 	{
-		this.add(new NBTMedium(value));
+		this.addTag(new NBTMedium(value));
 	}
 
 	@Deprecated
 	public void addInteger(int value)
 	{
-		this.add(new NBTInteger(value));
+		this.addTag(new NBTInteger(value));
 	}
 
 	@Deprecated
 	public void addLong(long value)
 	{
-		this.add(new NBTLong(value));
+		this.addTag(new NBTLong(value));
 	}
 
 	@Deprecated
 	public void addFloat(float value)
 	{
-		this.add(new NBTFloat(value));
+		this.addTag(new NBTFloat(value));
 	}
 
 	@Deprecated
 	public void addDouble(double value)
 	{
-		this.add(new NBTDouble(value));
+		this.addTag(new NBTDouble(value));
 	}
 
 	@Deprecated
 	public void addString(String value)
 	{
-		this.add(new NBTString(value));
+		this.addTag(new NBTString(value));
 	}
 
 	@Deprecated
 	public void addTagList(NBTList list)
 	{
-		this.add(list);
+		this.addTag(list);
 	}
 
 	@Deprecated
 	public void addTagCompound(NBTMap compound)
 	{
-		this.add(compound);
+		this.addTag(compound);
 	}
 
 	@Deprecated
 	public void addTagArray(NBTArray array)
 	{
-		this.add(array);
+		this.addTag(array);
 	}
 
 	public static <T> NBTList fromArray(T[] args)
@@ -197,7 +197,7 @@ public class NBTList extends NamedBinaryTag implements Iterable<NamedBinaryTag>
 			final NamedBinaryTag tag = NBTParser.wrap(arg);
 			if (tag != null)
 			{
-				list.add(tag);
+				list.addTag(tag);
 			}
 		}
 
@@ -213,7 +213,7 @@ public class NBTList extends NamedBinaryTag implements Iterable<NamedBinaryTag>
 			final NamedBinaryTag tag = NBTParser.wrap(arg);
 			if (tag != null)
 			{
-				list.add(tag);
+				list.addTag(tag);
 			}
 		}
 
@@ -226,7 +226,7 @@ public class NBTList extends NamedBinaryTag implements Iterable<NamedBinaryTag>
 		T[] array = (T[]) Array.newInstance(arrayType, len);
 		for (int i = 0; i < len; i++)
 		{
-			array[i] = (T) this.get(i).getValue();
+			array[i] = (T) this.getTag(i).getValue();
 		}
 		return array;
 	}
@@ -242,7 +242,7 @@ public class NBTList extends NamedBinaryTag implements Iterable<NamedBinaryTag>
 		int len = this.size();
 		for (int i = 0; i < len; i++)
 		{
-			NamedBinaryTag value = this.get(i);
+			NamedBinaryTag value = this.getTag(i);
 			if (value != null)
 			{
 				output.writeNBT(value);
@@ -262,7 +262,7 @@ public class NBTList extends NamedBinaryTag implements Iterable<NamedBinaryTag>
 				return;
 			}
 
-			this.add(nbt);
+			this.addTag(nbt);
 		}
 	}
 

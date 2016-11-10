@@ -53,92 +53,16 @@ public class NBTMap extends NamedBinaryTag implements Iterable<String>
 		return this.getValue().keySet().iterator();
 	}
 
-	public void setTag(String name, NamedBinaryTag tag)
-	{
-		this.tags.put(name, tag);
-	}
-
 	public boolean hasTag(String name)
 	{
 		return this.tags.containsKey(name);
 	}
 
+	// Getters
+
 	public NamedBinaryTag getTag(String name)
 	{
 		return this.tags.get(name);
-	}
-
-	public void setBoolean(String name, boolean value)
-	{
-		this.setTag(name, new NBTBoolean(value));
-	}
-
-	public void setNibble(String name, byte value)
-	{
-		this.setTag(name, new NBTNibble(value));
-	}
-
-	public void setByte(String name, byte value)
-	{
-		this.setTag(name, new NBTByte(value));
-	}
-
-	public void setShort(String name, short value)
-	{
-		this.setTag(name, new NBTShort(value));
-	}
-
-	public void setChar(String name, char value)
-	{
-		this.setTag(name, new NBTInteger(value));
-	}
-
-	public void setMedium(String name, int value)
-	{
-		this.setTag(name, new NBTMedium(value));
-	}
-
-	public void setInteger(String name, int value)
-	{
-		this.setTag(name, new NBTInteger(value));
-	}
-
-	public void setLong(String name, long value)
-	{
-		this.setTag(name, new NBTLong(value));
-	}
-
-	public void setFloat(String name, float value)
-	{
-		this.setTag(name, new NBTFloat(value));
-	}
-
-	public void setDouble(String name, double value)
-	{
-		this.setTag(name, new NBTDouble(value));
-	}
-
-	public void setString(String name, String value)
-	{
-		this.setTag(name, new NBTString(value));
-	}
-
-	@Deprecated
-	public void setTagList(String name, NBTList list)
-	{
-		this.setTag(name, list);
-	}
-
-	@Deprecated
-	public void setTagCompound(String name, NBTMap compound)
-	{
-		this.setTag(name, compound);
-	}
-
-	@Deprecated
-	public void setTagArray(String name, NBTArray array)
-	{
-		this.setTag(name, array);
 	}
 
 	public boolean getBoolean(String name)
@@ -229,6 +153,88 @@ public class NBTMap extends NamedBinaryTag implements Iterable<String>
 		return tag instanceof NBTArray ? (NBTArray) tag : null;
 	}
 
+	// Setters
+
+	public void setTag(String name, NamedBinaryTag tag)
+	{
+		this.tags.put(name, tag);
+	}
+
+	public void setBoolean(String name, boolean value)
+	{
+		this.setTag(name, new NBTBoolean(value));
+	}
+
+	public void setNibble(String name, byte value)
+	{
+		this.setTag(name, new NBTNibble(value));
+	}
+
+	public void setByte(String name, byte value)
+	{
+		this.setTag(name, new NBTByte(value));
+	}
+
+	public void setShort(String name, short value)
+	{
+		this.setTag(name, new NBTShort(value));
+	}
+
+	public void setChar(String name, char value)
+	{
+		this.setTag(name, new NBTInteger(value));
+	}
+
+	public void setMedium(String name, int value)
+	{
+		this.setTag(name, new NBTMedium(value));
+	}
+
+	public void setInteger(String name, int value)
+	{
+		this.setTag(name, new NBTInteger(value));
+	}
+
+	public void setLong(String name, long value)
+	{
+		this.setTag(name, new NBTLong(value));
+	}
+
+	public void setFloat(String name, float value)
+	{
+		this.setTag(name, new NBTFloat(value));
+	}
+
+	public void setDouble(String name, double value)
+	{
+		this.setTag(name, new NBTDouble(value));
+	}
+
+	public void setString(String name, String value)
+	{
+		this.setTag(name, new NBTString(value));
+	}
+
+	@Deprecated
+	public void setTagList(String name, NBTList list)
+	{
+		this.setTag(name, list);
+	}
+
+	@Deprecated
+	public void setTagCompound(String name, NBTMap compound)
+	{
+		this.setTag(name, compound);
+	}
+
+	@Deprecated
+	public void setTagArray(String name, NBTArray array)
+	{
+		this.setTag(name, array);
+	}
+
+	// Serialization, Equality, toString
+
 	@Override
 	public boolean valueEquals(NamedBinaryTag that)
 	{
@@ -238,10 +244,14 @@ public class NBTMap extends NamedBinaryTag implements Iterable<String>
 	@Override
 	public void writeValue(NBTOutputStream output) throws IOException
 	{
-		for (String key : this.tags.keySet())
+		for (Map.Entry<String, NamedBinaryTag> entry : this.tags.entrySet())
 		{
-			NamedBinaryTag value = this.tags.get(key);
-			output.writeNBT(value);
+			final NamedBinaryTag nbt = entry.getValue();
+
+			output.writeByte(nbt.getType());
+			output.writeString(entry.getKey());
+
+			nbt.writeValue(output);
 		}
 		output.writeEnd();
 	}

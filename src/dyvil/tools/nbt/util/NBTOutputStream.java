@@ -124,18 +124,18 @@ public class NBTOutputStream extends DataOutputStream
 		final byte[] data = new byte[byteCount];
 
 		this.writeInt(size);
-		for (int i = 0, j = 0, k = 7; i < size; i++)
+		for (int boolIndex = 0, byteIndex = 0, bitIndex = 7; boolIndex < size; boolIndex++)
 		{
-			if (v[i])
+			if (v[boolIndex])
 			{
-				data[j] |= 1 << k;
+				data[byteIndex] |= 1 << bitIndex;
 			}
-			--k;
+			--bitIndex;
 
-			if (k < 0)
+			if (bitIndex < 0)
 			{
-				j++;
-				k = 7;
+				byteIndex++;
+				bitIndex = 7;
 			}
 		}
 		this.out.write(data);
@@ -150,16 +150,16 @@ public class NBTOutputStream extends DataOutputStream
 		final byte[] data = new byte[byteCount];
 
 		this.writeInt(size);
-		for (int i = 0, j = 0, k = 1; i < size; i++)
+		for (int nibbleIndex = 0, byteIndex = 0, bitIndex = 1; nibbleIndex < size; nibbleIndex++)
 		{
-			int k1 = k << 2;
-			data[j] |= v[i] << k1;
-			--k;
+			int k1 = bitIndex << 2;
+			data[byteIndex] |= v[nibbleIndex] << k1;
+			--bitIndex;
 
-			if (k < 0)
+			if (bitIndex < 0)
 			{
-				j++;
-				k = 1;
+				byteIndex++;
+				bitIndex = 1;
 			}
 		}
 		this.out.write(data);

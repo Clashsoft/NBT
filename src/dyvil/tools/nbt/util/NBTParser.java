@@ -46,7 +46,7 @@ public class NBTParser
 
 			for (Object element : list)
 			{
-				tagList.add(wrap(element));
+				tagList.addTag(wrap(element));
 			}
 
 			return tagList;
