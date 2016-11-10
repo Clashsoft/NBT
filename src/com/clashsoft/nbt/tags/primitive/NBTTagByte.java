@@ -1,94 +1,88 @@
 package com.clashsoft.nbt.tags.primitive;
 
-import java.io.IOException;
-
 import com.clashsoft.nbt.io.NBTInputStream;
 import com.clashsoft.nbt.io.NBTOutputStream;
 
+import java.io.IOException;
+
 public class NBTTagByte extends NBTTagNumber
 {
-	protected byte	value;
-	
-	public NBTTagByte(String name)
+	protected byte value;
+
+	public NBTTagByte(byte value)
 	{
-		this(name, (byte) 0);
-	}
-	
-	public NBTTagByte(String name, byte value)
-	{
-		super(TYPE_BYTE, name);
 		this.value = value;
 	}
-	
+
+	@Override
+	public byte getType()
+	{
+		return TYPE_BYTE;
+	}
+
 	@Override
 	public Byte getValue()
 	{
-		return Byte.valueOf(this.getByte());
+		return this.value;
 	}
-	
+
 	@Override
 	public byte getByte()
 	{
 		return this.value;
 	}
-	
+
 	@Override
 	public short getShort()
 	{
 		return this.value;
 	}
-	
+
 	@Override
 	public char getChar()
 	{
 		return (char) this.value;
 	}
-	
+
 	@Override
 	public int getInt()
 	{
 		return this.value;
 	}
-	
+
 	@Override
 	public long getLong()
 	{
 		return this.value;
 	}
-	
+
 	@Override
 	public float getFloat()
 	{
 		return this.value;
 	}
-	
+
 	@Override
 	public double getDouble()
 	{
 		return this.value;
 	}
-	
+
 	@Override
 	public char getPostfix()
 	{
 		return 'B';
 	}
-	
+
 	@Override
 	public void writeNumber(NBTOutputStream output) throws IOException
 	{
 		output.writeByte(this.value);
 	}
-	
+
 	@Override
 	public void readNumber(NBTInputStream input) throws IOException
 	{
 		this.value = input.readByte();
-	}
-	
-	@Override
-	public void readNumber(String number)
-	{
-		this.value = Byte.parseByte(number);
 	}
 }

@@ -1,250 +1,291 @@
 package com.clashsoft.nbt.tags.collection;
 
-import java.util.Map;
-
 import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
 import com.clashsoft.nbt.tags.primitive.*;
 import com.clashsoft.nbt.tags.string.NBTTagString;
+import com.clashsoft.nbt.util.NBTParser;
 
-public class NBTTagCompound extends NBTTagMap implements NBTTagContainer<String>
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+public class NBTTagCompound extends NamedBinaryTag implements Iterable<String>
 {
-	public NBTTagCompound(String name)
+	protected Map<String, NamedBinaryTag> tags;
+
+	public NBTTagCompound()
 	{
-		super(TYPE_COMPOUND, name);
+		this(new HashMap<>());
 	}
-	
-	public NBTTagCompound(String name, Map<String, NamedBinaryTag> tags)
+
+	public NBTTagCompound(Map<String, NamedBinaryTag> tags)
 	{
-		super(TYPE_COMPOUND, name, tags);
+		this.tags = tags;
 	}
-	
+
+	@Override
+	public byte getType()
+	{
+		return TYPE_COMPOUND;
+	}
+
 	@Override
 	public Map<String, NamedBinaryTag> getValue()
 	{
 		return this.tags;
 	}
-	
-	@Override
-	public NamedBinaryTag addTag(NamedBinaryTag tag)
-	{
-		return this.setTag(tag);
-	}
-	
-	@Override
-	public void removeTag(NamedBinaryTag tag)
-	{
-		this.tags.remove(tag.getName());
-	}
-	
-	@Override
-	public boolean canAddTag(String name)
-	{
-		return !this.hasTag(name);
-	}
-	
-	@Override
+
 	public int size()
 	{
 		return this.tags.size();
 	}
-	
-	@Override
+
 	public void clear()
 	{
 		this.tags.clear();
 	}
-	
+
+	@Override
+	public Iterator<String> iterator()
+	{
+		return this.getValue().keySet().iterator();
+	}
+
+	public void setTag(String name, NamedBinaryTag tag)
+	{
+		this.tags.put(name, tag);
+	}
+
+	public boolean hasTag(String name)
+	{
+		return this.tags.containsKey(name);
+	}
+
+	public NamedBinaryTag getTag(String name)
+	{
+		return this.tags.get(name);
+	}
+
 	public void setBoolean(String name, boolean value)
 	{
-		this.setTag(new NBTTagBoolean(name, value));
+		this.setTag(name, new NBTTagBoolean(value));
 	}
-	
+
 	public void setNibble(String name, byte value)
 	{
-		this.setTag(new NBTTagNibble(name, value));
+		this.setTag(name, new NBTTagNibble(value));
 	}
-	
+
 	public void setByte(String name, byte value)
 	{
-		this.setTag(new NBTTagByte(name, value));
+		this.setTag(name, new NBTTagByte(value));
 	}
-	
+
 	public void setShort(String name, short value)
 	{
-		this.setTag(new NBTTagShort(name, value));
+		this.setTag(name, new NBTTagShort(value));
 	}
-	
+
 	public void setChar(String name, char value)
 	{
-		this.setTag(new NBTTagInteger(name, value));
+		this.setTag(name, new NBTTagInteger(value));
 	}
-	
+
 	public void setMedium(String name, int value)
 	{
-		this.setTag(new NBTTagMedium(name, value));
+		this.setTag(name, new NBTTagMedium(value));
 	}
-	
+
 	public void setInteger(String name, int value)
 	{
-		this.setTag(new NBTTagInteger(name, value));
+		this.setTag(name, new NBTTagInteger(value));
 	}
-	
+
 	public void setLong(String name, long value)
 	{
-		this.setTag(new NBTTagLong(name, value));
+		this.setTag(name, new NBTTagLong(value));
 	}
-	
+
 	public void setFloat(String name, float value)
 	{
-		this.setTag(new NBTTagFloat(name, value));
+		this.setTag(name, new NBTTagFloat(value));
 	}
-	
+
 	public void setDouble(String name, double value)
 	{
-		this.setTag(new NBTTagDouble(name, value));
+		this.setTag(name, new NBTTagDouble(value));
 	}
-	
+
 	public void setString(String name, String value)
 	{
-		this.setTag(new NBTTagString(name, value));
+		this.setTag(name, new NBTTagString(value));
 	}
-	
-	public void setTagList(NBTTagList list)
+
+	@Deprecated
+	public void setTagList(String name, NBTTagList list)
 	{
-		this.setTag(list);
+		this.setTag(name, list);
 	}
-	
-	public void setTagSet(NBTTagSet set)
+
+	@Deprecated
+	public void setTagCompound(String name, NBTTagCompound compound)
 	{
-		this.setTag(set);
+		this.setTag(name, compound);
 	}
-	
-	public void setTagCompound(NBTTagCompound compound)
+
+	@Deprecated
+	public void setTagArray(String name, NBTTagArray array)
 	{
-		this.setTag(compound);
+		this.setTag(name, array);
 	}
-	
-	public void setTagArray(NBTTagArray array)
-	{
-		this.setTag(array);
-	}
-	
+
 	public boolean getBoolean(String name)
 	{
 		NBTTagPrimitive tag = this.getPrimitiveTag(name);
-		return tag != null ? tag.getBool() : false;
+		return tag != null && tag.getBool();
 	}
-	
+
 	public byte getNibble(String name)
 	{
 		return (byte) (this.getByte(name) & 0xF);
 	}
-	
+
 	public byte getByte(String name)
 	{
 		NBTTagPrimitive tag = this.getPrimitiveTag(name);
 		return tag != null ? tag.getByte() : 0;
 	}
-	
+
 	public short getShort(String name)
 	{
 		NBTTagPrimitive tag = this.getPrimitiveTag(name);
 		return tag != null ? tag.getShort() : 0;
 	}
-	
+
 	public char getChar(String name)
 	{
 		NBTTagPrimitive tag = this.getPrimitiveTag(name);
 		return tag != null ? tag.getChar() : 0;
 	}
-	
+
 	public int getMedium(String name)
 	{
 		return this.getInteger(name) & 0xFFFFFF;
 	}
-	
+
 	public int getInteger(String name)
 	{
 		NBTTagPrimitive tag = this.getPrimitiveTag(name);
 		return tag != null ? tag.getInt() : 0;
 	}
-	
+
 	public long getLong(String name)
 	{
 		NBTTagPrimitive tag = this.getPrimitiveTag(name);
 		return tag != null ? tag.getLong() : 0L;
 	}
-	
+
 	public float getFloat(String name)
 	{
 		NBTTagPrimitive tag = this.getPrimitiveTag(name);
 		return tag != null ? tag.getFloat() : 0F;
 	}
-	
+
 	public double getDouble(String name)
 	{
 		NBTTagPrimitive tag = this.getPrimitiveTag(name);
 		return tag != null ? tag.getDouble() : 0D;
 	}
-	
+
 	public String getString(String name)
 	{
-		try
-		{
-			NBTTagString tag = (NBTTagString) this.getTag(name);
-			return tag != null ? tag.getString() : "";
-		}
-		catch (ClassCastException ex)
-		{
-			return "";
-		}
+		final NamedBinaryTag tag = this.getTag(name);
+		return tag instanceof NBTTagString ? ((NBTTagString) tag).getString() : "";
 	}
-	
+
 	public NBTTagPrimitive getPrimitiveTag(String name)
 	{
-		try
-		{
-			return (NBTTagPrimitive) this.getTag(name);
-		}
-		catch (ClassCastException ex)
-		{
-			return null;
-		}
+		final NamedBinaryTag tag = this.getTag(name);
+		return tag instanceof NBTTagPrimitive ? (NBTTagPrimitive) tag : null;
 	}
-	
+
 	public NBTTagList getTagList(String name)
 	{
-		try
-		{
-			return (NBTTagList) this.getTag(name);
-		}
-		catch (ClassCastException ex)
-		{
-			return new NBTTagList(name);
-		}
+		final NamedBinaryTag tag = this.getTag(name);
+		return tag instanceof NBTTagList ? (NBTTagList) tag : null;
 	}
-	
+
 	public NBTTagCompound getTagCompound(String name)
 	{
-		try
-		{
-			return (NBTTagCompound) this.getTag(name);
-		}
-		catch (ClassCastException ex)
-		{
-			return new NBTTagCompound(name);
-		}
+		final NamedBinaryTag tag = this.getTag(name);
+		return tag instanceof NBTTagCompound ? (NBTTagCompound) tag : null;
 	}
-	
+
 	public NBTTagArray getTagArray(String name)
 	{
-		try
+		final NamedBinaryTag tag = this.getTag(name);
+		return tag instanceof NBTTagArray ? (NBTTagArray) tag : null;
+	}
+
+	@Override
+	public boolean valueEquals(NamedBinaryTag that)
+	{
+		return this.tags.equals(((NBTTagCompound) that).getValue());
+	}
+
+	@Override
+	public void writeValue(NBTOutputStream output) throws IOException
+	{
+		for (String key : this.tags.keySet())
 		{
-			return (NBTTagArray) this.getTag(name);
+			NamedBinaryTag value = this.tags.get(key);
+			output.writeNBT(value);
 		}
-		catch (ClassCastException ex)
+		output.writeEnd();
+	}
+
+	@Override
+	public void readValue(NBTInputStream input) throws IOException
+	{
+		while (true)
 		{
-			return new NBTTagArray(name);
+			final byte tag = input.readByte();
+			if (tag == TYPE_END)
+			{
+				return;
+			}
+
+			final String name = input.readString();
+			final NamedBinaryTag nbt = NBTParser.createFromType(tag);
+			if (nbt != null)
+			{
+				nbt.readValue(input);
+				this.setTag(name, nbt);
+			}
+		}
+	}
+
+	@Override
+	public void toString(String indent, StringBuilder buffer)
+	{
+		int len = this.tags.size();
+		buffer.append("{ ");
+
+		for (Map.Entry<String, NamedBinaryTag> entry : this.getValue().entrySet())
+		{
+			buffer.append(entry.getKey()).append(": ").append(", ");
+		}
+
+		if (len > 0)
+		{
+			buffer.replace(buffer.length() - 2, buffer.length() - 1, " }");
+		}
+		else
+		{
+			buffer.append('}');
 		}
 	}
 }

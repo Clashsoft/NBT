@@ -1,262 +1,249 @@
 package com.clashsoft.nbt.tags.collection;
 
+import com.clashsoft.nbt.NamedBinaryTag;
+import com.clashsoft.nbt.io.NBTInputStream;
+import com.clashsoft.nbt.io.NBTOutputStream;
+import com.clashsoft.nbt.tags.primitive.*;
+import com.clashsoft.nbt.tags.string.NBTTagString;
+import com.clashsoft.nbt.util.NBTParser;
+
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.clashsoft.nbt.NamedBinaryTag;
-import com.clashsoft.nbt.io.NBTInputStream;
-import com.clashsoft.nbt.io.NBTOutputStream;
-import com.clashsoft.nbt.tags.primitive.*;
-import com.clashsoft.nbt.tags.string.NBTTagString;
-import com.clashsoft.nbt.util.NBTHelper;
-import com.clashsoft.nbt.util.NBTParser;
-import com.clashsoft.nbt.util.NBTParserException;
-
-public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedBinaryTag>
+public class NBTTagList extends NamedBinaryTag implements Iterable<NamedBinaryTag>
 {
-	public static final String		START	= "(";
-	public static final String		END		= ")";
-	
-	private List<NamedBinaryTag>	tags;
-	
-	public NBTTagList(String name)
+	private List<NamedBinaryTag> tags;
+
+	public NBTTagList()
 	{
-		this(name, 10);
+		this(10);
 	}
-	
-	public NBTTagList(String name, int capacity)
+
+	public NBTTagList(int capacity)
 	{
-		this(name, new ArrayList(capacity));
+		this(new ArrayList<>(capacity));
 	}
-	
-	public NBTTagList(String name, List<NamedBinaryTag> tags)
+
+	public NBTTagList(List<NamedBinaryTag> tags)
 	{
-		super(TYPE_LIST, name);
 		this.tags = tags;
 	}
-	
+
+	@Override
+	public byte getType()
+	{
+		return TYPE_LIST;
+	}
+
 	@Override
 	public List<NamedBinaryTag> getValue()
 	{
 		return this.tags;
 	}
-	
+
 	@Override
 	public boolean valueEquals(NamedBinaryTag that)
 	{
 		return this.tags.equals(((NBTTagList) that).tags);
 	}
-	
-	@Override
-	public NamedBinaryTag addTag(NamedBinaryTag tag)
-	{
-		if (tag != null)
-		{
-			tag.setContainer(this);
-			this.tags.add(tag);
-		}
-		return null;
-	}
-	
-	public void setTag(int index, NamedBinaryTag tag)
-	{
-		if (tag != null)
-		{
-			this.ensureSize(index + 1);
-			this.tags.set(index, tag);
-		}
-	}
-	
-	@Override
-	public void removeTag(NamedBinaryTag tag)
-	{
-		this.tags.remove(tag);
-	}
-	
-	public NamedBinaryTag removeTag(int index)
-	{
-		return this.tags.remove(index);
-	}
-	
-	@Override
-	public boolean canAddTag(String name)
-	{
-		return true;
-	}
-	
-	@Override
-	public Iterator iterator()
-	{
-		return this.tags.iterator();
-	}
-	
-	@Override
+
 	public int size()
 	{
 		return this.tags.size();
 	}
-	
+
 	@Override
+	public Iterator<NamedBinaryTag> iterator()
+	{
+		return this.tags.iterator();
+	}
+
+	public NamedBinaryTag get(int index)
+	{
+		return this.tags.get(index);
+	}
+
 	public void clear()
 	{
 		this.tags.clear();
 	}
-	
-	public NamedBinaryTag tagAt(int index)
+
+	public void add(NamedBinaryTag tag)
 	{
-		return this.tags.get(index);
+		this.tags.add(tag);
 	}
-	
+
+	public void setTag(int index, NamedBinaryTag tag)
+	{
+		this.ensureSize(index + 1);
+		this.tags.set(index, tag);
+	}
+
+	public void remove(NamedBinaryTag tag)
+	{
+		this.tags.remove(tag);
+	}
+
+	public NamedBinaryTag removeAt(int index)
+	{
+		return this.tags.remove(index);
+	}
+
 	public int indexOf(NamedBinaryTag nbt)
 	{
 		return this.tags.indexOf(nbt);
 	}
-	
+
 	private void ensureSize(int size)
 	{
-		List tags = this.tags;
-		
-		if (tags instanceof ArrayList)
+		if (this.tags instanceof ArrayList)
 		{
-			((ArrayList) tags).ensureCapacity(size);
-		}
-		while (tags.size() < size)
-		{
-			tags.add(null);
+			((ArrayList) this.tags).ensureCapacity(size);
 		}
 	}
-	
-	public void addBoolean(String name, boolean value)
+
+	@Deprecated
+	public void addBoolean(boolean value)
 	{
-		this.addTag(new NBTTagBoolean(name, value));
+		this.add(new NBTTagBoolean(value));
 	}
-	
-	public void addNibble(String name, byte value)
+
+	@Deprecated
+	public void addNibble(byte value)
 	{
-		this.addTag(new NBTTagNibble(name, value));
+		this.add(new NBTTagNibble(value));
 	}
-	
-	public void addByte(String name, byte value)
+
+	@Deprecated
+	public void addByte(byte value)
 	{
-		this.addTag(new NBTTagByte(name, value));
+		this.add(new NBTTagByte(value));
 	}
-	
-	public void addShort(String name, short value)
+
+	@Deprecated
+	public void addShort(short value)
 	{
-		this.addTag(new NBTTagShort(name, value));
+		this.add(new NBTTagShort(value));
 	}
-	
-	public void addChar(String name, char value)
+
+	@Deprecated
+	public void addChar(char value)
 	{
-		this.addTag(new NBTTagChar(name, value));
+		this.add(new NBTTagChar(value));
 	}
-	
-	public void addMedium(String name, int value)
+
+	@Deprecated
+	public void addMedium(int value)
 	{
-		this.addTag(new NBTTagMedium(name, value));
+		this.add(new NBTTagMedium(value));
 	}
-	
-	public void addInteger(String name, int value)
+
+	@Deprecated
+	public void addInteger(int value)
 	{
-		this.addTag(new NBTTagInteger(name, value));
+		this.add(new NBTTagInteger(value));
 	}
-	
-	public void addLong(String name, long value)
+
+	@Deprecated
+	public void addLong(long value)
 	{
-		this.addTag(new NBTTagLong(name, value));
+		this.add(new NBTTagLong(value));
 	}
-	
-	public void addFloat(String name, float value)
+
+	@Deprecated
+	public void addFloat(float value)
 	{
-		this.addTag(new NBTTagFloat(name, value));
+		this.add(new NBTTagFloat(value));
 	}
-	
-	public void addDouble(String name, double value)
+
+	@Deprecated
+	public void addDouble(double value)
 	{
-		this.addTag(new NBTTagDouble(name, value));
+		this.add(new NBTTagDouble(value));
 	}
-	
-	public void addString(String name, String value)
+
+	@Deprecated
+	public void addString(String value)
 	{
-		this.addTag(new NBTTagString(name, value));
+		this.add(new NBTTagString(value));
 	}
-	
+
+	@Deprecated
 	public void addTagList(NBTTagList list)
 	{
-		this.addTag(list);
+		this.add(list);
 	}
-	
-	public void addTagSet(NBTTagSet set)
-	{
-		this.addTag(set);
-	}
-	
+
+	@Deprecated
 	public void addTagCompound(NBTTagCompound compound)
 	{
-		this.addTag(compound);
+		this.add(compound);
 	}
-	
+
+	@Deprecated
 	public void addTagArray(NBTTagArray array)
 	{
-		this.addTag(array);
+		this.add(array);
 	}
-	
-	public static <T> NBTTagList fromArray(String name, T[] args)
+
+	public static <T> NBTTagList fromArray(T[] args)
 	{
-		NBTTagList list = new NBTTagList(name, args.length);
-		for (int i = 0; i < args.length; i++)
+		final NBTTagList list = new NBTTagList(args.length);
+
+		for (T arg : args)
 		{
-			String tagName = name + i;
-			NamedBinaryTag base = NBTParser.wrap(tagName, args[i]);
-			if (base != null)
+			final NamedBinaryTag tag = NBTParser.wrap(arg);
+			if (tag != null)
 			{
-				list.addTag(base);
+				list.add(tag);
 			}
 		}
+
 		return list;
 	}
-	
-	public static NBTTagList fromList(String name, List args)
+
+	public static NBTTagList fromList(List<?> args)
 	{
-		NBTTagList list = new NBTTagList(name, args.size());
-		for (int i = 0; i < args.size(); i++)
+		final NBTTagList list = new NBTTagList(args.size());
+
+		for (Object arg : args)
 		{
-			String tagName = name + i;
-			NamedBinaryTag base = NBTParser.wrap(tagName, args.get(i));
-			if (base != null)
+			final NamedBinaryTag tag = NBTParser.wrap(arg);
+			if (tag != null)
 			{
-				list.addTag(base);
+				list.add(tag);
 			}
 		}
+
 		return list;
 	}
-	
+
 	public <T> T[] toArray(Class<T> arrayType)
 	{
 		int len = this.size();
 		T[] array = (T[]) Array.newInstance(arrayType, len);
 		for (int i = 0; i < len; i++)
 		{
-			array[i] = (T) this.tagAt(i).getValue();
+			array[i] = (T) this.get(i).getValue();
 		}
 		return array;
 	}
-	
+
 	public <T> T[] toArray()
 	{
 		return (T[]) this.tags.toArray();
 	}
-	
+
 	@Override
 	public void writeValue(NBTOutputStream output) throws IOException
 	{
 		int len = this.size();
 		for (int i = 0; i < len; i++)
 		{
-			NamedBinaryTag value = this.tagAt(i);
+			NamedBinaryTag value = this.get(i);
 			if (value != null)
 			{
 				output.writeNBT(value);
@@ -264,78 +251,41 @@ public class NBTTagList extends NamedBinaryTag implements NBTTagContainer<NamedB
 		}
 		output.writeEnd();
 	}
-	
+
 	@Override
 	public void readValue(NBTInputStream input) throws IOException
 	{
 		while (true)
 		{
-			NamedBinaryTag nbt = input.readNBT();
-			
-			if (nbt == NBTHelper.END)
+			final NamedBinaryTag nbt = input.readNBT();
+			if (nbt == null)
 			{
-				break;
+				return;
 			}
-			
-			this.addTag(nbt);
+
+			this.add(nbt);
 		}
 	}
-	
+
 	@Override
-	public String writeString()
+	public void toString(String indent, StringBuilder buffer)
 	{
-		int len = this.tags.size();
-		StringBuilder sb = new StringBuilder(len << 6).append(START);
-		NamedBinaryTag value;
-		
-		for (int i = 0; i < len; i++)
+		final int size = this.tags.size();
+		if (size == 0)
 		{
-			value = this.tags.get(i);
-			if (value != null)
-			{
-				sb.append(i).append(':').append(value.writeString()).append(',');
-			}
-		}
-		sb.append(END);
-		
-		if (len > 0)
-		{
-			sb.deleteCharAt(sb.length() - 2);
-		}
-		
-		return sb.toString();
-	}
-	
-	@Override
-	public void readString(String dataString) throws NBTParserException
-	{
-		int pos1 = dataString.indexOf(START) + 1;
-		int pos2 = dataString.lastIndexOf(END);
-		if (pos1 < 0 || pos2 < 0)
-		{
+			buffer.append("[]");
 			return;
 		}
-		
-		dataString = dataString.substring(pos1, pos2);
-		
-		List<String> tags = NBTHelper.split(dataString, ',');
-		int len = tags.size();
-		
-		for (int i = 0; i < len; i++)
+
+		buffer.append("[ ");
+
+		this.tags.get(0).toString(indent, buffer);
+		for (int i = 1; i < size; i++)
 		{
-			String sub = tags.get(i);
-			NamedBinaryTag tag = NBTParser.createTag(sub);
-			int index;
-			
-			try
-			{
-				index = Integer.parseInt(tag.getName());
-			}
-			catch (NumberFormatException ex)
-			{
-				index = this.size();
-			}
-			this.setTag(index, tag);
+			buffer.append(", ");
+			this.tags.get(i).toString(indent, buffer);
 		}
+
+		buffer.append(" ]");
 	}
 }

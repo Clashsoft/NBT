@@ -1,28 +1,28 @@
 package com.clashsoft.nbt.io;
 
+import com.clashsoft.nbt.NamedBinaryTag;
+
 import java.io.*;
 import java.util.zip.GZIPOutputStream;
 
-import com.clashsoft.nbt.NamedBinaryTag;
-import com.clashsoft.nbt.util.NBTHelper;
-
+@SuppressWarnings("PointlessBitwiseExpression")
 public class NBTOutputStream extends DataOutputStream
 {
-	protected ObjectOutputStream	objectOutput;
-	protected final int				flags;
-	
+	protected       ObjectOutputStream objectOutput;
+	protected final int                flags;
+
 	public NBTOutputStream(OutputStream os)
 	{
 		super(os);
 		this.flags = -1;
 	}
-	
+
 	public NBTOutputStream(File file, int flags) throws IOException
 	{
 		super(getStream(file, flags));
 		this.flags = flags;
 	}
-	
+
 	protected static OutputStream getStream(File file, int flags) throws IOException
 	{
 		OutputStream output = new FileOutputStream(file);
@@ -40,7 +40,7 @@ public class NBTOutputStream extends DataOutputStream
 		}
 		return output;
 	}
-	
+
 	/**
 	 * Increases the written counter by the specified value until it reaches
 	 * Integer.MAX_VALUE.
@@ -54,7 +54,7 @@ public class NBTOutputStream extends DataOutputStream
 		}
 		this.written = temp;
 	}
-	
+
 	protected void initObjectOutput() throws IOException
 	{
 		if (this.objectOutput == null)
@@ -62,47 +62,47 @@ public class NBTOutputStream extends DataOutputStream
 			this.objectOutput = new ObjectOutputStream(this.out);
 		}
 	}
-	
+
 	/**
 	 * Writes this tag's data to an output stream. At first, the type is written
 	 * to the output stream as a byte value. If the type is not END, the tag
 	 * name and value are written to the output stream. The value is written by
 	 * the {@link NamedBinaryTag#writeValue(NBTOutputStream)} method.
-	 * 
-	 * @param output
-	 *            the output stream
+	 *
+	 * @param nbt
+	 * 	the tag to serialize
+	 *
 	 * @throws IOException
-	 *             if an exception occurred
+	 * 	if an exception occurred
 	 */
 	public void writeNBT(NamedBinaryTag nbt) throws IOException
 	{
 		byte type = nbt.getType();
 		this.writeByte(nbt.getType());
-		
+
 		if (type != NamedBinaryTag.TYPE_END)
 		{
-			this.writeUTF(nbt.getName());
 			nbt.writeValue(this);
 		}
 	}
-	
+
 	public void writeEnd() throws IOException
 	{
 		this.writeByte(NamedBinaryTag.TYPE_END);
 	}
-	
+
 	public void writeObject(Object v) throws IOException
 	{
-		initObjectOutput();
+		this.initObjectOutput();
 		this.objectOutput.writeObject(v);
 	}
-	
+
 	public void writeNibble(byte v) throws IOException
 	{
 		this.out.write(v & 0xF);
 		this.incCount(1);
 	}
-	
+
 	public void writeMedium(int v) throws IOException
 	{
 		this.out.write(v >>> 16 & 0xFF);
@@ -110,27 +110,28 @@ public class NBTOutputStream extends DataOutputStream
 		this.out.write(v >>> 0 & 0xFF);
 		this.incCount(3);
 	}
-	
+
 	public void writeString(String str) throws IOException
 	{
 		this.writeUTF(str);
 	}
-	
+
 	public void writeBooleanArray(boolean[] v) throws IOException
 	{
-		int len = v.length;
-		int len1 = NBTHelper.ceil(len / 8F);
-		byte[] data = new byte[len1];
-		
-		this.writeInt(len);
-		for (int i = 0, j = 0, k = 7; i < len; i++)
+		final int size = v.length;
+		final int byteCount = NBTInputStream.ceilDiv(size, 8);
+
+		final byte[] data = new byte[byteCount];
+
+		this.writeInt(size);
+		for (int i = 0, j = 0, k = 7; i < size; i++)
 		{
 			if (v[i])
 			{
 				data[j] |= 1 << k;
 			}
 			--k;
-			
+
 			if (k < 0)
 			{
 				j++;
@@ -138,22 +139,23 @@ public class NBTOutputStream extends DataOutputStream
 			}
 		}
 		this.out.write(data);
-		this.incCount(len1);
+		this.incCount(byteCount);
 	}
-	
+
 	public void writeNibbleArray(byte[] v) throws IOException
 	{
-		int len = v.length;
-		int len1 = NBTHelper.ceil(len / 2F);
-		byte[] data = new byte[len1];
-		
-		this.writeInt(len);
-		for (int i = 0, j = 0, k = 1; i < len; i++)
+		final int size = v.length;
+		final int byteCount = NBTInputStream.ceilDiv(size, 2);
+
+		final byte[] data = new byte[byteCount];
+
+		this.writeInt(size);
+		for (int i = 0, j = 0, k = 1; i < size; i++)
 		{
 			int k1 = k << 2;
 			data[j] |= v[i] << k1;
 			--k;
-			
+
 			if (k < 0)
 			{
 				j++;
@@ -161,83 +163,77 @@ public class NBTOutputStream extends DataOutputStream
 			}
 		}
 		this.out.write(data);
-		this.incCount(len1);
+		this.incCount(byteCount);
 	}
-	
+
 	public void writeByteArray(byte[] v) throws IOException
 	{
-		int len = v.length;
-		this.writeInt(len);
-		for (int i = 0; i < len; i++)
+		int size = v.length;
+		this.writeInt(size);
+		for (byte b : v)
 		{
-			byte b = v[i];
 			this.out.write(b);
 		}
-		this.incCount(len);
+		this.incCount(size);
 	}
-	
+
 	public void writeShortArray(short[] v) throws IOException
 	{
-		int len = v.length;
-		this.writeInt(len);
-		for (int i = 0; i < len; i++)
+		int size = v.length;
+		this.writeInt(size);
+		for (short s : v)
 		{
-			short s = v[i];
 			this.out.write(s >>> 8 & 0xFF);
 			this.out.write(s >>> 0 & 0xFF);
 		}
-		this.incCount(len * 2);
+		this.incCount(size * 2);
 	}
-	
+
 	public void writeCharArray(char[] v) throws IOException
 	{
-		int len = v.length;
-		this.writeInt(len);
-		for (int i = 0; i < len; i++)
+		int size = v.length;
+		this.writeInt(size);
+		for (char c : v)
 		{
-			int c = v[i];
 			this.out.write(c >>> 8 & 0xFF);
 			this.out.write(c >>> 0 & 0xFF);
 		}
-		this.incCount(len * 2);
+		this.incCount(size * 2);
 	}
-	
+
 	public void writeMediumArray(int[] v) throws IOException
 	{
-		int len = v.length;
-		this.writeInt(len);
-		for (int i = 0; i < len; i++)
+		int size = v.length;
+		this.writeInt(size);
+		for (int m : v)
 		{
-			int m = v[i];
 			this.out.write(m >>> 16 & 0xFF);
 			this.out.write(m >>> 8 & 0xFF);
 			this.out.write(m >>> 0 & 0xFF);
 		}
-		this.incCount(len * 3);
+		this.incCount(size * 3);
 	}
-	
+
 	public void writeIntArray(int[] v) throws IOException
 	{
-		int len = v.length;
-		this.writeInt(len);
-		for (int i = 0; i < len; i++)
+		int size = v.length;
+		this.writeInt(size);
+		for (int j : v)
 		{
-			int j = v[i];
 			this.out.write(j >>> 24 & 0xFF);
 			this.out.write(j >>> 16 & 0xFF);
 			this.out.write(j >>> 8 & 0xFF);
 			this.out.write(j >>> 0 & 0xFF);
 		}
-		this.incCount(len * 4);
+		this.incCount(size * 4);
 	}
-	
+
 	public void writeLongArray(long[] v) throws IOException
 	{
-		int len = v.length;
-		this.writeInt(len);
-		for (int i = 0; i < len; i++)
+		int size = v.length;
+		this.writeInt(size);
+		for (long l : v)
 		{
-			long l = v[i];
 			this.out.write((int) (l >>> 56L & 0xFF));
 			this.out.write((int) (l >>> 48L & 0xFF));
 			this.out.write((int) (l >>> 40 & 0xFF));
@@ -247,31 +243,31 @@ public class NBTOutputStream extends DataOutputStream
 			this.out.write((int) (l >>> 8L & 0xFF));
 			this.out.write((int) (l >>> 0L & 0xFF));
 		}
-		this.incCount(len * 8);
+		this.incCount(size * 8);
 	}
-	
+
 	public void writeFloatArray(float[] v) throws IOException
 	{
-		int len = v.length;
-		this.writeInt(len);
-		for (int i = 0; i < len; i++)
+		int size = v.length;
+		this.writeInt(size);
+		for (float aV : v)
 		{
-			int j = Float.floatToIntBits(v[i]);
+			int j = Float.floatToIntBits(aV);
 			this.out.write(j >>> 24 & 0xFF);
 			this.out.write(j >>> 16 & 0xFF);
 			this.out.write(j >>> 8 & 0xFF);
 			this.out.write(j >>> 0 & 0xFF);
 		}
-		this.incCount(len * 4);
+		this.incCount(size * 4);
 	}
-	
+
 	public void writeDoubleArray(double[] v) throws IOException
 	{
-		int len = v.length;
-		this.writeInt(len);
-		for (int i = 0; i < len; i++)
+		int size = v.length;
+		this.writeInt(size);
+		for (double aV : v)
 		{
-			long l = Double.doubleToLongBits(v[i]);
+			long l = Double.doubleToLongBits(aV);
 			this.out.write((int) (l >>> 56L & 0xFF));
 			this.out.write((int) (l >>> 48L & 0xFF));
 			this.out.write((int) (l >>> 40 & 0xFF));
@@ -281,16 +277,15 @@ public class NBTOutputStream extends DataOutputStream
 			this.out.write((int) (l >>> 8L & 0xFF));
 			this.out.write((int) (l >>> 0L & 0xFF));
 		}
-		this.incCount(len * 8);
+		this.incCount(size * 8);
 	}
-	
+
 	public void writeStringArray(String[] v) throws IOException
 	{
-		int len = v.length;
-		this.writeInt(len);
-		for (int i = 0; i < len; i++)
+		int size = v.length;
+		this.writeInt(size);
+		for (String s : v)
 		{
-			String s = v[i];
 			this.writeString(s);
 		}
 	}

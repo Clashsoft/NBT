@@ -4,7 +4,7 @@ import com.clashsoft.nbt.tags.collection.NBTTagCompound;
 
 public interface INBTSaveable
 {
-	public void writeToNBT(NBTTagCompound nbt);
-	
-	public void readFromNBT(NBTTagCompound nbt);
+	void writeToNBT(NBTTagCompound nbt);
+
+	void readFromNBT(NBTTagCompound nbt);
 }
