@@ -1,13 +1,12 @@
-package com.clashsoft.nbt;
+package dyvil.tools.nbt;
 
-import com.clashsoft.nbt.io.NBTInputStream;
-import com.clashsoft.nbt.io.NBTOutputStream;
-import com.clashsoft.nbt.io.NBTSerializer;
-import com.clashsoft.nbt.tags.collection.NBTTagArray;
-import com.clashsoft.nbt.tags.collection.NBTTagCompound;
-import com.clashsoft.nbt.tags.collection.NBTTagList;
-import com.clashsoft.nbt.tags.primitive.*;
-import com.clashsoft.nbt.tags.string.NBTTagString;
+import dyvil.tools.nbt.collection.NBTArray;
+import dyvil.tools.nbt.collection.NBTList;
+import dyvil.tools.nbt.collection.NBTMap;
+import dyvil.tools.nbt.primitive.*;
+import dyvil.tools.nbt.util.NBTInputStream;
+import dyvil.tools.nbt.util.NBTOutputStream;
+import dyvil.tools.nbt.util.NBTSerializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,21 +42,21 @@ public abstract class NamedBinaryTag
 
 	static
 	{
-		TYPES[TYPE_COMPOUND] = NBTTagCompound.class;
-		TYPES[TYPE_LIST] = NBTTagList.class;
-		TYPES[TYPE_ARRAY] = NBTTagArray.class;
+		TYPES[TYPE_COMPOUND] = NBTMap.class;
+		TYPES[TYPE_LIST] = NBTList.class;
+		TYPES[TYPE_ARRAY] = NBTArray.class;
 
-		TYPES[TYPE_BOOLEAN] = NBTTagBoolean.class;
-		TYPES[TYPE_NIBBLE] = NBTTagNibble.class;
-		TYPES[TYPE_BYTE] = NBTTagByte.class;
-		TYPES[TYPE_SHORT] = NBTTagShort.class;
-		TYPES[TYPE_CHAR] = NBTTagChar.class;
-		TYPES[TYPE_MEDIUM] = NBTTagMedium.class;
-		TYPES[TYPE_INT] = NBTTagInteger.class;
-		TYPES[TYPE_LONG] = NBTTagLong.class;
-		TYPES[TYPE_FLOAT] = NBTTagFloat.class;
-		TYPES[TYPE_DOUBLE] = NBTTagDouble.class;
-		TYPES[TYPE_STRING] = NBTTagString.class;
+		TYPES[TYPE_BOOLEAN] = NBTBoolean.class;
+		TYPES[TYPE_NIBBLE] = NBTNibble.class;
+		TYPES[TYPE_BYTE] = NBTByte.class;
+		TYPES[TYPE_SHORT] = NBTShort.class;
+		TYPES[TYPE_CHAR] = NBTChar.class;
+		TYPES[TYPE_MEDIUM] = NBTMedium.class;
+		TYPES[TYPE_INT] = NBTInteger.class;
+		TYPES[TYPE_LONG] = NBTLong.class;
+		TYPES[TYPE_FLOAT] = NBTFloat.class;
+		TYPES[TYPE_DOUBLE] = NBTDouble.class;
+		TYPES[TYPE_STRING] = NBTString.class;
 	}
 
 	/**

@@ -1,11 +1,10 @@
-package com.clashsoft.nbt.tags.collection;
+package dyvil.tools.nbt.collection;
 
-import com.clashsoft.nbt.NamedBinaryTag;
-import com.clashsoft.nbt.io.NBTInputStream;
-import com.clashsoft.nbt.io.NBTOutputStream;
-import com.clashsoft.nbt.tags.primitive.*;
-import com.clashsoft.nbt.tags.string.NBTTagString;
-import com.clashsoft.nbt.util.NBTParser;
+import dyvil.tools.nbt.NamedBinaryTag;
+import dyvil.tools.nbt.primitive.*;
+import dyvil.tools.nbt.util.NBTInputStream;
+import dyvil.tools.nbt.util.NBTOutputStream;
+import dyvil.tools.nbt.util.NBTParser;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -13,21 +12,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class NBTTagList extends NamedBinaryTag implements Iterable<NamedBinaryTag>
+public class NBTList extends NamedBinaryTag implements Iterable<NamedBinaryTag>
 {
 	private List<NamedBinaryTag> tags;
 
-	public NBTTagList()
+	public NBTList()
 	{
 		this(10);
 	}
 
-	public NBTTagList(int capacity)
+	public NBTList(int capacity)
 	{
 		this(new ArrayList<>(capacity));
 	}
 
-	public NBTTagList(List<NamedBinaryTag> tags)
+	public NBTList(List<NamedBinaryTag> tags)
 	{
 		this.tags = tags;
 	}
@@ -47,7 +46,7 @@ public class NBTTagList extends NamedBinaryTag implements Iterable<NamedBinaryTa
 	@Override
 	public boolean valueEquals(NamedBinaryTag that)
 	{
-		return this.tags.equals(((NBTTagList) that).tags);
+		return this.tags.equals(((NBTList) that).tags);
 	}
 
 	public int size()
@@ -108,90 +107,90 @@ public class NBTTagList extends NamedBinaryTag implements Iterable<NamedBinaryTa
 	@Deprecated
 	public void addBoolean(boolean value)
 	{
-		this.add(new NBTTagBoolean(value));
+		this.add(new NBTBoolean(value));
 	}
 
 	@Deprecated
 	public void addNibble(byte value)
 	{
-		this.add(new NBTTagNibble(value));
+		this.add(new NBTNibble(value));
 	}
 
 	@Deprecated
 	public void addByte(byte value)
 	{
-		this.add(new NBTTagByte(value));
+		this.add(new NBTByte(value));
 	}
 
 	@Deprecated
 	public void addShort(short value)
 	{
-		this.add(new NBTTagShort(value));
+		this.add(new NBTShort(value));
 	}
 
 	@Deprecated
 	public void addChar(char value)
 	{
-		this.add(new NBTTagChar(value));
+		this.add(new NBTChar(value));
 	}
 
 	@Deprecated
 	public void addMedium(int value)
 	{
-		this.add(new NBTTagMedium(value));
+		this.add(new NBTMedium(value));
 	}
 
 	@Deprecated
 	public void addInteger(int value)
 	{
-		this.add(new NBTTagInteger(value));
+		this.add(new NBTInteger(value));
 	}
 
 	@Deprecated
 	public void addLong(long value)
 	{
-		this.add(new NBTTagLong(value));
+		this.add(new NBTLong(value));
 	}
 
 	@Deprecated
 	public void addFloat(float value)
 	{
-		this.add(new NBTTagFloat(value));
+		this.add(new NBTFloat(value));
 	}
 
 	@Deprecated
 	public void addDouble(double value)
 	{
-		this.add(new NBTTagDouble(value));
+		this.add(new NBTDouble(value));
 	}
 
 	@Deprecated
 	public void addString(String value)
 	{
-		this.add(new NBTTagString(value));
+		this.add(new NBTString(value));
 	}
 
 	@Deprecated
-	public void addTagList(NBTTagList list)
+	public void addTagList(NBTList list)
 	{
 		this.add(list);
 	}
 
 	@Deprecated
-	public void addTagCompound(NBTTagCompound compound)
+	public void addTagCompound(NBTMap compound)
 	{
 		this.add(compound);
 	}
 
 	@Deprecated
-	public void addTagArray(NBTTagArray array)
+	public void addTagArray(NBTArray array)
 	{
 		this.add(array);
 	}
 
-	public static <T> NBTTagList fromArray(T[] args)
+	public static <T> NBTList fromArray(T[] args)
 	{
-		final NBTTagList list = new NBTTagList(args.length);
+		final NBTList list = new NBTList(args.length);
 
 		for (T arg : args)
 		{
@@ -205,9 +204,9 @@ public class NBTTagList extends NamedBinaryTag implements Iterable<NamedBinaryTa
 		return list;
 	}
 
-	public static NBTTagList fromList(List<?> args)
+	public static NBTList fromList(List<?> args)
 	{
-		final NBTTagList list = new NBTTagList(args.size());
+		final NBTList list = new NBTList(args.size());
 
 		for (Object arg : args)
 		{

@@ -1,16 +1,16 @@
-package com.clashsoft.nbt.tags.primitive;
+package dyvil.tools.nbt.primitive;
 
-import com.clashsoft.nbt.NamedBinaryTag;
-import com.clashsoft.nbt.io.NBTInputStream;
-import com.clashsoft.nbt.io.NBTOutputStream;
+import dyvil.tools.nbt.NamedBinaryTag;
+import dyvil.tools.nbt.util.NBTInputStream;
+import dyvil.tools.nbt.util.NBTOutputStream;
 
 import java.io.IOException;
 
-public class NBTTagBoolean extends NamedBinaryTag implements NBTTagPrimitive
+public class NBTBoolean extends NamedBinaryTag implements NBTPrimitive
 {
 	protected boolean value;
 
-	public NBTTagBoolean(boolean value)
+	public NBTBoolean(boolean value)
 	{
 		this.value = value;
 	}
@@ -78,7 +78,7 @@ public class NBTTagBoolean extends NamedBinaryTag implements NBTTagPrimitive
 	@Override
 	public boolean valueEquals(NamedBinaryTag that)
 	{
-		return this.value == ((NBTTagPrimitive) that).getBool();
+		return this.value == ((NBTPrimitive) that).getBool();
 	}
 
 	@Override

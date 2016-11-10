@@ -1,12 +1,12 @@
-package com.clashsoft.nbt.tags.primitive;
+package dyvil.tools.nbt.primitive;
 
-import com.clashsoft.nbt.NamedBinaryTag;
-import com.clashsoft.nbt.io.NBTInputStream;
-import com.clashsoft.nbt.io.NBTOutputStream;
+import dyvil.tools.nbt.NamedBinaryTag;
+import dyvil.tools.nbt.util.NBTInputStream;
+import dyvil.tools.nbt.util.NBTOutputStream;
 
 import java.io.IOException;
 
-public abstract class NBTTagNumber extends NamedBinaryTag implements NBTTagPrimitive
+public abstract class NBTNumber extends NamedBinaryTag implements NBTPrimitive
 {
 	@Override
 	public abstract Number getValue();

@@ -1,15 +1,15 @@
-package com.clashsoft.nbt.tags.primitive;
+package dyvil.tools.nbt.primitive;
 
-import com.clashsoft.nbt.io.NBTInputStream;
-import com.clashsoft.nbt.io.NBTOutputStream;
+import dyvil.tools.nbt.util.NBTInputStream;
+import dyvil.tools.nbt.util.NBTOutputStream;
 
 import java.io.IOException;
 
-public class NBTTagShort extends NBTTagNumber
+public class NBTShort extends NBTNumber
 {
 	protected short value;
 
-	public NBTTagShort(short value)
+	public NBTShort(short value)
 	{
 		this.value = value;
 	}
@@ -84,11 +84,5 @@ public class NBTTagShort extends NBTTagNumber
 	public void readNumber(NBTInputStream input) throws IOException
 	{
 		this.value = input.readShort();
-	}
-
-	@Override
-	public void readNumber(String number)
-	{
-		this.value = Short.parseShort(number);
 	}
 }

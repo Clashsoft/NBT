@@ -1,15 +1,15 @@
-package com.clashsoft.nbt.tags.primitive;
+package dyvil.tools.nbt.primitive;
 
-import com.clashsoft.nbt.io.NBTInputStream;
-import com.clashsoft.nbt.io.NBTOutputStream;
+import dyvil.tools.nbt.util.NBTInputStream;
+import dyvil.tools.nbt.util.NBTOutputStream;
 
 import java.io.IOException;
 
-public class NBTTagLong extends NBTTagNumber
+public class NBTDouble extends NBTNumber
 {
-	protected long value;
+	protected double value;
 
-	public NBTTagLong(long value)
+	public NBTDouble(double value)
 	{
 		this.value = value;
 	}
@@ -17,11 +17,11 @@ public class NBTTagLong extends NBTTagNumber
 	@Override
 	public byte getType()
 	{
-		return TYPE_LONG;
+		return TYPE_DOUBLE;
 	}
 
 	@Override
-	public Long getValue()
+	public Double getValue()
 	{
 		return this.value;
 	}
@@ -53,13 +53,13 @@ public class NBTTagLong extends NBTTagNumber
 	@Override
 	public long getLong()
 	{
-		return this.value;
+		return (long) this.value;
 	}
 
 	@Override
 	public float getFloat()
 	{
-		return this.value;
+		return (float) this.value;
 	}
 
 	@Override
@@ -71,18 +71,18 @@ public class NBTTagLong extends NBTTagNumber
 	@Override
 	public char getPostfix()
 	{
-		return 'L';
+		return 'D';
 	}
 
 	@Override
 	public void writeNumber(NBTOutputStream output) throws IOException
 	{
-		output.writeLong(this.value);
+		output.writeDouble(this.value);
 	}
 
 	@Override
 	public void readNumber(NBTInputStream input) throws IOException
 	{
-		this.value = input.readLong();
+		this.value = input.readDouble();
 	}
 }

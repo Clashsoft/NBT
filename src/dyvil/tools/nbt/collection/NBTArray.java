@@ -1,13 +1,13 @@
-package com.clashsoft.nbt.tags.collection;
+package dyvil.tools.nbt.collection;
 
-import com.clashsoft.nbt.NamedBinaryTag;
-import com.clashsoft.nbt.io.NBTInputStream;
-import com.clashsoft.nbt.io.NBTOutputStream;
-import com.clashsoft.nbt.tags.primitive.NBTTagBoolean;
-import com.clashsoft.nbt.tags.primitive.NBTTagChar;
-import com.clashsoft.nbt.tags.primitive.NBTTagNumber;
-import com.clashsoft.nbt.tags.string.NBTTagString;
-import com.clashsoft.nbt.util.NBTParser;
+import dyvil.tools.nbt.NamedBinaryTag;
+import dyvil.tools.nbt.util.NBTInputStream;
+import dyvil.tools.nbt.util.NBTOutputStream;
+import dyvil.tools.nbt.primitive.NBTBoolean;
+import dyvil.tools.nbt.primitive.NBTChar;
+import dyvil.tools.nbt.primitive.NBTNumber;
+import dyvil.tools.nbt.primitive.NBTString;
+import dyvil.tools.nbt.util.NBTParser;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -20,7 +20,7 @@ import java.lang.reflect.Array;
  *
  * @author Clashsoft
  */
-public class NBTTagArray extends NamedBinaryTag
+public class NBTArray extends NamedBinaryTag
 {
 	public static final byte TYPE_NBT = 0;
 
@@ -31,7 +31,7 @@ public class NBTTagArray extends NamedBinaryTag
 	/**
 	 * Constructor used for deserialization
 	 */
-	public NBTTagArray()
+	public NBTArray()
 	{
 	}
 
@@ -43,70 +43,70 @@ public class NBTTagArray extends NamedBinaryTag
 	 * @param array
 	 * 	the array
 	 */
-	public NBTTagArray(Object array)
+	public NBTArray(Object array)
 	{
 		this.array = array;
 		this.unwrap(array);
 	}
 
-	public NBTTagArray(Object array, int length, byte type)
+	public NBTArray(Object array, int length, byte type)
 	{
 		this.array = array;
 		this.subtype = type;
 		this.length = length;
 	}
 
-	public NBTTagArray(NamedBinaryTag[] nbtArray)
+	public NBTArray(NamedBinaryTag[] nbtArray)
 	{
 		this.setNBTArray(nbtArray);
 	}
 
-	public NBTTagArray(boolean[] booleanArray)
+	public NBTArray(boolean[] booleanArray)
 	{
 		this.setBooleanArray(booleanArray);
 	}
 
-	public NBTTagArray(byte[] byteArray)
+	public NBTArray(byte[] byteArray)
 	{
 		this.setByteArray(byteArray);
 	}
 
-	public NBTTagArray(short[] shortArray)
+	public NBTArray(short[] shortArray)
 	{
 		this.setShortArray(shortArray);
 	}
 
-	public NBTTagArray(char[] charArray)
+	public NBTArray(char[] charArray)
 	{
 		this.setCharArray(charArray);
 	}
 
-	public static NBTTagArray mediumArray(int[] mediumArray)
+	public static NBTArray mediumArray(int[] mediumArray)
 	{
-		return new NBTTagArray().setMediumArray(mediumArray);
+		return new NBTArray().setMediumArray(mediumArray);
 	}
 
-	public NBTTagArray(int[] intArray)
+	public NBTArray(int[] intArray)
 	{
 		this.setIntArray(intArray);
 	}
 
-	public NBTTagArray(long[] longArray)
+	public NBTArray(long[] longArray)
 	{
 		this.setLongArray(longArray);
 	}
 
-	public NBTTagArray(float[] floatArray)
+	public NBTArray(float[] floatArray)
 	{
 		this.setFloatArray(floatArray);
 	}
 
-	public NBTTagArray(double[] doubleArray)
+	public NBTArray(double[] doubleArray)
 	{
 		this.setDoubleArray(doubleArray);
 	}
 
-	public NBTTagArray(String[] stringArray)
+	public NBTArray(String[] stringArray)
 	{
 		this.setStringArray(stringArray);
 	}
@@ -367,7 +367,7 @@ public class NBTTagArray extends NamedBinaryTag
 			boolean[] booleanArray = new boolean[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagBoolean tag = (NBTTagBoolean) nbtArray[i];
+				NBTBoolean tag = (NBTBoolean) nbtArray[i];
 				booleanArray[i] = tag.getBool();
 			}
 			this.array = booleanArray;
@@ -377,7 +377,7 @@ public class NBTTagArray extends NamedBinaryTag
 			byte[] byteArray = new byte[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagNumber tag = (NBTTagNumber) nbtArray[i];
+				NBTNumber tag = (NBTNumber) nbtArray[i];
 				byteArray[i] = tag.getByte();
 			}
 			this.array = byteArray;
@@ -387,7 +387,7 @@ public class NBTTagArray extends NamedBinaryTag
 			short[] shortArray = new short[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagNumber tag = (NBTTagNumber) nbtArray[i];
+				NBTNumber tag = (NBTNumber) nbtArray[i];
 				shortArray[i] = tag.getShort();
 			}
 			this.array = shortArray;
@@ -397,7 +397,7 @@ public class NBTTagArray extends NamedBinaryTag
 			char[] charArray = new char[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagChar tag = (NBTTagChar) nbtArray[i];
+				NBTChar tag = (NBTChar) nbtArray[i];
 				charArray[i] = tag.getChar();
 			}
 			this.array = charArray;
@@ -407,7 +407,7 @@ public class NBTTagArray extends NamedBinaryTag
 			int[] intArray = new int[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagNumber tag = (NBTTagNumber) nbtArray[i];
+				NBTNumber tag = (NBTNumber) nbtArray[i];
 				intArray[i] = tag.getInt();
 			}
 			this.array = intArray;
@@ -417,7 +417,7 @@ public class NBTTagArray extends NamedBinaryTag
 			long[] longArray = new long[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagNumber tag = (NBTTagNumber) nbtArray[i];
+				NBTNumber tag = (NBTNumber) nbtArray[i];
 				longArray[i] = tag.getLong();
 			}
 			this.array = longArray;
@@ -427,7 +427,7 @@ public class NBTTagArray extends NamedBinaryTag
 			float[] floatArray = new float[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagNumber tag = (NBTTagNumber) nbtArray[i];
+				NBTNumber tag = (NBTNumber) nbtArray[i];
 				floatArray[i] = tag.getFloat();
 			}
 			this.array = floatArray;
@@ -437,7 +437,7 @@ public class NBTTagArray extends NamedBinaryTag
 			double[] doubleArray = new double[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagNumber tag = (NBTTagNumber) nbtArray[i];
+				NBTNumber tag = (NBTNumber) nbtArray[i];
 				doubleArray[i] = tag.getDouble();
 			}
 			this.array = doubleArray;
@@ -447,7 +447,7 @@ public class NBTTagArray extends NamedBinaryTag
 			String[] stringArray = new String[len];
 			for (int i = 0; i < len; i++)
 			{
-				NBTTagString tag = (NBTTagString) nbtArray[i];
+				NBTString tag = (NBTString) nbtArray[i];
 				stringArray[i] = tag.getString();
 			}
 			this.array = stringArray;
@@ -529,7 +529,7 @@ public class NBTTagArray extends NamedBinaryTag
 		return (String[]) this.array;
 	}
 
-	protected NBTTagArray setNBTArray(NamedBinaryTag[] objects)
+	protected NBTArray setNBTArray(NamedBinaryTag[] objects)
 	{
 		this.array = objects;
 		this.subtype = TYPE_NBT;
@@ -537,7 +537,7 @@ public class NBTTagArray extends NamedBinaryTag
 		return this;
 	}
 
-	protected NBTTagArray setBooleanArray(boolean[] booleanArray)
+	protected NBTArray setBooleanArray(boolean[] booleanArray)
 	{
 		this.array = booleanArray;
 		this.subtype = TYPE_BOOLEAN;
@@ -545,7 +545,7 @@ public class NBTTagArray extends NamedBinaryTag
 		return this;
 	}
 
-	protected NBTTagArray setNibbleArray(byte[] nibbleArray)
+	protected NBTArray setNibbleArray(byte[] nibbleArray)
 	{
 		this.array = nibbleArray;
 		this.subtype = TYPE_NIBBLE;
@@ -553,7 +553,7 @@ public class NBTTagArray extends NamedBinaryTag
 		return this;
 	}
 
-	protected NBTTagArray setByteArray(byte[] byteArray)
+	protected NBTArray setByteArray(byte[] byteArray)
 	{
 		this.array = byteArray;
 		this.subtype = TYPE_BYTE;
@@ -561,7 +561,7 @@ public class NBTTagArray extends NamedBinaryTag
 		return this;
 	}
 
-	protected NBTTagArray setShortArray(short[] shortArray)
+	protected NBTArray setShortArray(short[] shortArray)
 	{
 		this.array = shortArray;
 		this.subtype = TYPE_SHORT;
@@ -569,7 +569,7 @@ public class NBTTagArray extends NamedBinaryTag
 		return this;
 	}
 
-	protected NBTTagArray setCharArray(char[] charArray)
+	protected NBTArray setCharArray(char[] charArray)
 	{
 		this.array = charArray;
 		this.subtype = TYPE_CHAR;
@@ -577,7 +577,7 @@ public class NBTTagArray extends NamedBinaryTag
 		return this;
 	}
 
-	protected NBTTagArray setMediumArray(int[] mediumArray)
+	protected NBTArray setMediumArray(int[] mediumArray)
 	{
 		this.array = mediumArray;
 		this.subtype = TYPE_MEDIUM;
@@ -585,7 +585,7 @@ public class NBTTagArray extends NamedBinaryTag
 		return this;
 	}
 
-	protected NBTTagArray setIntArray(int[] intArray)
+	protected NBTArray setIntArray(int[] intArray)
 	{
 		this.array = intArray;
 		this.subtype = TYPE_INT;
@@ -593,7 +593,7 @@ public class NBTTagArray extends NamedBinaryTag
 		return this;
 	}
 
-	protected NBTTagArray setLongArray(long[] longArray)
+	protected NBTArray setLongArray(long[] longArray)
 	{
 		this.array = longArray;
 		this.subtype = TYPE_LONG;
@@ -601,7 +601,7 @@ public class NBTTagArray extends NamedBinaryTag
 		return this;
 	}
 
-	protected NBTTagArray setFloatArray(float[] floatArray)
+	protected NBTArray setFloatArray(float[] floatArray)
 	{
 		this.array = floatArray;
 		this.subtype = TYPE_FLOAT;
@@ -609,7 +609,7 @@ public class NBTTagArray extends NamedBinaryTag
 		return this;
 	}
 
-	protected NBTTagArray setDoubleArray(double[] doubleArray)
+	protected NBTArray setDoubleArray(double[] doubleArray)
 	{
 		this.array = doubleArray;
 		this.subtype = TYPE_DOUBLE;
@@ -617,7 +617,7 @@ public class NBTTagArray extends NamedBinaryTag
 		return this;
 	}
 
-	protected NBTTagArray setStringArray(String[] stringArray)
+	protected NBTArray setStringArray(String[] stringArray)
 	{
 		this.array = stringArray;
 		this.subtype = TYPE_STRING;

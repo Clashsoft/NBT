@@ -1,6 +1,6 @@
-package com.clashsoft.nbt.io;
+package dyvil.tools.nbt.util;
 
-import com.clashsoft.nbt.NamedBinaryTag;
+import dyvil.tools.nbt.NamedBinaryTag;
 
 import java.io.*;
 import java.util.zip.GZIPOutputStream;

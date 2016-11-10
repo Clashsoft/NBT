@@ -1,15 +1,15 @@
-package com.clashsoft.nbt.tags.primitive;
+package dyvil.tools.nbt.primitive;
 
-import com.clashsoft.nbt.io.NBTInputStream;
-import com.clashsoft.nbt.io.NBTOutputStream;
+import dyvil.tools.nbt.util.NBTInputStream;
+import dyvil.tools.nbt.util.NBTOutputStream;
 
 import java.io.IOException;
 
-public class NBTTagInteger extends NBTTagNumber
+public class NBTNibble extends NBTNumber
 {
-	protected int value;
+	protected byte value;
 
-	public NBTTagInteger(int value)
+	public NBTNibble(byte value)
 	{
 		this.value = value;
 	}
@@ -17,31 +17,31 @@ public class NBTTagInteger extends NBTTagNumber
 	@Override
 	public byte getType()
 	{
-		return TYPE_INT;
+		return TYPE_NIBBLE;
 	}
 
 	@Override
-	public Integer getValue()
+	public Byte getValue()
 	{
-		return this.value;
+		return this.getByte();
 	}
 
 	@Override
 	public byte getByte()
 	{
-		return (byte) this.value;
+		return this.value;
+	}
+
+	@Override
+	public short getShort()
+	{
+		return this.value;
 	}
 
 	@Override
 	public char getChar()
 	{
 		return (char) this.value;
-	}
-
-	@Override
-	public short getShort()
-	{
-		return (short) this.value;
 	}
 
 	@Override
@@ -71,18 +71,18 @@ public class NBTTagInteger extends NBTTagNumber
 	@Override
 	public char getPostfix()
 	{
-		return 'I';
+		return 'N';
 	}
 
 	@Override
 	public void writeNumber(NBTOutputStream output) throws IOException
 	{
-		output.writeInt(this.value);
+		output.writeNibble(this.value);
 	}
 
 	@Override
 	public void readNumber(NBTInputStream input) throws IOException
 	{
-		this.value = input.readInt();
+		this.value = input.readNibble();
 	}
 }

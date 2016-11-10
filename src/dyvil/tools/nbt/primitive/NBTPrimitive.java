@@ -1,6 +1,6 @@
-package com.clashsoft.nbt.tags.primitive;
+package dyvil.tools.nbt.primitive;
 
-public interface NBTTagPrimitive
+public interface NBTPrimitive
 {
 	boolean getBool();
 

@@ -1,15 +1,16 @@
-package com.clashsoft.nbt.tags.primitive;
+package dyvil.tools.nbt.primitive;
 
-import com.clashsoft.nbt.io.NBTInputStream;
-import com.clashsoft.nbt.io.NBTOutputStream;
+import dyvil.tools.nbt.util.NBTInputStream;
+import dyvil.tools.nbt.util.NBTOutputStream;
+import dyvil.tools.nbt.NamedBinaryTag;
 
 import java.io.IOException;
 
-public class NBTTagFloat extends NBTTagNumber
+public class NBTFloat extends NBTNumber
 {
 	protected float value;
 
-	public NBTTagFloat(float value)
+	public NBTFloat(float value)
 	{
 		this.value = value;
 	}
@@ -17,7 +18,7 @@ public class NBTTagFloat extends NBTTagNumber
 	@Override
 	public byte getType()
 	{
-		return TYPE_FLOAT;
+		return NamedBinaryTag.TYPE_FLOAT;
 	}
 
 	@Override
